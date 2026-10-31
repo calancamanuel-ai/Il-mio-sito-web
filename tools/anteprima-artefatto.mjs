@@ -13,8 +13,10 @@ if (!out) { console.error('uso: node tools/anteprima-artefatto.mjs <cartella>');
 if (existsSync(out)) rmSync(out, { recursive: true });
 mkdirSync(join(out, 'risorse'), { recursive: true });
 
-const pages = readdirSync(src).filter((f) => f.endsWith('.html'));
-const names = new Set(pages.map((f) => f.replace(/\.html$/, '')));
+// pagine alla radice e nelle sottocartelle (es. lab/flusso.html -> lab-flusso.html: tutto resta alla radice)
+const pages = readdirSync(src, { recursive: true }).map(String).filter((f) => f.endsWith('.html') && !f.startsWith('_astro'));
+const flat = (f) => f.replace(/\.html$/, '').replaceAll('/', '-');
+const names = new Map(pages.map((f) => [f.replace(/\.html$/, ''), flat(f)]));
 
 const fixUrl = (u) => {
   if (!u.startsWith('/') || u.startsWith('//')) return u;
@@ -24,7 +26,7 @@ const fixUrl = (u) => {
   if (path === '') return 'home.html' + rest;
   if (path.startsWith('_astro/')) return path.replace('_astro/', 'risorse/') + rest; // "_" è riservato negli artefatti
   if (path.includes('.')) return path + rest;
-  if (names.has(path)) return `${path}.html${rest}`;
+  if (names.has(path)) return `${names.get(path)}.html${rest}`;
   return path + rest; // per esempio api/contatto: resta un indirizzo relativo che non risponde
 };
 
@@ -33,10 +35,11 @@ for (const f of pages) {
   html = html.replace(/<link rel="preload"[^>]*as="font"[^>]*>/g, '');
   html = html.replace(/(href|src|action)="([^"]*)"/g, (_, a, u) => `${a}="${fixUrl(u)}"`);
   html = html.replace(/`\/contatti\?/g, '`contatti.html?');
-  writeFileSync(join(out, f === 'index.html' ? 'home.html' : f), html);
+  writeFileSync(join(out, f === 'index.html' ? 'home.html' : `${flat(f)}.html`), html);
 }
 
 for (const f of readdirSync(join(src, '_astro'))) {
+  if (f.endsWith('.js')) { copyFileSync(join(src, '_astro', f), join(out, 'risorse', f)); continue; }
   if (!f.endsWith('.css')) continue;
   let css = readFileSync(join(src, '_astro', f), 'utf8');
   css = css.replace(/url\(\/_astro\/([^)]+\.woff2)\)/g, (_, file) =>
@@ -57,7 +60,7 @@ writeFileSync(join(out, 'index.html'), `<title>Anteprima sito Manuel</title>
 <main>
   <h1>Apertura della home…</h1>
   <p>Se non si apre da sola, <a href="home.html">vai alla home</a>.</p>
-  <p>Pagine: ${['home', ...[...names].filter((n) => !['index', '404'].includes(n))].map((n) => `<a href="${n}.html">${n}</a>`).join(' · ')}</p>
+  <p>Pagine: ${['home', ...[...names.values()].filter((n) => !['index', '404'].includes(n))].map((n) => `<a href="${n}.html">${n}</a>`).join(' · ')}</p>
 </main>
 <script>location.replace('home.html');</script>
 `);
