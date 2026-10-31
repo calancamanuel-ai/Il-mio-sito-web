@@ -62,6 +62,6 @@ writeFileSync(join(out, 'index.html'), `<title>Anteprima sito Manuel</title>
   <p>Se non si apre da sola, <a href="home.html">vai alla home</a>.</p>
   <p>Pagine: ${['home', ...[...names.values()].filter((n) => !['index', '404'].includes(n))].map((n) => `<a href="${n}.html">${n}</a>`).join(' · ')}</p>
 </main>
-<script>location.replace('home.html');</script>
+<script>/* #nome-pagina nel link dell'artefatto apre quella pagina (es. #lab-flusso) */ var h = location.hash.slice(1); location.replace(h && /^[a-z-]+$/.test(h) ? h + '.html' : 'home.html');</script>
 `);
 console.log('anteprima pronta in', out);
