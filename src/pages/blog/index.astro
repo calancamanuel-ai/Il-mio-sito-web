@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CloseInverted from '../../components/sections/CloseInverted.astro';
+---
+<BaseLayout title="Blog" description="Un articolo al mese su domande vere dei clienti: automazioni, AI e siti per chi ha un'attività.">
+  <section class="section blog" aria-labelledby="titolo">
+    <h1 id="titolo">Domande vere, risposte brevi</h1>
+    <p class="lead">Un articolo al mese, partendo da quello che mi chiedono in call. Il primo arriva con l'apertura del sito.</p>
+    <p class="empty">Per ora non c'è ancora nessun articolo: preferisco aspettare una domanda vera piuttosto che riempire la pagina.</p>
+  </section>
+  <CloseInverted title="Hai una domanda? Scrivimi." />
+</BaseLayout>
+<style>
+  .blog { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3) var(--space-5); align-items: end; padding-top: clamp(3rem, 8vh, 6rem); }
+  .blog h1, .blog .lead { grid-column: 1; }
+  .blog .empty { grid-column: 2; grid-row: 1 / 3; padding: var(--space-4); background: var(--c-surface); color: var(--c-ink); }
+  @media (max-width: 860px) { .blog { grid-template-columns: minmax(0, 1fr); } .blog .empty { grid-column: 1; grid-row: auto; } }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
+  .empty { max-width: var(--measure); color: var(--c-ink-soft); }
+</style>

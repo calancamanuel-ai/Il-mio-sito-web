@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CircuitMap from '../components/ui/CircuitMap.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+import Value from '../components/ui/Value.astro';
+import CloseInverted from '../components/sections/CloseInverted.astro';
+import { brand, contatti, contenuti, zona, isPlaceholder } from '../config/sito';
+const principi = [
+  { h: 'Consulente, non agenzia', p: 'Parli sempre con la stessa persona, dalla prima call al supporto. Nessun passaggio di mano.' },
+  { h: 'Prezzo fisso, scritto prima', p: 'Dopo l’analisi gratuita ricevi una proposta con prezzo e tempi. Non cambia in corso d’opera.' },
+  { h: 'Ti dico anche quando non conviene', p: 'Se un’automazione non ripaga, te lo dico e ti propongo qualcosa di più semplice.' },
+  { h: 'Il sito è la prova', p: 'Quello che stai guardando l’ho fatto io: velocità, demo e cura sono le stesse che metto nei progetti.' },
+];
+---
+<BaseLayout title="Chi sono" description={`${brand.titolare}, consulente di automazione e sviluppo: parte da ${zona.base} e lavora anche da remoto.`}>
+  <section class="about section" aria-labelledby="titolo">
+    <div class="photo" role="img" aria-label={isPlaceholder(contenuti.fotoManuel) ? 'Foto di Manuel da inserire' : `Foto di ${brand.titolare}`}>
+      <Value value={contenuti.fotoManuel} />
+    </div>
+    <div class="about-text">
+      <h1 id="titolo">{brand.titolare}, consulente di automazione</h1>
+      <p class="lead">Parto da {zona.base}. Lavoro con Bologna, Modena e anche da remoto.</p>
+      <p class="story"><Value value={contenuti.testoChiSono} /></p>
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota una call di 20 minuti</ButtonLink>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="come">
+    <h2 id="come" class="section-title">Come lavoro</h2>
+    <ul class="principles">{principi.map((x) => <li><h3>{x.h}</h3><p>{x.p}</p></li>)}</ul>
+  </section>
+
+  <section class="section" aria-labelledby="zona">
+    <h2 id="zona" class="section-title">Da dove parto</h2>
+    <CircuitMap />
+  </section>
+
+  <CloseInverted title="Una call, e ci conosciamo." />
+</BaseLayout>
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-5); align-items: end; padding-top: clamp(3rem, 8vh, 6rem); }
+  .photo { display: grid; place-items: center; aspect-ratio: 4 / 5; padding: 1rem; background: var(--c-surface); text-align: center; }
+  .about-text { display: grid; gap: var(--space-3); justify-items: start; }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
+  .story { max-width: var(--measure); }
+  .principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+  .principles h3 { font-size: var(--step-lead); font-weight: 500; margin-bottom: 0.4rem; }
+  .principles p { max-width: 44ch; }
+  @media (max-width: 760px) {
+    .about, .principles { grid-template-columns: minmax(0, 1fr); }
+    .photo { max-width: 16rem; }
+  }
+</style>

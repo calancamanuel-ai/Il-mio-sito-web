@@ -1,0 +1,38 @@
+---
+/** Frammento: pannello interno per seguire richieste e pratiche (dati d'esempio). */
+interface Props { class?: string }
+const { class: extra = '' } = Astro.props;
+const righe = [
+  { cliente: 'Bianchi Costruzioni', cosa: 'Preventivo ristrutturazione bagno', stato: 'Bozza pronta', s: 'ok' },
+  { cliente: 'Farmacia Centrale', cosa: 'Sito: nuova pagina orari', stato: 'In lavorazione', s: 'wait' },
+  { cliente: 'L. Ferri', cosa: 'Richiesta revisione caldaia', stato: 'Da chiamare', s: 'todo' },
+  { cliente: 'Studio Gallo', cosa: 'Documenti mancanti: 2', stato: 'Email inviata', s: 'ok' },
+];
+---
+<figure class:list={['frag', extra]} data-ui>
+  <div class="frag-bar"><span>Richieste di questa settimana</span><span class="mono tag">esempio</span></div>
+  <table>
+    <thead><tr><th scope="col">Cliente</th><th scope="col">Cosa</th><th scope="col">Stato</th></tr></thead>
+    <tbody>{righe.map((r) => <tr><td>{r.cliente}</td><td>{r.cosa}</td><td><span class={`st st--${r.s}`}>{r.stato}</span></td></tr>)}</tbody>
+  </table>
+  <figcaption class="visually-hidden">Esempio di pannello interno con le richieste e il loro stato. Nomi inventati.</figcaption>
+</figure>
+<style>
+  .frag { margin: 0; background: var(--c-surface); color: var(--c-ink); min-height: 220px; }
+  .frag-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.7rem 1rem; background: var(--c-line); font-weight: 600; }
+  .tag { color: var(--c-placeholder); font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border-bottom: 2px solid var(--c-line); vertical-align: top; }
+  th { color: var(--c-ink-soft); font-weight: 400; }
+  .st { white-space: nowrap; }
+  .st--ok { color: var(--c-ok); }
+  .st--wait { color: var(--c-accent); }
+  .st--todo { color: var(--c-placeholder); }
+  @media (max-width: 600px) {
+    thead { display: none; }
+    table, tbody, tr, td { display: block; }
+    tr { padding: 0.6rem 1rem; border-bottom: 2px solid var(--c-line); }
+    td { padding: 0.1rem 0; border: 0; }
+    td:first-child { font-weight: 600; }
+  }
+</style>

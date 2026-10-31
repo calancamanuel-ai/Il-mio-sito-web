@@ -24,7 +24,7 @@ import { servizi } from '../../content/home';
   .claims { display: grid; gap: var(--space-5); }
   .claim { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-4); align-items: center; }
   .claim-text { display: grid; gap: var(--space-2); justify-items: start; }
-  .claim h3 { font-size: var(--step-head); font-weight: 300; line-height: 1; }
+  .claim h3 { font-size: clamp(2rem, 1rem + 2.4vw, 3.5rem); font-weight: 300; line-height: 1; max-width: 14ch; }
   .claim p { max-width: 40ch; }
   .claim a { display: inline-block; padding-block: 0.5rem; }
   @media (max-width: 900px) { .claim { grid-template-columns: minmax(0, 1fr); } }

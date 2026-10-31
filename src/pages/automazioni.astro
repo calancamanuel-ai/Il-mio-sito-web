@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import FragmentWorkflow from '../components/ui/FragmentWorkflow.astro';
+import ExampleFlows from '../components/sections/ExampleFlows.astro';
+import SavingsCalculator from '../components/demos/SavingsCalculator.astro';
+import NotWorthIt from '../components/sections/NotWorthIt.astro';
+import PriceSection from '../components/sections/PriceSection.astro';
+import Faq from '../components/sections/Faq.astro';
+import CloseInverted from '../components/sections/CloseInverted.astro';
+
+const esempi = [
+  { titolo: 'Le richieste dal sito finiscono in un foglio, e tu lo sai subito', arriva: 'Un modulo compilato sul sito', fa: 'Controlla i campi e toglie i doppioni', esce: 'Una riga nel foglio e un avviso sul telefono', programmi: 'sito, Google Sheets o Excel, Telegram', prezzo: 'workflow-semplice' },
+  { titolo: 'Le email di richiesta diventano bozze di preventivo', arriva: 'Un’email del cliente, anche scritta di fretta', fa: 'Claude capisce cosa chiede e prende i prezzi dal tuo listino', esce: 'Una bozza da rileggere e inviare con un clic', programmi: 'Gmail o Outlook, listino in foglio, gestionale', prezzo: 'workflow-ai' },
+  { titolo: 'Le fatture si archiviano da sole, con il nome giusto', arriva: 'Un PDF allegato a un’email', fa: 'Legge fornitore, data e importo', esce: 'Il file nella cartella giusta e i dati in tabella', programmi: 'email, Google Drive o Dropbox, foglio di calcolo', prezzo: 'workflow-ai' },
+  { titolo: 'I promemoria partono il giorno prima', arriva: 'Un appuntamento in calendario', fa: 'Prepara il messaggio con giorno, ora e indirizzo', esce: 'Un WhatsApp o un’email al cliente', programmi: 'Google Calendar, WhatsApp Business, email', prezzo: 'workflow-semplice' },
+];
+const faq = [
+  { q: 'Cos’è un workflow?', a: 'Una sequenza di passaggi che il computer fa da solo, sempre nello stesso modo: riceve qualcosa, lo elabora, lo mette dove serve e ti avvisa.' },
+  { q: 'Perché n8n?', a: 'Collega centinaia di programmi, può girare su un server tuo o in cloud e non ti lega a un abbonamento per ogni singolo passaggio.' },
+  { q: 'Quanto ci vuole per averlo?', a: 'Dipende dai passaggi e dai programmi da collegare: i tempi esatti sono scritti nella proposta, insieme al prezzo fisso.' },
+  { q: 'Posso modificarlo da solo?', a: 'Sì, ti consegno il flusso e ti spiego come leggerlo. Le modifiche piccole le puoi fare tu; per le altre c’è l’assistenza.' },
+];
+---
+<BaseLayout title="Automazioni n8n" description="Automazioni con n8n per richieste, preventivi, fatture e promemoria: il lavoro ripetitivo lo fa un sistema, tu decidi.">
+  <PageIntro title="Il lavoro ripetitivo, fatto da un flusso" answer="Costruisco con n8n flussi che ricevono richieste, email e documenti, li leggono, li archiviano e ti avvisano solo quando serve una tua decisione. Da 300 €, con prezzo fisso.">
+    <FragmentWorkflow slot="aside" />
+  </PageIntro>
+
+  <ExampleFlows id="esempi" title="Quattro flussi che chiedono in molti" items={esempi} />
+
+  <section class="section" id="calcolatore" aria-labelledby="calcolo">
+    <h2 id="calcolo" class="section-title">Quante ore ti restituisce?</h2>
+    <p class="lead calc-lead">Scegli la tua attività e cosa ti porta via tempo: il conto si aggiorna mentre scegli.</p>
+    <SavingsCalculator />
+  </section>
+
+  <NotWorthIt class="page-nw" />
+  <PriceSection ids={['analisi', 'workflow-semplice', 'workflow-ai', 'assistenza']} />
+  <Faq items={faq} />
+  <CloseInverted title="Prima il flusso, poi il caffè." />
+</BaseLayout>
+<style>
+  .calc-lead { margin-block: var(--space-3) var(--space-5); }
+  :global(.page-nw) { margin-top: var(--gap-section); }
+</style>

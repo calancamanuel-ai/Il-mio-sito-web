@@ -1,0 +1,52 @@
+---
+/** Esempi concreti di flussi: cosa arriva, cosa fa, cosa esce, programmi tipici, prezzo da. */
+import { prezzi } from '../../config/sito';
+interface Item { titolo: string; arriva: string; fa: string; esce: string; programmi: string; prezzo: string }
+interface Props { items: Item[]; title: string; id: string }
+const { items, title, id } = Astro.props;
+const eur = (n: number) => new Intl.NumberFormat('it-IT').format(n) + ' €';
+const prezzoDi = (pid: string) => { const v = prezzi.voci.find((x) => x.id === pid); return v ? `da ${eur(v.da)}` : ''; };
+---
+<section class="section" aria-labelledby={id}>
+  <h2 id={id} class="section-title">{title}</h2>
+  <ul class="flows">
+    {items.map((it) => (
+      <li class="flow-item">
+        <h3>{it.titolo}</h3>
+        <ol class="chain" data-ui aria-label={`Esempio: ${it.titolo}`}>
+          <li><span class="mono tag">arriva</span>{it.arriva}</li>
+          <li><span class="mono tag">fa</span>{it.fa}</li>
+          <li><span class="mono tag">esce</span>{it.esce}</li>
+        </ol>
+        <p class="meta">Programmi tipici: {it.programmi} · <span class="mono price">{prezzoDi(it.prezzo)}</span></p>
+      </li>
+    ))}
+  </ul>
+</section>
+<style>
+  .flows { display: grid; gap: var(--space-5); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+  .flow-item { display: grid; gap: var(--space-2); }
+  .flow-item h3 { font-size: var(--step-lead); font-weight: 500; max-width: 30ch; }
+  .chain {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-3);
+    list-style: none;
+    background: var(--c-surface);
+    min-height: 200px;
+    align-content: center;
+  }
+  .chain::before { content: ''; position: absolute; left: var(--space-3); right: var(--space-3); top: calc(var(--space-3) + 1.1rem); height: 3px; background: var(--c-action); }
+  .chain li { position: relative; display: grid; gap: 0.4rem; align-content: start; }
+  .tag { justify-self: start; padding: 0.25rem 0.5rem; background: var(--c-bg); color: var(--c-action); }
+  .meta { color: var(--c-ink-soft); }
+  .price { color: var(--c-action); }
+  @media (max-width: 760px) {
+    .chain { grid-template-columns: minmax(0, 1fr); }
+    .chain::before { left: calc(var(--space-3) + 1.2rem); right: auto; top: var(--space-3); bottom: var(--space-3); width: 3px; height: auto; }
+    .chain li { padding-left: 0; }
+  }
+</style>

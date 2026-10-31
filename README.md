@@ -35,4 +35,8 @@ Tutti i dati (contatti, dati legali, prezzi) stanno in `src/config/sito.ts`. I v
 
 ## Bozze
 
-Le pagine in `/lab/` sono bozze di lavoro (direzioni creative, prove del 3D), non collegate dalla navigazione.
+Le pagine in `/lab/` sono prove di lavoro (in fase 3 il 3D), non collegate dalla navigazione. Le bozze delle tre direzioni della fase 1 sono nella storia git (commit "Fase 1: tre direzioni creative").
+
+## Form di contatto
+
+Il form invia JSON a `/api/contatto`. L'endpoint (Cloudflare Worker con Turnstile e inoltro a n8n) arriva in fase 5: fino ad allora il form valida i campi e dice che l'invio non è ancora attivo.

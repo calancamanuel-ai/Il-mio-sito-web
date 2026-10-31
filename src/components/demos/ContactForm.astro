@@ -1,0 +1,114 @@
+---
+/**
+ * Form di contatto. Invia JSON a /api/contatto (endpoint Worker della fase 5, che
+ * verificherà Turnstile e inoltrerà a n8n). Finché l'endpoint manca, lo dice e offre alternative.
+ * Il consenso commerciale è separato e non preselezionato.
+ */
+import { contatti } from '../../config/sito';
+import Value from '../ui/Value.astro';
+const servizi = ['Automazione', 'Software su misura con Claude', 'Sito web', 'Non lo so ancora'];
+---
+<form class="cform" data-cform action="/api/contatto" method="post" novalidate>
+  <div class="row">
+    <label class="field"><span>Nome *</span><input name="nome" autocomplete="name" required /></label>
+    <label class="field"><span>Email *</span><input name="email" type="email" autocomplete="email" required /></label>
+  </div>
+  <div class="row">
+    <label class="field"><span>Telefono (se preferisci essere chiamato)</span><input name="telefono" type="tel" autocomplete="tel" /></label>
+    <label class="field"><span>Attività</span><input name="attivita" placeholder="Es. studio tecnico, officina, negozio" /></label>
+  </div>
+  <label class="field"><span>Ti interessa</span>
+    <select name="servizio">{servizi.map((s) => <option>{s}</option>)}</select>
+  </label>
+  <label class="field"><span>Cosa ti porta via tempo? *</span>
+    <textarea name="messaggio" rows="5" required aria-describedby="msg-hint"></textarea>
+    <span id="msg-hint" class="hint">Bastano due righe. Se arrivi da "Costruisci la tua automazione", il flusso scelto è già qui.</span>
+  </label>
+  <label class="hp" aria-hidden="true">Non compilare<input name="sito_web" tabindex="-1" autocomplete="off" /></label>
+  <label class="check"><input type="checkbox" name="consenso_commerciale" value="si" />
+    <span>Voglio ricevere ogni tanto idee e novità via email (facoltativo, puoi toglierlo quando vuoi).</span>
+  </label>
+  <p class="privacy">Inviando la richiesta accetti che i dati siano usati per risponderti, come spiegato nella <a href="/privacy">privacy</a>.</p>
+  <button type="submit" class="submit">Invia la richiesta</button>
+  <p class="status" role="status" aria-live="polite" data-status></p>
+  <noscript><p class="status">Senza JavaScript puoi scrivermi a <Value value={contatti.email} />.</p></noscript>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-cform]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const wf = new URLSearchParams(location.search).get('workflow');
+    const msg = form.elements.namedItem('messaggio') as HTMLTextAreaElement;
+    if (wf && !msg.value) msg.value = `Mi interessa questo flusso: ${wf}.\n`;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      const bad = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')].filter((el) => !el.checkValidity());
+      if (bad.length) {
+        bad.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        status.textContent = 'Manca qualcosa: controlla i campi segnati.';
+        status.dataset.state = 'error';
+        bad[0].focus();
+        return;
+      }
+      const btn = form.querySelector<HTMLButtonElement>('.submit')!;
+      btn.disabled = true;
+      status.textContent = 'Invio in corso…';
+      status.dataset.state = '';
+      try {
+        const res = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = 'Fatto. La tua richiesta è arrivata: ti rispondo io, non un risponditore.';
+        status.dataset.state = 'ok';
+      } catch {
+        status.textContent = 'L’invio online non è ancora attivo (arriva con la prossima fase). Intanto usa i contatti qui accanto.';
+        status.dataset.state = 'error';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .cform { display: grid; gap: var(--space-3); }
+  .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .field { display: grid; gap: 0.4rem; font-weight: 600; }
+  input, select, textarea {
+    min-height: var(--tap);
+    padding: 0.6rem 0.8rem;
+    border: 2px solid var(--c-line);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-ink);
+    font: inherit;
+    font-weight: 400;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--c-action); outline: none; }
+  [aria-invalid='true'] { border-color: var(--c-error); }
+  .hint { font-weight: 400; color: var(--c-ink-soft); }
+  .hp { position: absolute; left: -9999px; }
+  .check { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.75rem; align-items: start; cursor: pointer; }
+  .check input { width: 1.4rem; height: 1.4rem; min-height: 0; margin-top: 0.2rem; accent-color: var(--c-action); }
+  .privacy { color: var(--c-ink-soft); }
+  .submit {
+    justify-self: start;
+    min-height: 52px;
+    padding: 0.7em 1.5em;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--c-action);
+    color: var(--c-on-action);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out);
+  }
+  .submit:hover { background: var(--c-ink); }
+  .submit:active { transform: scale(0.98); }
+  .submit:disabled { opacity: 0.6; cursor: progress; }
+  .status[data-state='error'] { color: var(--c-error); }
+  .status[data-state='ok'] { color: var(--c-ok); }
+  @media (max-width: 700px) { .row { grid-template-columns: minmax(0, 1fr); } .submit { width: 100%; } }
+</style>

@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import CloseInverted from '../components/sections/CloseInverted.astro';
+import { mostraTestimonianze, testimonianze } from '../config/sito';
+
+/**
+ * Casi d'uso per settore come "log di sistema". Sono esempi tipici, dichiarati tali:
+ * le stime riportano le ipotesi. I casi veri li sostituiranno (contenuti.casiReali).
+ */
+const settori = [
+  {
+    id: 'studi', nome: 'Studi professionali', voci: [
+      { problema: 'Le richieste di appuntamento arrivano per email, telefono e WhatsApp.', intervento: 'Un unico modulo di prenotazione collegato al calendario, con conferma automatica.', strumenti: 'sito, Google Calendar, email', stima: 'circa 2 ore a settimana, ipotizzando 15 richieste da 8 minuti l’una' },
+      { problema: 'I clienti mandano documenti sparsi e incompleti.', intervento: 'Claude controlla cosa manca e prepara l’email con l’elenco preciso.', strumenti: 'email, Google Drive, Claude', stima: 'circa 1 ora a settimana, ipotizzando 10 pratiche da 6 minuti' },
+    ],
+  },
+  {
+    id: 'artigiani', nome: 'Artigiani e imprese edili', voci: [
+      { problema: 'I preventivi si scrivono la sera, partendo da messaggi vocali e foto.', intervento: 'Le richieste vengono riassunte da Claude in una bozza di preventivo dal tuo listino.', strumenti: 'WhatsApp Business, foglio listino, Claude', stima: 'circa 3 ore a settimana, ipotizzando 6 preventivi da 30 minuti' },
+      { problema: 'Ci si dimentica di richiamare chi non ha risposto al preventivo.', intervento: 'Promemoria automatico dopo 7 giorni, a te e al cliente.', strumenti: 'foglio richieste, email, Telegram', stima: 'meno preventivi persi; il numero dipende da quanti ne mandi' },
+    ],
+  },
+  {
+    id: 'commercio', nome: 'Commercio', voci: [
+      { problema: 'Le fatture dei fornitori vanno copiate a mano nel gestionale.', intervento: 'I PDF vengono letti, archiviati e i dati finiscono in tabella.', strumenti: 'email, Dropbox, gestionale o foglio', stima: 'circa 2 ore a settimana, ipotizzando 30 fatture da 4 minuti' },
+      { problema: 'Le stesse domande su orari e disponibilità, ogni giorno.', intervento: 'Risposte automatiche su WhatsApp, con passaggio a te quando la domanda è nuova.', strumenti: 'WhatsApp Business, Claude', stima: 'circa 1,5 ore a settimana, ipotizzando 30 messaggi da 3 minuti' },
+    ],
+  },
+  {
+    id: 'agricoltura', nome: 'Agricoltura e agriturismi', voci: [
+      { problema: 'Le prenotazioni arrivano da più canali e si accavallano.', intervento: 'Un solo calendario, aggiornato da sito, email e telefono.', strumenti: 'sito, Google Calendar, email', stima: 'meno doppie prenotazioni; tempo da misurare in analisi' },
+      { problema: 'I registri e le scadenze stanno su quaderni e fogli diversi.', intervento: 'Promemoria delle scadenze e un foglio unico compilato dai moduli.', strumenti: 'moduli online, Google Sheets, email', stima: 'circa 1 ora a settimana, ipotizzando 4 registrazioni da 15 minuti' },
+    ],
+  },
+];
+---
+<BaseLayout title="Casi d'uso per settore" description="Esempi di automazioni per studi professionali, artigiani, commercio e agricoltura: problema, intervento, strumenti e tempo stimato.">
+  <PageIntro title="Cosa si automatizza, settore per settore" answer="Esempi tipici di problemi, interventi e strumenti per quattro settori, con il tempo stimato e le ipotesi scritte accanto. I casi reali arrivano con i primi clienti.">
+    <nav class="sectors" slot="aside" aria-label="Settori">
+      <ul>{settori.map((s) => <li><a href={`#${s.id}`}>{s.nome}</a></li>)}</ul>
+    </nav>
+  </PageIntro>
+
+  {settori.map((s) => (
+    <section class="log-section section" id={s.id} aria-labelledby={`${s.id}-h`}>
+      <h2 id={`${s.id}-h`} class="section-title">{s.nome}</h2>
+      <ol class="log" data-ui aria-label={`Esempi per ${s.nome}`}>
+        {s.voci.map((v, i) => (
+          <li class="entry">
+            <p class="mono entry-id">esempio · {s.id}-{i + 1}</p>
+            <dl>
+              <div><dt class="mono">problema</dt><dd>{v.problema}</dd></div>
+              <div><dt class="mono">intervento</dt><dd>{v.intervento}</dd></div>
+              <div><dt class="mono">strumenti</dt><dd>{v.strumenti}</dd></div>
+              <div><dt class="mono">stima</dt><dd>{v.stima}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
+
+  {mostraTestimonianze && (
+    <section class="section" aria-labelledby="casi-veri">
+      <h2 id="casi-veri" class="section-title">Dai clienti</h2>
+      {testimonianze.map((t) => <blockquote><p>{t.testo}</p><footer>{t.autore}, {t.attivita}</footer></blockquote>)}
+    </section>
+  )}
+
+  <CloseInverted title="Il tuo settore? Raccontamelo." />
+</BaseLayout>
+<style>
+  .sectors ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: var(--step-lead); }
+  .sectors a { display: block !important; padding: 0.9rem 1.25rem !important; background: var(--c-surface); text-decoration: none; }
+  .sectors a:hover { background: var(--c-line); }
+  .sectors a { display: inline-block; padding-block: 0.4rem; }
+  .log { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+  .entry { display: grid; gap: var(--space-2); padding: var(--space-3); background: var(--c-surface); }
+  .entry-id { color: var(--c-action); }
+  dl { display: grid; gap: 0.6rem; margin: 0; }
+  dl div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: var(--space-2); }
+  dt { color: var(--c-ink-soft); }
+  dd { margin: 0; max-width: 60ch; }
+  @media (max-width: 900px) { .log { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 600px) { dl div { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; } }
+</style>

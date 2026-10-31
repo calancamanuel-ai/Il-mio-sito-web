@@ -3,9 +3,12 @@
 import { dopoContatto } from '../../content/home';
 import { contatti } from '../../config/sito';
 import Value from '../ui/Value.astro';
+interface Props { level?: 'h2' | 'h3' }
+const { level = 'h3' } = Astro.props;
+const H = level;
 ---
 <div class="after">
-  <h3 class="after-h">Dopo che mi scrivi</h3>
+  <H class="after-h">Dopo che mi scrivi</H>
   <ol>
     {dopoContatto.map((d) => (
       <li><strong>{d.h}.</strong> {d.p}{d.tempo && <Fragment><Value value={contatti.tempoRisposta} />.</Fragment>}</li>

@@ -1,0 +1,32 @@
+---
+/** Anteprima: Officina Bertelli (inventata). Stile pratico e deciso. */
+import MockSite from './MockSite.astro';
+---
+<MockSite url="officina-bertelli.demo" tabs={['Home', 'Prenota']} theme="officina" label="Sito dimostrativo Officina Bertelli">
+  <div slot="home" class="o">
+    <div class="o-nav"><strong>BERTELLI</strong><span>Servizi · Orari · Dove siamo</span></div>
+    <p class="o-h">Tagliando in giornata.<br />A Sant'Agata dal 1987.</p>
+    <p class="o-p">Lasci l'auto alle 8, ti scriviamo su WhatsApp quando è pronta.</p>
+    <span class="o-btn">Prenota il tagliando</span>
+    <ul class="o-list"><li>Tagliandi</li><li>Gomme</li><li>Revisioni</li><li>Climatizzatori</li></ul>
+  </div>
+  <div slot="pagina2" class="o">
+    <p class="o-h o-h--s">Scegli il giorno</p>
+    <div class="o-days">{['Lun 3', 'Mar 4', 'Mer 5', 'Gio 6', 'Ven 7'].map((d, i) => <span class={i === 3 ? 'on' : ''}>{d}</span>)}</div>
+    <p class="o-p">Targa, modello e cosa serve. Ti confermiamo l'orario entro un'ora lavorativa.</p>
+    <span class="o-btn">Invia la richiesta</span>
+  </div>
+</MockSite>
+<style>
+  .o { display: grid; gap: 0.9rem; padding: 1.5rem; min-height: 360px; background: #1c1c1c; color: #f4f1ea; font-family: Arial, Helvetica, sans-serif; }
+  .o-nav { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.95rem; }
+  .o-nav strong { letter-spacing: 0.12em; color: #ffb020; }
+  .o-h { font-size: clamp(1.375rem, 1rem + 1.6vw, 2.6rem); font-weight: 700; line-height: 1; text-transform: uppercase; }
+  .o-h--s { font-size: 1.6rem; }
+  .o-p { max-width: 36ch; }
+  .o-btn { justify-self: start; padding: 0.6rem 1rem; background: #ffb020; color: #1c1c1c; font-weight: 700; text-transform: uppercase; }
+  .o-list { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; margin: 0; padding: 0; list-style: none; color: #d6d0c4; }
+  .o-days { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .o-days span { padding: 0.5rem 0.7rem; background: #2c2c2c; }
+  .o-days .on { background: #ffb020; color: #1c1c1c; font-weight: 700; }
+</style>

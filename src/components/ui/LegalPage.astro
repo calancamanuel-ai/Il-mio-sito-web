@@ -1,20 +1,26 @@
 ---
 /** Impaginazione comune per privacy e cookie: testo a misura di lettura. */
-interface Props { title: string; updated: string }
-const { title, updated } = Astro.props;
+interface Props { title: string; updated: string; summary: string[] }
+const { title, updated, summary } = Astro.props;
 ---
 <article class="legal-page wrap">
-  <h1>{title}</h1>
+  <div class="legal-head">
+    <h1>{title}</h1>
+    <aside class="summary" aria-label="In breve"><p class="summary-h">In breve</p><ul>{summary.map((s) => <li>{s}</li>)}</ul></aside>
+  </div>
   <p class="draft-note">[BOZZA] Testo da far controllare al commercialista o a un legale prima della pubblicazione. Aggiornato al <time datetime={updated}>{updated}</time>.</p>
   <div class="legal-body"><slot /></div>
 </article>
 
 <style>
-  .legal-page {
-    padding-block: var(--space-5);
-    max-width: calc(var(--measure) + 2 * var(--margin));
-  }
-  h1 { font-size: var(--step-head); }
+  .legal-page { padding-block: var(--space-5); }
+  .legal-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); align-items: start; }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
+  .summary { padding: var(--space-3); background: var(--c-surface); }
+  .summary-h { font-weight: 600; margin-bottom: 0.5rem; }
+  .summary ul { display: grid; gap: 0.4rem; margin: 0; padding-left: 1.1em; }
+  .draft-note, .legal-body { max-width: var(--measure); }
+  @media (max-width: 860px) { .legal-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); } }
   .draft-note {
     margin-block: var(--space-3) var(--space-4);
     color: var(--c-placeholder);

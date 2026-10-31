@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+---
+<BaseLayout title="Pagina non trovata" description="Questa pagina non esiste.">
+  <section class="section nf" aria-labelledby="titolo">
+    <p class="mono err">errore · nodo "pagina" non trovato</p>
+    <h1 id="titolo">Questo flusso si è rotto.</h1>
+    <p class="lead">La pagina che cerchi non c'è, o ha cambiato indirizzo. Succede anche ai sistemi migliori: ripartiamo dalla home.</p>
+    <ButtonLink href="/">Torna alla home</ButtonLink>
+  </section>
+</BaseLayout>
+<style>
+  .nf { display: grid; gap: var(--space-3); justify-items: start; padding-top: clamp(3rem, 10vh, 7rem); }
+  .err { color: var(--c-error); }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 14ch; }
+</style>

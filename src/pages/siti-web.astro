@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/sections/PageIntro.astro';
+import FragmentSite from '../components/ui/FragmentSite.astro';
+import CaseStudy from '../components/sections/CaseStudy.astro';
+import MockOfficina from '../components/ui/MockOfficina.astro';
+import MockStudio from '../components/ui/MockStudio.astro';
+import MockAgriturismo from '../components/ui/MockAgriturismo.astro';
+import PriceSection from '../components/sections/PriceSection.astro';
+import Faq from '../components/sections/Faq.astro';
+import CloseInverted from '../components/sections/CloseInverted.astro';
+
+const faq = [
+  { q: 'Il mio sito sarà come questo?', a: 'Solo se ha senso per la tua attività. Questo sito mostra cosa so fare; il tuo avrà lo stile giusto per chi ti cerca, anche sobrio e classico.' },
+  { q: 'Cosa mi serve per partire?', a: 'Le informazioni che il cliente chiede sempre (servizi, orari, zona, prezzi se li mostri) e qualche foto vera. Il resto lo scriviamo insieme.' },
+  { q: 'Posso aggiornarlo da solo?', a: 'Orari, prezzi e testi semplici sì. Per il resto c’è l’assistenza, oppure mi scrivi quando serve.' },
+  { q: 'Dominio e hosting chi li paga?', a: 'Il dominio è a tuo nome e lo paghi tu direttamente al registrar. Per un sito statico l\u2019hosting può essere gratuito: costi e alternative sono scritti nella proposta.' },
+];
+---
+<BaseLayout title="Siti web" description="Siti web veloci sul telefono, chiari e collegati alle automazioni. Tre progetti dimostrativi con brief, scelte di design e anteprima.">
+  <PageIntro title="Siti che portano richieste" answer="Progetto siti veloci sul telefono, chiari su cosa fai e collegati alle automazioni: la richiesta arriva già ordinata. Sito vetrina da 600 €, con prezzo fisso.">
+    <FragmentSite slot="aside" />
+  </PageIntro>
+
+  <section class="section" aria-labelledby="progetti">
+    <h2 id="progetti" class="section-title">Tre progetti, tre stili</h2>
+    <p class="lead styles-line">Questo sito mostra cosa so fare. Il tuo avrà lo stile giusto per la tua attività, anche sobrio e classico.</p>
+
+    <div class="cases">
+      <CaseStudy id="caso-studio" nome="Studio Ravaglia Fantoni" settore="Studio di commercialisti"
+        brief="Due commercialisti a Modena: clienti abituati al telefono, molte domande ripetute su orari, documenti e scadenze."
+        scelte={['Serif classica e blu scuro su bianco: serietà senza effetti speciali.', 'Indirizzo, orari e tempi di risposta in alto: sono le prime domande.', 'Un solo pulsante, "Fissa un appuntamento", su ogni pagina.']}
+        fa={['Prenotazione degli appuntamenti senza telefonate.', 'Elenco dei documenti da portare, per servizio.', 'Le richieste arrivano allo studio già divise per tipo.']}>
+        <MockStudio />
+      </CaseStudy>
+
+      <CaseStudy id="caso-officina" nome="Officina Bertelli" settore="Officina meccanica"
+        brief="Un'officina a Sant'Agata Bolognese che riceve richieste di tagliando per telefono mentre ha le mani nel motore."
+        scelte={['Contrasto forte e caratteri stretti: si legge anche dal telefono, in piedi, al sole.', 'Il pulsante di prenotazione nel primo schermo, sempre.', 'Servizi in parole semplici, senza gergo tecnico.']}
+        fa={['Prenotazione con scelta del giorno.', 'Conferma e avviso "auto pronta" su WhatsApp, in automatico.', 'Le richieste finiscono in un foglio, non su foglietti.']}>
+        <MockOfficina />
+      </CaseStudy>
+
+      <CaseStudy id="caso-agri" nome="Ca' dei Gelsi" settore="Agriturismo"
+        brief="Un agriturismo con sei camere in pianura, che vuole meno richieste via email e più prenotazioni dirette."
+        scelte={['Colori della terra e un paesaggio disegnato: fa venire voglia di esserci.', 'Le camere hanno ognuna il suo nome e i suoi dettagli.', '"Verifica le date" al posto di un modulo lungo.']}
+        fa={['Mostra la disponibilità e raccoglie la richiesta con le date.', 'Risponde da sola alle domande su orari, animali e parcheggio.', 'Ricorda al cliente l’arrivo il giorno prima.']}>
+        <MockAgriturismo />
+      </CaseStudy>
+    </div>
+  </section>
+
+  <PriceSection ids={['analisi', 'sito-vetrina', 'sito-premium', 'assistenza']} />
+  <Faq items={faq} />
+  <CloseInverted title="Un sito che lavora di notte." />
+</BaseLayout>
+<style>
+  .styles-line { margin-block: var(--space-3) var(--space-5); max-width: 46ch; }
+</style>

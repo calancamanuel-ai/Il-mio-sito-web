@@ -1,0 +1,41 @@
+---
+/** Anteprima: Agriturismo Ca' dei Gelsi (inventato). Caldo e visivo, paesaggio disegnato. */
+import MockSite from './MockSite.astro';
+---
+<MockSite url="cadeigelsi.demo" tabs={['Home', 'Camere']} theme="agri" label="Sito dimostrativo Agriturismo Ca' dei Gelsi">
+  <div slot="home" class="g">
+    <svg class="g-land" viewBox="0 0 600 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <rect width="600" height="220" fill="#f1d9a7" />
+      <circle cx="470" cy="70" r="34" fill="#e8a33d" />
+      <path d="M0 150 Q150 90 300 140 T600 120 V220 H0Z" fill="#7d9a4f" />
+      <path d="M0 185 Q200 140 380 180 T600 170 V220 H0Z" fill="#4f6b34" />
+      <g fill="#33461f"><rect x="90" y="120" width="8" height="40" /><circle cx="94" cy="112" r="22" /><rect x="140" y="128" width="7" height="34" /><circle cx="143" cy="120" r="18" /></g>
+    </svg>
+    <div class="g-text">
+      <p class="g-h">Ca' dei Gelsi</p>
+      <p class="g-p">Sei camere tra i filari, a venti minuti da Bologna. Colazione con quello che cresce qui.</p>
+      <span class="g-btn">Verifica le date</span>
+    </div>
+  </div>
+  <div slot="pagina2" class="g g--rooms">
+    <p class="g-h g-h--s">Le camere</p>
+    <ul class="g-rooms">
+      <li><strong>Il Fienile</strong><span>2 persone · vista vigna</span></li>
+      <li><strong>La Stalla</strong><span>4 persone · ingresso sul cortile</span></li>
+      <li><strong>Il Gelso</strong><span>2 persone · vasca</span></li>
+    </ul>
+  </div>
+</MockSite>
+<style>
+  .g { position: relative; display: grid; min-height: 360px; background: #eef1ec; color: #3a2a17; font-family: Georgia, serif; }
+  .g-land { width: 100%; height: 220px; }
+  .g-text { display: grid; gap: 0.6rem; padding: 1.25rem 1.5rem 1.5rem; }
+  .g-h { font-size: 2rem; font-style: italic; line-height: 1; }
+  .g-h--s { font-size: 1.6rem; }
+  .g-p { max-width: 44ch; }
+  .g-btn { justify-self: start; padding: 0.55rem 1rem; background: #8a3b1e; color: #eef1ec; border-radius: 999px; }
+  .g--rooms { align-content: start; gap: 1rem; padding: 1.5rem; }
+  .g-rooms { display: grid; gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+  .g-rooms li { display: grid; padding: 0.9rem 1rem; background: #f3e3c4; }
+  .g-rooms span { color: #5b4630; }
+</style>

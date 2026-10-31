@@ -1,24 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/demos/ContactForm.astro';
+import AfterContact from '../components/sections/AfterContact.astro';
+import PersonNote from '../components/sections/PersonNote.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
 import Value from '../components/ui/Value.astro';
-import { contatti } from '../config/sito';
+import { contatti, zona } from '../config/sito';
 ---
-<BaseLayout title="Contatti" description="Prenota una call conoscitiva di 20 minuti.">
-  <section class="wrap contacts">
-    <h1>Prenota una call di {contatti.durataCallMinuti} minuti</h1>
-    <p>Il form intelligente arriva nella fase 2. Nel frattempo questi sono i canali, ancora da completare:</p>
-    <ul>
-      <li>Prenotazione: <Value value={contatti.linkPrenotazione} /></li>
-      <li>Email: <Value value={contatti.email} /></li>
-      <li>Telefono: <Value value={contatti.telefono} /></li>
-      <li>WhatsApp: <Value value={contatti.whatsapp} /></li>
-    </ul>
+<BaseLayout title="Contatti" description="Prenota una call conoscitiva di 20 minuti o scrivi cosa ti porta via tempo: ti risponde Manuel.">
+  <section class="contact section" aria-labelledby="titolo">
+    <div class="contact-main">
+      <h1 id="titolo">Raccontami cosa ti porta via tempo</h1>
+      <p class="lead">Una call di {contatti.durataCallMinuti} minuti, gratuita e senza impegno. Oppure scrivi due righe qui sotto.</p>
+      <ContactForm />
+    </div>
+    <aside class="contact-side" aria-label="Altri modi per contattarmi">
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota direttamente la call</ButtonLink>
+      <dl class="channels">
+        <div><dt>Email</dt><dd><Value value={contatti.email} /></dd></div>
+        <div><dt>Telefono</dt><dd><Value value={contatti.telefono} /></dd></div>
+        <div><dt>WhatsApp</dt><dd><Value value={contatti.whatsapp} /></dd></div>
+        <div><dt>Dove</dt><dd>{zona.base}, Bologna e Modena. Anche da remoto.</dd></div>
+      </dl>
+      <AfterContact level="h2" />
+      <PersonNote />
+    </aside>
   </section>
 </BaseLayout>
-
 <style>
-  .contacts { padding-block: var(--space-5); max-width: calc(var(--measure) + 2 * var(--margin)); }
-  h1 { font-size: var(--step-head); margin-bottom: var(--space-3); }
-  ul { margin-top: var(--space-3); padding-left: 1.2em; }
-  li { margin-bottom: var(--space-1); }
+  .contact { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); padding-top: clamp(3rem, 8vh, 6rem); align-items: start; }
+  .contact-main { display: grid; gap: var(--space-3); }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
+  .contact-side { display: grid; gap: var(--space-4); justify-items: start; padding: var(--space-4); background: var(--c-surface); }
+  .contact-side :global(.person .photo) { background: var(--c-bg); }
+  .channels { display: grid; gap: var(--space-2); margin: 0; }
+  .channels dt { color: var(--c-ink-soft); }
+  .channels dd { margin: 0; }
+  @media (max-width: 900px) { .contact { grid-template-columns: minmax(0, 1fr); } .contact-side { padding: var(--space-3); } }
 </style>

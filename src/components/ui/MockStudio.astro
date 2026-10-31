@@ -1,0 +1,35 @@
+---
+/** Anteprima: Studio Ravaglia Fantoni, commercialisti (inventato). Sobrio e classico. */
+import MockSite from './MockSite.astro';
+---
+<MockSite url="studio-ravaglia-fantoni.demo" tabs={['Lo studio', 'Servizi']} theme="studio" label="Sito dimostrativo Studio Ravaglia Fantoni">
+  <div slot="home" class="s">
+    <div class="s-nav"><span class="s-name">Studio Ravaglia Fantoni</span><span>Commercialisti a Modena</span></div>
+    <p class="s-h">Contabilità, dichiarazioni e consulenza per imprese e famiglie.</p>
+    <p class="s-p">Riceviamo su appuntamento, in studio o in videochiamata. Rispondiamo alle email entro il giorno lavorativo successivo.</p>
+    <dl class="s-facts"><div><dt>Indirizzo</dt><dd>Via d'esempio 12, Modena</dd></div><div><dt>Orari</dt><dd>Lun–Ven, 9–13 e 14:30–18</dd></div></dl>
+    <span class="s-btn">Fissa un appuntamento</span>
+  </div>
+  <div slot="pagina2" class="s">
+    <p class="s-h s-h--s">Servizi</p>
+    <ul class="s-list">
+      <li><strong>Imprese</strong> Contabilità ordinaria e semplificata, bilanci, paghe.</li>
+      <li><strong>Professionisti</strong> Regime forfettario, fatturazione elettronica, scadenze.</li>
+      <li><strong>Famiglie</strong> Dichiarazione dei redditi, successioni, bonus casa.</li>
+    </ul>
+  </div>
+</MockSite>
+<style>
+  .s { display: grid; gap: 1rem; align-content: start; padding: 1.75rem; min-height: 360px; background: #fbfbfa; color: #1f2a37; font-family: Georgia, 'Times New Roman', serif; }
+  .s-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid #1f2a37; font-size: 0.95rem; }
+  .s-name { font-weight: 700; letter-spacing: 0.02em; }
+  .s-h { font-size: clamp(1.4rem, 1.1rem + 0.9vw, 1.9rem); line-height: 1.2; max-width: 28ch; }
+  .s-h--s { font-size: 1.5rem; }
+  .s-p { max-width: 52ch; color: #3b4654; }
+  .s-facts { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin: 0; }
+  .s-facts dt { font-size: 0.875rem; color: #59636f; }
+  .s-facts dd { margin: 0; }
+  .s-btn { justify-self: start; padding: 0.55rem 1rem; background: #1f2a37; color: #fbfbfa; }
+  .s-list { display: grid; gap: 0.9rem; margin: 0; padding: 0; list-style: none; max-width: 56ch; }
+  .s-list strong { display: block; }
+</style>

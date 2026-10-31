@@ -1,0 +1,28 @@
+---
+/** Caso studio breve: prima l'anteprima (slot), poi brief, scelte di design e cosa fa il sito. */
+interface Props { id: string; nome: string; settore: string; brief: string; scelte: string[]; fa: string[] }
+const { id, nome, settore, brief, scelte, fa } = Astro.props;
+---
+<article class="case" aria-labelledby={id}>
+  <div class="case-preview"><slot /></div>
+  <div class="case-head">
+    <h3 id={id}>{nome}</h3>
+    <p class="case-tag"><span class="mono">progetto dimostrativo</span> · {settore}, attività inventata</p>
+  </div>
+  <div class="case-cols">
+    <div><h4>Il brief</h4><p>{brief}</p></div>
+    <div><h4>Le scelte, e perché</h4><ul>{scelte.map((s) => <li>{s}</li>)}</ul></div>
+    <div><h4>Cosa fa il sito</h4><ul>{fa.map((s) => <li>{s}</li>)}</ul></div>
+  </div>
+</article>
+<style>
+  .case { display: grid; gap: var(--space-3); }
+  .case + :global(.case) { margin-top: var(--gap-section); }
+  .case-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-1) var(--space-3); }
+  .case-head h3 { font-size: var(--step-head); font-weight: 300; line-height: 1; }
+  .case-tag { color: var(--c-placeholder); }
+  .case-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .case-cols h4 { font-size: var(--step-body); font-weight: 600; margin-bottom: 0.5rem; letter-spacing: 0; }
+  .case-cols ul { display: grid; gap: 0.4rem; margin: 0; padding-left: 1.1em; }
+  @media (max-width: 900px) { .case-cols { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); } }
+</style>

@@ -1,0 +1,41 @@
+---
+/**
+ * Cornice di un'anteprima navigabile: barra con indirizzo finto e schede.
+ * Ogni scheda è uno slot ("home", "pagina2"); un piccolo script le alterna.
+ */
+interface Props { url: string; tabs: [string, string]; theme: string; label: string }
+const { url, tabs, theme, label } = Astro.props;
+---
+<figure class={`mock mock--${theme}`} data-ui data-mock aria-label={label}>
+  <div class="mock-bar">
+    <span class="mono mock-url">{url}</span>
+    <span class="mono mock-tag">progetto dimostrativo</span>
+  </div>
+  <div class="mock-tabs" role="tablist" aria-label={`Pagine di ${label}`}>
+    <button type="button" role="tab" aria-selected="true" data-tab="0">{tabs[0]}</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="1">{tabs[1]}</button>
+  </div>
+  <div class="mock-view" role="tabpanel" data-view="0"><slot name="home" /></div>
+  <div class="mock-view" role="tabpanel" data-view="1" hidden><slot name="pagina2" /></div>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-mock]').forEach((m) => {
+    const tabs = m.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      m.querySelectorAll<HTMLElement>('[data-view]').forEach((v) => { v.hidden = v.dataset.view !== t.dataset.tab; });
+    }));
+  });
+</script>
+
+<style>
+  .mock { margin: 0; background: var(--c-surface); min-height: 420px; }
+  .mock-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.6rem 1rem; background: var(--c-line); font-size: 0.875rem; }
+  .mock-url { color: var(--c-ink); }
+  .mock-tag { color: var(--c-placeholder); }
+  .mock-tabs { display: flex; gap: 2px; background: var(--c-line); }
+  .mock-tabs button { min-height: var(--tap); padding: 0 1rem; border: 0; background: var(--c-surface); color: var(--c-ink); font: inherit; cursor: pointer; }
+  .mock-tabs button[aria-selected='true'] { background: var(--c-action); color: var(--c-on-action); font-weight: 600; }
+  .mock-view { min-height: 360px; }
+</style>

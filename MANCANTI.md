@@ -2,7 +2,7 @@
 
 Tutti i valori stanno in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"`. Finché c'è almeno una voce **bloccante**, il sito resta su `*.workers.dev` con `noindex`.
 
-Ultimo aggiornamento: fase 1 (31 ottobre 2026), dopo l'aggiornamento del piano "Fiducia e portfolio".
+Ultimo aggiornamento: fine fase 2 (31 ottobre 2026).
 
 ## Bloccano il lancio
 
@@ -22,15 +22,14 @@ Ultimo aggiornamento: fase 1 (31 ottobre 2026), dopo l'aggiornamento del piano "
 | Tempi di risposta dopo il primo contatto | Come lavoro, contatti, conferma del form | `contatti.tempoRisposta` |
 | Testi privacy e cookie controllati dal commercialista/legale | `/privacy`, `/cookie` | — (testi in bozza) |
 | Scelta analytics (Cloudflare Web Analytics o Plausible) | Privacy, cookie | `contenuti.analytics` |
-| URL webhook n8n (variabile d'ambiente, mai nel codice) | Form di contatto (fase 5) | `contenuti.webhookN8n` |
+| URL webhook n8n (variabile d'ambiente, mai nel codice) e endpoint `/api/contatto` | Form di contatto: oggi valida i campi ma l'invio risponde "non ancora attivo" (fase 5) | `contenuti.webhookN8n` |
 | Chiave Cloudflare Turnstile | Form di contatto (fase 5) | `contenuti.turnstileSiteKey` |
 
 ## Non bloccano il lancio (ma servono)
 
 | Cosa manca | Dove compare | Chiave in `sito.ts` |
 | --- | --- | --- |
-| Scelta tra le 3 direzioni creative | Tutto il sito (palette, font, interazioni) | — (fine fase 1) |
-| 4–5 messaggi chiave in `riferimenti/messaggi.md` | Testi di tutte le pagine (ora segnaposto, poi `[BOZZA]`) | `contenuti.messaggiChiave` |
+| 4–5 messaggi chiave in `riferimenti/messaggi.md` | Tutti i testi: oggi sono bozze scritte dal piano (avviso giallo in cima a ogni pagina) | `contenuti.messaggiChiave` |
 | Cognome di Manuel | Chi sono, privacy | `brand.cognomeTitolare` |
 | Testi "Chi sono" | `/chi-sono` | `contenuti.testoChiSono` |
 | Foto vera di Manuel | `/chi-sono`, invito finale | `contenuti.fotoManuel` |
@@ -42,6 +41,9 @@ Ultimo aggiornamento: fase 1 (31 ottobre 2026), dopo l'aggiornamento del piano "
 | Conferma fasce di prezzo | Prezzi, "Costruisci la tua automazione" | `prezzi` |
 | Verifica costo risposte AI WhatsApp (0,0572 €) e voucher camerali 2026 | Prezzi, FAQ | `prezzi.costiRicorrenti` |
 | Decisione sul riquadro "chiedi al sito" | Contatti | — |
+| Periodo di conservazione delle richieste, servizi usati per n8n, email e calendario | `/privacy` | testo in `src/pages/privacy.astro` |
+| Verifica dei casi d'uso d'esempio (problemi e stime realistici per i tuoi settori) | `/casi-d-uso` | testo in `src/pages/casi-d-uso.astro` |
+| Foto reali e mappe d'archivio del territorio (domini delle collezioni aperte da autorizzare) | Chi sono, home | — |
 | Profilo LinkedIn (facoltativo) | Footer | `contatti.linkedin` |
 | PEC (facoltativa) | Footer | `datiLegali.pec` |
 | Indirizzo `*.workers.dev` assegnato | README, test | `sito.urlProvvisorio` |

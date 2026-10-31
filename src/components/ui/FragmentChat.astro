@@ -1,0 +1,30 @@
+---
+/** Frammento: conversazione WhatsApp d'esempio con risposta automatica (attività inventata). */
+interface Props { class?: string }
+const { class: extra = '' } = Astro.props;
+const msgs = [
+  { from: 'c', t: '18:42', txt: 'Buonasera, quanto costa una revisione per una Panda del 2016?' },
+  { from: 'a', t: '18:42', txt: 'Buonasera! Per una Panda la revisione costa 79 €. Posso proporle giovedì alle 9:00 o venerdì alle 14:30. Quale preferisce?' },
+  { from: 'c', t: '18:44', txt: 'Venerdì va bene' },
+  { from: 'a', t: '18:44', txt: 'Fatto: venerdì alle 14:30. Le scrivo qui il giorno prima per ricordarglielo.' },
+];
+---
+<figure class:list={['chat', extra]} data-ui>
+  <div class="chat-bar"><span>Officina Bertelli</span><span class="mono tag">risposta automatica · esempio</span></div>
+  <ol class="msgs">
+    {msgs.map((m) => (
+      <li class={`msg msg--${m.from}`}><p>{m.txt}</p><span class="mono time">{m.t}</span></li>
+    ))}
+  </ol>
+  <figcaption class="visually-hidden">Esempio: un cliente chiede un prezzo su WhatsApp e riceve risposta e appuntamento in automatico. Attività e prezzo inventati.</figcaption>
+</figure>
+<style>
+  .chat { margin: 0; background: #0e1611; color: var(--c-ink); min-height: 300px; }
+  .chat-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.75rem 1rem; background: #1b2a20; font-weight: 600; }
+  .tag { color: var(--c-placeholder); font-weight: 400; font-size: 0.875rem; }
+  .msgs { display: grid; gap: 0.6rem; margin: 0; padding: 1rem; list-style: none; }
+  .msg { max-width: 82%; padding: 0.6rem 0.8rem; line-height: 1.35; }
+  .msg--c { justify-self: start; background: #22302a; }
+  .msg--a { justify-self: end; background: #1f4d33; }
+  .time { display: block; margin-top: 0.25rem; color: #c3d1c7; font-size: 0.8125rem; text-align: right; }
+</style>

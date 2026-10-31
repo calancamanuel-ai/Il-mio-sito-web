@@ -5,9 +5,10 @@ import PersonNote from './PersonNote.astro';
 import { contatti } from '../../config/sito';
 interface Props { title?: string; text?: string }
 const { title = 'Dal tuo caos a un flusso.', text = 'Venti minuti per capire cosa puoi togliere dalla tua settimana. Poi decidi tu.' } = Astro.props;
+const long = title.length > 24;
 ---
 <section class="close" aria-labelledby="chiusura">
-  <h2 id="chiusura">{title}</h2>
+  <h2 id="chiusura" class:list={[{ long }]}>{title}</h2>
   <div class="close-row">
     <div class="close-text">
       <p>{text}</p>
@@ -31,9 +32,11 @@ const { title = 'Dal tuo caos a un flusso.', text = 'Venti minuti per capire cos
     color: var(--c-inverse-ink);
   }
   h2 { font-size: var(--step-display); line-height: 0.92; font-weight: 300; max-width: 12ch; }
-  .close-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-4); }
+  h2.long { font-size: clamp(2.5rem, 0.8rem + 5.6vw, 7rem); max-width: 16ch; }
+  .close-row { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); align-items: end; gap: var(--space-4); }
+  .close :global(.close-btn) { justify-self: start; }
   .close-text { display: grid; gap: var(--space-3); max-width: 44ch; font-size: var(--step-body); }
   .close :global(.close-btn) { min-height: 56px; background: var(--c-inverse-ink); color: var(--c-action); }
   .close :global(.close-btn:hover) { background: #26332b; }
-  @media (max-width: 760px) { .close { min-height: 0; } .close :global(.close-btn) { width: 100%; } }
+  @media (max-width: 760px) { .close-row { grid-template-columns: minmax(0, 1fr); } .close { min-height: 0; } .close :global(.close-btn) { width: 100%; } }
 </style>

@@ -40,8 +40,8 @@ const priceBase = prezzi.voci.find((v) => v.id === 'workflow-semplice')!.da;
 <div class="build" data-build data-price-ai={priceAi} data-price-base={priceBase}>
   <form class="build-blocks" aria-label="Costruisci la tua automazione">
     {blocks.map((b, bi) => (
-      <fieldset class="block">
-        <legend>{b.title}</legend>
+      <fieldset class="block" aria-labelledby={`blk-${b.id}`}>
+        <h3 class="block-title" id={`blk-${b.id}`}>{b.title}</h3>
         <div class="choices">
           {b.options.map((o: any, oi) => (
             <label class="choice">
@@ -106,7 +106,7 @@ const priceBase = prezzi.voci.find((v) => v.id === 'workflow-semplice')!.da;
   }
   .build-blocks { display: grid; gap: var(--space-4); }
   .block { margin: 0; padding: 0; border: 0; }
-  legend {
+  .block-title {
     margin-bottom: 0.75rem;
     font-family: var(--font-display);
     font-weight: 800;

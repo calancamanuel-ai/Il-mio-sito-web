@@ -94,9 +94,9 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
       top: 100%;
       z-index: 40;
       padding: var(--space-2) var(--margin) var(--space-3);
-      background: var(--c-surface);
-      box-shadow: 0 16px 32px rgb(0 0 0 / 0.5);
+      background: var(--c-line);
     }
+    .nav-mobile:not([open]) nav { display: none; }
     .nav-mobile ul { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
     .nav-mobile a { display: block; padding-block: 0.75rem; font-size: var(--step-lead); }
   }
