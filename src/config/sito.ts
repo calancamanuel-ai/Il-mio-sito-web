@@ -36,6 +36,8 @@ export const contatti = {
   whatsapp: '[DA COMPLETARE: numero WhatsApp Business]',
   linkPrenotazione: '[DA COMPLETARE: link prenotazione call (Cal.com, Calendly o Google Calendar)]',
   durataCallMinuti: 20,
+  /** Tempo entro cui Manuel risponde dopo il primo contatto (sezione Fiducia). */
+  tempoRisposta: '[DA COMPLETARE: tempi di risposta dopo il primo contatto]',
   linkedin: '[DA COMPLETARE: profilo LinkedIn (facoltativo)]',
 };
 
@@ -96,6 +98,13 @@ export const contenuti = {
   turnstileSiteKey: '[DA COMPLETARE: chiave pubblica Cloudflare Turnstile]',
   analytics: '[DA COMPLETARE: scelta tra Cloudflare Web Analytics e Plausible]',
 };
+
+/**
+ * Testimonianze e casi veri: lo spazio è pronto ma resta nascosto
+ * finché la lista è vuota (mai testimonianze inventate).
+ */
+export const testimonianze: { testo: string; autore: string; attivita: string; consenso: true }[] = [];
+export const mostraTestimonianze = testimonianze.length > 0;
 
 /** Data dell'ultimo aggiornamento mostrata nella barra di stato. */
 export const ultimoAggiornamento = new Date().toISOString().slice(0, 10);

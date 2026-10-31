@@ -71,6 +71,8 @@ Leggeri e non contati: barra di stato, "vista tecnica", cursore con scia (solo d
 ## Contenuti
 
 - **Solo contenuti veri o segnaposto.** Mai inventare dati, prezzi, recensioni, clienti, testimonianze o numeri. I dati mancanti vivono solo in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"` e sono elencati in `MANCANTI.md` (cosa, dove compare, se blocca il lancio). Aggiorna `MANCANTI.md` a ogni sessione.
+- **Fiducia senza testimonianze** (sezione Fiducia del piano): persona vera (foto segnaposto, consulente non agenzia, territorio), trasparenza (prezzi "da", preventivo fisso, tempi di risposta e passi dopo il primo contatto), onestà ("Quando non conviene automatizzare"), prova pratica (demo, sito, vista tecnica). Lo spazio per testimonianze e casi veri esiste ma resta nascosto finché `testimonianze` in `sito.ts` è vuota.
+- **Portfolio**: casi studio brevi (brief dichiarato inventato, scelte di design e perché, cosa fa il sito, anteprima), il lavoro prima del testo; almeno un progetto sobrio e classico; una riga dice che lo stile si decide con il cliente.
 - Esempi e progetti dimostrativi sono dichiarati come tali ("esempio", "progetto dimostrativo").
 - Prezzi solo da `src/config/sito.ts`. Stime del calcolatore sempre con le ipotesi scritte sotto.
 - Testi derivati da `riferimenti/messaggi.md`, marcati `[BOZZA]` finché non approvati.

@@ -2,7 +2,7 @@
 
 Tutti i valori stanno in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"`. Finché c'è almeno una voce **bloccante**, il sito resta su `*.workers.dev` con `noindex`.
 
-Ultimo aggiornamento: fase 1 (31 ottobre 2026).
+Ultimo aggiornamento: fase 1 (31 ottobre 2026), dopo l'aggiornamento del piano "Fiducia e portfolio".
 
 ## Bloccano il lancio
 
@@ -19,6 +19,7 @@ Ultimo aggiornamento: fase 1 (31 ottobre 2026).
 | Link per prenotare la call | Tutti i pulsanti "Prenota una call" | `contatti.linkPrenotazione` |
 | Numero WhatsApp Business | Barra mobile, pagina contatti | `contatti.whatsapp` |
 | Numero di telefono | Barra mobile "Chiama" | `contatti.telefono` |
+| Tempi di risposta dopo il primo contatto | Come lavoro, contatti, conferma del form | `contatti.tempoRisposta` |
 | Testi privacy e cookie controllati dal commercialista/legale | `/privacy`, `/cookie` | — (testi in bozza) |
 | Scelta analytics (Cloudflare Web Analytics o Plausible) | Privacy, cookie | `contenuti.analytics` |
 | URL webhook n8n (variabile d'ambiente, mai nel codice) | Form di contatto (fase 5) | `contenuti.webhookN8n` |
@@ -35,6 +36,7 @@ Ultimo aggiornamento: fase 1 (31 ottobre 2026).
 | Foto vera di Manuel | `/chi-sono`, invito finale | `contenuti.fotoManuel` |
 | 2–3 casi d'uso reali con numeri veri | `/casi-d-uso`, home | `contenuti.casiReali` |
 | Screenshot di siti per clienti (con permesso) | `/siti-web` | `contenuti.screenshotClienti` |
+| Testimonianze vere (con consenso): lo spazio resta nascosto finché la lista è vuota | Home, Casi d'uso, Siti web | `testimonianze` |
 | Indirizzo da mostrare (o solo comune) | Footer, dati strutturati | `zona.indirizzo` |
 | Mittente email del form (provvisorio fino al dominio) | Email automatiche | `contatti.emailMittenteForm` |
 | Conferma fasce di prezzo | Prezzi, "Costruisci la tua automazione" | `prezzi` |
