@@ -1,0 +1,18 @@
+---
+/** Fiducia, una persona vera: foto di Manuel (segnaposto) e due righe dirette. */
+import { brand, contenuti, isPlaceholder, zona } from '../../config/sito';
+import Value from '../ui/Value.astro';
+interface Props { class?: string }
+const { class: extra = '' } = Astro.props;
+---
+<div class:list={['person', extra]}>
+  <div class="photo" role="img" aria-label={isPlaceholder(contenuti.fotoManuel) ? 'Foto di Manuel da inserire' : `Foto di ${brand.titolare}`}>
+    <Value value={contenuti.fotoManuel} />
+  </div>
+  <p class="person-text">Ti risponde {brand.titolare}, non un'agenzia: una persona sola, che lavora da {zona.base} e segue il progetto dalla call al supporto.</p>
+</div>
+<style>
+  .person { display: grid; grid-template-columns: 8.5rem 1fr; gap: var(--space-3); align-items: end; }
+  .photo { display: grid; place-items: center; aspect-ratio: 4 / 5; padding: 0.6rem; background: var(--person-photo, var(--c-surface)); font-size: 0.875rem; text-align: center; line-height: 1.25; }
+  .person-text { max-width: 38ch; }
+</style>

@@ -2,6 +2,7 @@
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
+import bricolageLatin from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
 import { brand, sito, isPlaceholder } from '../config/sito';
 import SiteHeader from '../components/sections/SiteHeader.astro';
 import SiteFooter from '../components/sections/SiteFooter.astro';
@@ -12,8 +13,10 @@ interface Props {
   description: string;
   /** false per le bozze in /lab che portano la propria intestazione. */
   chrome?: boolean;
+  /** Font da precaricare (evita il salto del testo, CLS). */
+  preloadFonts?: string[];
 }
-const { title, description, chrome = true } = Astro.props;
+const { title, description, chrome = true, preloadFonts = [bricolageLatin] } = Astro.props;
 const brandName = isPlaceholder(brand.nome) ? 'Brand da definire' : brand.nome;
 const fullTitle = `${title} · ${brandName}`;
 ---
@@ -30,6 +33,7 @@ const fullTitle = `${title} · ${brandName}`;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="it_IT" />
+    {preloadFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
     <slot name="head" />
   </head>
   <body>

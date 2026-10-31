@@ -1,0 +1,27 @@
+---
+/** Fiducia, onestà: "Quando non conviene automatizzare". */
+import { nonConviene } from '../../content/home';
+interface Props { class?: string }
+const { class: extra = '' } = Astro.props;
+---
+<section class:list={['nw', extra]} aria-labelledby="non-conviene">
+  <div class="nw-head">
+    <h2 id="non-conviene">{nonConviene.titolo}</h2>
+    <p>{nonConviene.intro}</p>
+  </div>
+  <ul class="nw-list">
+    {nonConviene.casi.map((c) => <li><h3>{c.h}</h3><p>{c.p}</p></li>)}
+  </ul>
+  <p class="nw-instead">{nonConviene.invece}</p>
+</section>
+<style>
+  .nw { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) clamp(2rem, 5vw, 5rem); padding: var(--space-5) var(--margin); background: var(--nw-ground, var(--c-surface)); color: var(--nw-ink, var(--c-ink)); }
+  .nw-head { grid-column: 1 / -1; }
+  .nw-head h2 { font-size: var(--step-head); font-weight: 800; margin-bottom: var(--space-2); }
+  .nw-head p { max-width: 36ch; font-size: var(--step-lead); }
+  .nw-list { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .nw-list h3 { font-size: var(--step-lead); margin-bottom: 0.25rem; }
+  .nw-list p { max-width: 52ch; }
+  .nw-instead { grid-column: 1 / -1; max-width: 52ch; font-weight: 600; }
+  @media (max-width: 860px) { .nw, .nw-list { grid-template-columns: 1fr; } }
+</style>

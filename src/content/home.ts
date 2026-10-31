@@ -4,6 +4,8 @@
  */
 import { prezzi } from '../config/sito';
 
+export const macchina = 'Quanto tempo perdi in attività che un sistema farebbe da solo?';
+
 export const hero = {
   titolo: 'Il lavoro ripetitivo lo fa un sistema.',
   sottotitolo:
@@ -37,11 +39,30 @@ export const faq: { q: string; a: string; segnaposto?: string; dopo?: string }[]
   { q: 'Devo cambiare i programmi che uso?', a: 'Quasi mai. Il flusso si collega a quello che hai già: email, fogli di calcolo, gestionale, WhatsApp.' },
   { q: 'Lavori solo nella zona di Bologna e Modena?', a: 'Si parte da qui, ma si lavora anche da remoto: call e consegne si fanno in video.' },
   {
-    q: 'Posso usare i voucher digitali della Camera di Commercio?',
-    a: 'Le Camere di Commercio pubblicano bandi per la digitalizzazione delle imprese. Edizione e scadenze 2026: ',
+    q: 'Posso usare i voucher digitali?',
+    a: 'Le Camere di Commercio di Bologna e Modena pubblicano bandi per la digitalizzazione delle imprese. Edizione e scadenze 2026: ',
     segnaposto: '[DA COMPLETARE: verificare sul sito della CCIAA di Bologna e di Modena]',
     dopo: '. In call vediamo se il tuo progetto rientra.',
   },
 ];
 
-export const chiusura = 'Venti minuti per capire cosa togliere dalla tua settimana.';
+export const chiusura = 'Venti minuti, poi decidi tu.';
+
+/** Fiducia: onestà. Quando un'automazione non ripaga. */
+export const nonConviene = {
+  titolo: 'Quando non conviene automatizzare',
+  intro: 'Te lo dico in call, prima di qualsiasi preventivo. Di solito non conviene quando:',
+  casi: [
+    { h: 'Succede due volte l’anno', p: 'Un’attività rara costa meno farla a mano che costruire e mantenere un flusso.' },
+    { h: 'Il processo cambia ogni settimana', p: 'Prima va deciso come si lavora; automatizzare il caos lo rende solo più veloce.' },
+    { h: 'Serve sempre il tuo giudizio', p: 'Se ogni caso è diverso, il sistema può preparare il lavoro, non farlo al posto tuo.' },
+  ],
+  invece: 'In questi casi ti propongo qualcosa di più semplice, anche solo un foglio fatto bene o un modello di email.',
+};
+
+/** Fiducia: trasparenza. Cosa succede dopo il primo contatto. */
+export const dopoContatto = [
+  { h: 'Rispondo', p: 'Ti scrivo io, entro ', tempo: true },
+  { h: 'Ci sentiamo 20 minuti', p: 'In call o in video, a un orario che scegli tu.' },
+  { h: 'Ricevi la proposta', p: 'Scritta, con un prezzo fisso e i tempi. Decidi con calma.' },
+];

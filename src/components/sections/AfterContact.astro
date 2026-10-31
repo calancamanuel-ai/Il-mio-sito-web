@@ -1,0 +1,19 @@
+---
+/** Fiducia, trasparenza: cosa succede dopo il primo contatto. */
+import { dopoContatto } from '../../content/home';
+import { contatti } from '../../config/sito';
+import Value from '../ui/Value.astro';
+---
+<div class="after">
+  <h3 class="after-h">Dopo che mi scrivi</h3>
+  <ol>
+    {dopoContatto.map((d) => (
+      <li><strong>{d.h}.</strong> {d.p}{d.tempo && <Fragment><Value value={contatti.tempoRisposta} />.</Fragment>}</li>
+    ))}
+  </ol>
+</div>
+<style>
+  .after { display: grid; gap: var(--space-2); }
+  .after-h { font-size: var(--step-lead); }
+  ol { display: grid; gap: var(--space-1); margin: 0; padding-left: 1.3em; max-width: 56ch; }
+</style>

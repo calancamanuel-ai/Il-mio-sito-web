@@ -1,0 +1,241 @@
+---
+/**
+ * Direzione C, "sperimentale": La frase che si accende (sentence-as-layout, seed 1946294617).
+ * Palette Terminale (quasi nero + verde segnale), Fraunces + Geist Mono.
+ * Cosa viva in bozza: "Il lunedì mattina" con gli interruttori; titolo che si decodifica.
+ */
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/geist-mono';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import frauncesLatin from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import LabBar from '../../components/ui/LabBar.astro';
+import ButtonLink from '../../components/ui/ButtonLink.astro';
+import FlowFallback from '../../components/three/FlowFallback.astro';
+import FragmentWorkflow from '../../components/ui/FragmentWorkflow.astro';
+import FragmentDraft from '../../components/ui/FragmentDraft.astro';
+import FragmentSite from '../../components/ui/FragmentSite.astro';
+import MondayToggles from '../../components/demos/MondayToggles.astro';
+import NotWorthIt from '../../components/sections/NotWorthIt.astro';
+import AfterContact from '../../components/sections/AfterContact.astro';
+import PersonNote from '../../components/sections/PersonNote.astro';
+import Value from '../../components/ui/Value.astro';
+import { contatti, prezzi } from '../../config/sito';
+import { hero, macchina, servizi, faq } from '../../content/home';
+
+const base = prezzi.voci.find((v) => v.id === 'workflow-semplice')!;
+const scala = [
+  { l: 'Prima ci sentiamo venti minuti.', p: 'Mi racconti dove perdi tempo. Nessun impegno.' },
+  { l: 'Poi guardo come lavori.', p: 'Analisi gratuita e proposta scritta con un prezzo fisso.' },
+  { l: 'Vedi il prototipo funzionare.', p: 'Sui tuoi dati, prima di decidere.' },
+  { l: 'Lo consegno e resto lì.', p: 'Ti spiego come controllarlo; se cambia qualcosa, cambia anche lui.' },
+];
+---
+<BaseLayout title="Direzione C · La frase che si accende" description="Bozza della direzione creativa C, sperimentale." preloadFonts={[frauncesLatin]}>
+  <LabBar slot="top" current="c" />
+
+  <section class="hero" aria-labelledby="titolo">
+    <h1 id="titolo" class="sentence" aria-label="Il caos diventa flusso.">
+      <span class="w" data-decode>Caos</span>
+      <span class="strip" data-ui aria-hidden="true">
+        <span class="strip-line"></span>
+        <span class="strip-node">Ricevi</span><span class="strip-node">Leggi</span><span class="strip-node">Archivia</span><span class="strip-node">Notifica</span>
+      </span>
+      <span class="w" data-decode>flusso.</span>
+    </h1>
+    <div class="hero-foot">
+      <p class="hero-sub">{hero.sottotitolo}</p>
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota una call di 20 minuti</ButtonLink>
+    </div>
+  </section>
+
+  <section class="block machine" aria-labelledby="macchina">
+    <h2 id="macchina" class="visually-hidden">La macchina del flusso</h2>
+    <p class="statement">{macchina}</p>
+    <FlowFallback class="machine-flow" />
+  </section>
+
+  <section class="block" aria-labelledby="lunedi">
+    <h2 id="lunedi">Spegni il lunedì mattina</h2>
+    <p class="lead">Accendi le attività che vorresti non fare più.</p>
+    <MondayToggles />
+  </section>
+
+  <section class="block claims" aria-labelledby="servizi">
+    <h2 id="servizi" class="visually-hidden">Servizi</h2>
+    {servizi.map((s) => (
+      <article class="claim">
+        <div class="claim-text"><h3>{s.h}</h3><p>{s.p}</p></div>
+        {s.id === 'wf' && <FragmentWorkflow />}
+        {s.id === 'draft' && <FragmentDraft />}
+        {s.id === 'site' && <FragmentSite />}
+      </article>
+    ))}
+  </section>
+
+  <section class="block stairs" aria-labelledby="metodo">
+    <h2 id="metodo" class="visually-hidden">Come lavoro</h2>
+    <ol>
+      {scala.map((s, i) => <li style={`--step:${i}`}><p class="stair">{s.l}</p><p>{s.p}</p></li>)}
+    </ol>
+    <div class="after-c"><AfterContact /></div>
+  </section>
+
+  <section class="price-field" aria-labelledby="prezzo">
+    <h2 id="prezzo" class="price-sentence">Il primo flusso parte da <span class="price-block">{base.da} €</span></h2>
+    <div class="price-row">
+      <p>{base.esempio}. Prezzo di lancio per i primi {prezzi.clientiLancio} clienti; dopo l'analisi gratuita ricevi un preventivo a prezzo fisso. Siti vetrina da 600 €, workflow con AI da 1.000 €, assistenza da 30 € al mese.</p>
+      <ButtonLink href={contatti.linkPrenotazione}>Chiedi il tuo preventivo</ButtonLink>
+    </div>
+  </section>
+
+  <NotWorthIt class="nw-c" />
+
+  <section class="block faq" aria-labelledby="faq-h">
+    <h2 id="faq-h" class="faq-title">Domande, risposte</h2>
+    {faq.map((f) => (
+      <div class="qa">
+        <h3>{f.q}</h3>
+        <p>{f.a}{f.segnaposto && <Value value={f.segnaposto} />}{f.dopo}</p>
+      </div>
+    ))}
+  </section>
+
+  <section class="inverted" aria-labelledby="close-h">
+    <h2 id="close-h">Dal tuo caos a un flusso.</h2>
+    <div class="inv-row">
+      <PersonNote class="inv-person" />
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota una call</ButtonLink>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Decodifica decorativa del titolo: solo con movimento consentito, larghezza fissa (niente CLS),
+  // testo vero sempre leggibile dagli screen reader tramite aria-label. Finisce entro 0,7 s.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const glyphs = 'ABCDEFGHKLMNOPRSTUVZ01<>/#';
+    document.querySelectorAll<HTMLElement>('[data-decode]').forEach((el) => {
+      const final = el.textContent || '';
+      el.style.width = `${el.getBoundingClientRect().width}px`;
+      el.classList.add('is-decoding');
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / 650);
+        const shown = Math.floor(p * final.length);
+        el.textContent = final.split('').map((c, i) => (i < shown || c === ' ' || c === '.') ? c : glyphs[(Math.random() * glyphs.length) | 0]).join('');
+        if (p < 1) requestAnimationFrame(tick);
+        else { el.textContent = final; el.classList.remove('is-decoding'); el.style.width = ''; }
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+</script>
+
+<style is:global>
+  html:root {
+    --c-bg: #0a0d0b;
+    --c-surface: #131a15;
+    --c-line: #24302a;
+    --c-ink: #e7efe9;
+    --c-ink-soft: #9aab9f;
+    --c-action: #4ade80;
+    --c-on-action: #0a0d0b;
+    --c-accent: #7dd3fc;
+    --c-ok: #4ade80;
+    --font-display: 'Fraunces Variable', Georgia, serif;
+    --font-text: 'Fraunces Variable', Georgia, serif;
+    --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+    --tracking-display: -0.02em;
+    --radius: 0;
+  }
+</style>
+
+<style>
+  .hero { display: grid; align-content: center; gap: var(--space-5); padding-block: clamp(4rem, 12vh, 9rem) !important; padding: var(--space-4) var(--margin); }
+  .sentence {
+    display: flex;
+    align-items: center;
+    gap: 0.18em;
+    font-size: clamp(3.5rem, 0.5rem + 8.4vw, 9.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  }
+  .w { display: inline-block; white-space: nowrap; }
+  .w.is-decoding { font-family: var(--font-mono); font-weight: 400; overflow: hidden; color: var(--c-action); }
+  .strip {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 0.78em;
+    padding-inline: 0.25em;
+    border-radius: 14px;
+    background: var(--c-surface);
+    font-size: 1em;
+  }
+  .strip-line { position: absolute; left: 0.5em; right: 0.5em; top: 50%; height: 3px; background: var(--c-action); }
+  .strip-node {
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    background: var(--c-bg);
+    color: var(--c-ink);
+    font-family: var(--font-mono);
+    font-size: clamp(0.75rem, 0.6rem + 0.4vw, 1rem);
+    letter-spacing: 0;
+  }
+  .hero-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-3); }
+  .hero-sub { max-width: 44ch; font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem); }
+
+  .block { padding: var(--gap-section) var(--margin) 0; }
+  h2 { font-size: clamp(2.25rem, 1rem + 4vw, 5rem); font-weight: 400; line-height: 1; max-width: 20ch; }
+  .lead { margin-block: var(--space-3) var(--space-4); font-size: var(--step-lead); }
+  .machine { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .statement { font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem); line-height: 1.15; max-width: 30ch; }
+  .machine :global(.flow) { font-family: var(--font-text); font-size: 1.0625rem; min-height: 46svh; }
+
+  .claims { display: grid; gap: var(--space-5); }
+  .claim { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-4); align-items: center; }
+  .claim h3 { font-size: clamp(2rem, 1rem + 2.6vw, 3.5rem); font-weight: 400; margin-bottom: var(--space-2); }
+  .claim p { max-width: 40ch; font-size: 1.125rem; }
+
+  .stairs ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 3.5rem; }
+  .stairs li { padding-left: calc(var(--step) * 14%); }
+  .stair { font-size: clamp(1.9rem, 1rem + 3.2vw, 4.25rem); line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .stairs li:last-child .stair { color: var(--c-action); }
+  .stairs li p:last-child { max-width: 38ch; color: var(--c-ink-soft); }
+  .after-c { margin-top: var(--space-5); padding-left: 42%; }
+
+  .price-field { margin-top: var(--gap-section); padding: var(--space-5) var(--margin); min-height: 80svh; display: grid; align-content: center; gap: var(--space-5); background: var(--c-surface); }
+  .price-sentence { font-size: clamp(2.75rem, 1rem + 6.4vw, 8rem); line-height: 0.95; max-width: none; }
+  .price-block { display: inline-block; padding: 0 0.15em; background: var(--c-action); color: var(--c-on-action); font-weight: 500; }
+  .price-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-3); }
+  .price-row p { max-width: 52ch; font-size: 1.125rem; }
+
+  .nw-c { --nw-ground: var(--c-bg); margin-top: var(--gap-section); }
+  .faq .qa, .faq .faq-title { display: grid; grid-template-columns: 6fr 1fr 5fr; }
+  .faq-title { color: var(--c-ink-soft); font-size: clamp(1.625rem, 1rem + 1.6vw, 2.5rem); max-width: none; margin-bottom: 4.5rem; }
+  .qa { margin-bottom: 4.5rem; }
+  .qa h3 { grid-column: 1; font-size: clamp(1.625rem, 1rem + 1.6vw, 2.5rem); font-weight: 500; line-height: 1.1; }
+  .qa p { grid-column: 3; max-width: 40ch; }
+
+  .inverted { margin-top: var(--gap-section); min-height: 90svh; display: grid; align-content: space-between; gap: var(--space-5); padding: var(--space-5) var(--margin); background: var(--c-ink); color: var(--c-bg); --c-surface: #c9d6cc; --c-placeholder: #7a4b00; }
+  .inverted h2 { font-size: clamp(3rem, 1rem + 8vw, 10rem); line-height: 0.9; max-width: 14ch; }
+  .inv-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-4); }
+  .inverted :global(.btn--primary) { background: #0a0d0b; color: #4ade80; min-height: 56px; }
+
+  @media (max-width: 900px) {
+    .sentence { flex-wrap: wrap; font-size: 21vw; gap: 0.1em 0; }
+    .strip { order: 1; flex: 1 0 100%; height: auto; aspect-ratio: 2 / 1; flex-wrap: wrap; align-content: center; justify-content: center; gap: 0.5rem; }
+    .strip-line { display: none; }
+    .w:last-of-type { order: 2; }
+    .claim { grid-template-columns: 1fr; }
+    .claims :global(.band-text), :global(.band-text) { font-size: 1.375rem; }
+    .stairs li { padding-left: calc(var(--step) * 6vw); }
+    .after-c { padding-left: 0; }
+    .faq .qa, .faq .faq-title { grid-template-columns: 1fr; }
+    .qa p { grid-column: 1; margin-top: 0.75rem; }
+  }
+</style>

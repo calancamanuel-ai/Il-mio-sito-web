@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const direzioni = [
+  { href: '/lab/direzione-a', nome: 'A · Il quaderno tecnico', tipo: 'Sicura', idea: 'Impaginata come un rapporto tecnico ben fatto: un asse fisso, pagine di testo e pagine di colore.', palette: ['#0b1220', '#111a2e', '#e6edf7', '#22d3ee', '#3b82f6'], nomePalette: 'Circuito', font: 'Bricolage Grotesque + JetBrains Mono', viva: 'Calcolatore di risparmio' },
+  { href: '/lab/direzione-b', nome: 'B · Capitoli di colore', tipo: 'Audace', idea: 'Ogni sezione è un manifesto a tutto campo, con un colore che vuol dire quel capitolo.', palette: ['#0b1220', '#131d34', '#eef1f6', '#ff7a1a', '#4f86f7'], nomePalette: 'Segnale', font: 'Schibsted Grotesk + Martian Mono', viva: 'Costruisci la tua automazione' },
+  { href: '/lab/direzione-c', nome: 'C · La frase che si accende', tipo: 'Sperimentale', idea: 'Una frase enorme è la composizione: il flusso prende il posto di una parola.', palette: ['#0a0d0b', '#131a15', '#e7efe9', '#4ade80', '#7dd3fc'], nomePalette: 'Terminale', font: 'Fraunces + Geist Mono', viva: 'Il lunedì mattina con gli interruttori' },
+];
+---
+<BaseLayout title="Tre direzioni" description="Le tre direzioni creative della fase 1.">
+  <section class="wrap lab">
+    <h1>Tre direzioni da scegliere</h1>
+    <p class="lead">Stessi testi in bozza, stessi dati: cambiano solo forma, palette, font e interazione. Si possono mescolare.</p>
+    <ul class="dirs">
+      {direzioni.map((d) => (
+        <li>
+          <h2><a href={d.href}>{d.nome}</a></h2>
+          <p><strong>{d.tipo}.</strong> {d.idea}</p>
+          <p>Palette {d.nomePalette} · {d.font} · interazione: {d.viva}</p>
+          <div class="sw" role="img" aria-label={`Palette ${d.nomePalette}`}>{d.palette.map((c) => <span style={`background:${c}`}></span>)}</div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+<style>
+  .lab { padding-block: var(--space-5); }
+  h1 { font-size: var(--step-head); }
+  .lead { margin-block: var(--space-2) var(--space-4); max-width: 60ch; font-size: var(--step-lead); }
+  .dirs { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+  .dirs h2 { font-size: var(--step-lead); margin-bottom: 0.4rem; }
+  .dirs p { max-width: 70ch; }
+  .sw { display: flex; margin-top: 0.75rem; }
+  .sw span { width: 3.5rem; height: 2rem; }
+</style>

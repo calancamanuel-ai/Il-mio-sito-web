@@ -96,7 +96,7 @@ const outputs = [
   }
   .doc {
     rotate: calc((var(--i) - 1.5) * 3.5deg);
-    translate: calc(sin(var(--i) * 1.7rad) * 1.4rem) 0;
+    translate: calc((sin(var(--i) * 1.7rad) + 1) * 0.8rem) 0;
   }
   .doc--wa { background: var(--flow-wa, #1f3b2e); }
   .doc--pdf { background: var(--flow-pdf, #3a2330); }
@@ -175,8 +175,9 @@ const outputs = [
     background: var(--c-ok);
   }
   @media (max-width: 760px) {
-    .flow { grid-template-columns: 1fr; }
-    .flow-chaos { grid-template-columns: 1fr 1fr; }
+    .flow { grid-template-columns: minmax(0, 1fr); }
+    .flow-chaos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .doc-title, .doc-meta { overflow-wrap: anywhere; }
     .doc { translate: 0 0; rotate: calc((var(--i) - 1.5) * 2deg); }
     .flow-out { grid-template-columns: 1fr; }
   }
