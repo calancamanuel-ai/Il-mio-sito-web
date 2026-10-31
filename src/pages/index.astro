@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+import { brand, contatti } from '../config/sito';
+const direzioni = [
+  { href: '/lab/direzione-a', nome: 'A · Il quaderno tecnico', tipo: 'sicura' },
+  { href: '/lab/direzione-b', nome: 'B · Capitoli di colore', tipo: 'audace' },
+  { href: '/lab/direzione-c', nome: 'C · La frase che si accende', tipo: 'sperimentale' },
+];
+---
+<BaseLayout title="Sito in costruzione" description={brand.promessa}>
+  <section class="wrap home-temp">
+    <h1>Le attività ripetitive le fa un sistema.</h1>
+    <p class="lead">Tu fai il tuo lavoro. Automazioni n8n, software su misura con Claude e siti web, da Persiceto, Bologna e Modena o da remoto.</p>
+    <ButtonLink href={contatti.linkPrenotazione}>Prenota una call</ButtonLink>
+    <h2>Fase 1: tre direzioni da scegliere</h2>
+    <ul>
+      {direzioni.map((d) => <li><a href={d.href}>{d.nome}</a> ({d.tipo})</li>)}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-temp { padding-block: var(--space-5); }
+  h1 { font-size: var(--step-display); line-height: var(--leading-display); max-width: 14ch; }
+  .lead { margin-block: var(--space-3) var(--space-4); font-size: var(--step-lead); max-width: 40ch; }
+  h2 { font-size: var(--step-lead); margin-block: var(--space-5) var(--space-2); }
+  ul { padding-left: 1.2em; }
+  li { margin-bottom: var(--space-1); }
+</style>

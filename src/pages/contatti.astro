@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Value from '../components/ui/Value.astro';
+import { contatti } from '../config/sito';
+---
+<BaseLayout title="Contatti" description="Prenota una call conoscitiva di 20 minuti.">
+  <section class="wrap contacts">
+    <h1>Prenota una call di {contatti.durataCallMinuti} minuti</h1>
+    <p>Il form intelligente arriva nella fase 2. Nel frattempo questi sono i canali, ancora da completare:</p>
+    <ul>
+      <li>Prenotazione: <Value value={contatti.linkPrenotazione} /></li>
+      <li>Email: <Value value={contatti.email} /></li>
+      <li>Telefono: <Value value={contatti.telefono} /></li>
+      <li>WhatsApp: <Value value={contatti.whatsapp} /></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .contacts { padding-block: var(--space-5); max-width: calc(var(--measure) + 2 * var(--margin)); }
+  h1 { font-size: var(--step-head); margin-bottom: var(--space-3); }
+  ul { margin-top: var(--space-3); padding-left: 1.2em; }
+  li { margin-bottom: var(--space-1); }
+</style>

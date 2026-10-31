@@ -1,0 +1,48 @@
+---
+/**
+ * Pulsante come link. Se l'href è un segnaposto, porta all'elenco dei dati mancanti
+ * della pagina contatti e lo dichiara nel testo per screen reader.
+ */
+import { isPlaceholder } from '../../config/sito';
+interface Props {
+  href: string;
+  variant?: 'primary' | 'quiet';
+  class?: string;
+}
+const { href, variant = 'primary', class: extra = '' } = Astro.props;
+const missing = isPlaceholder(href);
+const target = missing ? '/contatti' : href;
+---
+<a class:list={['btn', `btn--${variant}`, extra]} href={target} data-missing-link={missing ? '' : undefined}>
+  <slot />
+  {missing && <span class="visually-hidden"> (link di prenotazione da completare)</span>}
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-height: var(--tap);
+    padding: 0.7em 1.25em;
+    border-radius: var(--radius);
+    font-family: var(--font-text);
+    font-weight: 700;
+    font-size: var(--step-body);
+    line-height: 1.1;
+    text-decoration: none;
+    transition: transform var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out);
+  }
+  .btn--primary {
+    background: var(--c-action);
+    color: var(--c-on-action);
+  }
+  .btn--primary:hover { background: var(--c-ink); }
+  .btn--quiet {
+    color: var(--c-ink);
+    background: var(--c-surface);
+  }
+  .btn--quiet:hover { background: var(--c-line); }
+  .btn:active { transform: translateY(1px) scale(0.98); }
+</style>

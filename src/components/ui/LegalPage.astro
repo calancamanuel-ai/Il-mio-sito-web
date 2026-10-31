@@ -1,0 +1,29 @@
+---
+/** Impaginazione comune per privacy e cookie: testo a misura di lettura. */
+interface Props { title: string; updated: string }
+const { title, updated } = Astro.props;
+---
+<article class="legal-page wrap">
+  <h1>{title}</h1>
+  <p class="draft-note">[BOZZA] Testo da far controllare al commercialista o a un legale prima della pubblicazione. Aggiornato al <time datetime={updated}>{updated}</time>.</p>
+  <div class="legal-body"><slot /></div>
+</article>
+
+<style>
+  .legal-page {
+    padding-block: var(--space-5);
+    max-width: calc(var(--measure) + 2 * var(--margin));
+  }
+  h1 { font-size: var(--step-head); }
+  .draft-note {
+    margin-block: var(--space-3) var(--space-4);
+    color: var(--c-placeholder);
+  }
+  .legal-body :global(h2) {
+    font-size: var(--step-lead);
+    margin-block: var(--space-4) var(--space-2);
+  }
+  .legal-body :global(p),
+  .legal-body :global(ul) { margin-block: 0 var(--space-2); }
+  .legal-body :global(li) { margin-bottom: var(--space-1); }
+</style>

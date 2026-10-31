@@ -1,0 +1,66 @@
+---
+import { brand, contatti } from '../../config/sito';
+import ButtonLink from '../ui/ButtonLink.astro';
+import Value from '../ui/Value.astro';
+
+const links = [
+  { href: '/automazioni', label: 'Automazioni' },
+  { href: '/software', label: 'Software AI' },
+  { href: '/siti-web', label: 'Siti web' },
+  { href: '/casi-d-uso', label: "Casi d'uso" },
+  { href: '/chi-sono', label: 'Chi sono' },
+];
+const current = Astro.url.pathname;
+---
+<header class="site-header wrap">
+  <a class="wordmark" href="/" aria-label="Home"><Value value={brand.nome} /></a>
+  <nav aria-label="Principale">
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <ButtonLink href={contatti.linkPrenotazione} class="header-cta">Prenota una call</ButtonLink>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    background: var(--c-bg);
+  }
+  .wordmark {
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-body);
+    text-decoration: none;
+    max-width: 16ch;
+    line-height: 1.15;
+  }
+  nav ul {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  nav a {
+    display: inline-block;
+    padding-block: 0.6rem;
+    color: var(--c-ink);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--c-action);
+  }
+  @media (max-width: 900px) {
+    nav { display: none; }
+  }
+</style>

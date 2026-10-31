@@ -1,0 +1,3 @@
+# Sito in costruzione: nessuna indicizzazione finché MANCANTI.md ha voci bloccanti.
+User-agent: *
+Disallow: /

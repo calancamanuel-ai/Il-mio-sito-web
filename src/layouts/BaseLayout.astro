@@ -1,0 +1,44 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { brand, sito, isPlaceholder } from '../config/sito';
+import SiteHeader from '../components/sections/SiteHeader.astro';
+import SiteFooter from '../components/sections/SiteFooter.astro';
+import MobileBar from '../components/ui/MobileBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** false per le bozze in /lab che portano la propria intestazione. */
+  chrome?: boolean;
+}
+const { title, description, chrome = true } = Astro.props;
+const brandName = isPlaceholder(brand.nome) ? 'Brand da definire' : brand.nome;
+const fullTitle = `${title} · ${brandName}`;
+---
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {sito.noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#0b1220" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="it_IT" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    {chrome && <SiteHeader />}
+    <main id="contenuto">
+      <slot />
+    </main>
+    {chrome && <SiteFooter />}
+    {chrome && <MobileBar />}
+  </body>
+</html>

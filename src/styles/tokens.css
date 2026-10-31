@@ -1,0 +1,52 @@
+/*
+ * Design token provvisori: palette base "Circuito" del piano.
+ * Verranno sostituiti con quelli della direzione scelta a fine fase 1.
+ * I componenti usano solo questi nomi, mai valori diretti.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Colori: ruoli fissati dal piano */
+  --c-bg: #0b1220;        /* sfondo */
+  --c-surface: #111a2e;   /* superfici e card */
+  --c-line: #1e2a44;      /* bordi e linee (solo campi form e linea di flusso) */
+  --c-ink: #e6edf7;       /* testo principale */
+  --c-ink-soft: #94a3b8;  /* testo secondario */
+  --c-action: #22d3ee;    /* azione: pulsanti e link */
+  --c-on-action: #0b1220; /* testo sopra il colore di azione */
+  --c-accent: #3b82f6;    /* accento secondario: grafici, nodi */
+  --c-ok: #34d399;        /* stato ok */
+  --c-placeholder: #fbbf24; /* evidenza dei segnaposto [DA COMPLETARE] */
+
+  /* Tipografia */
+  --font-display: 'Bricolage Grotesque Variable', 'Arial Narrow', sans-serif;
+  --font-text: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --step-small: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --step-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(2.75rem, 1.5rem + 6vw, 7.5rem);
+
+  --leading-text: 1.55;
+  --leading-display: 0.95;
+  --tracking-display: -0.03em;
+
+  /* Spazi */
+  --margin: clamp(1rem, 0.5rem + 2.2vw, 2rem);
+  --gap-section: clamp(6rem, 4rem + 8vw, 12rem);
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --measure: 66ch;
+
+  /* Componenti */
+  --radius: 0;
+  --tap: 44px;
+  --mobile-bar-height: 3.5rem;
+  --dur-ui: 180ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

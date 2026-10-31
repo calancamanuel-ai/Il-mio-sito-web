@@ -1,0 +1,7 @@
+---
+/** Mostra un valore di sito.ts; se è un segnaposto lo evidenzia. */
+import { isPlaceholder } from '../../config/sito';
+interface Props { value: string | number }
+const { value } = Astro.props;
+---
+{isPlaceholder(value) ? <em class="placeholder">{value}</em> : <Fragment>{value}</Fragment>}

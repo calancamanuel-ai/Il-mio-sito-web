@@ -1,0 +1,41 @@
+---
+/** Barra fissa in basso su mobile: Chiama e WhatsApp (piatta, target >= 44px). */
+import { contatti, isPlaceholder } from '../../config/sito';
+const tel = isPlaceholder(contatti.telefono) ? '/contatti' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
+const wa = isPlaceholder(contatti.whatsapp) ? '/contatti' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
+---
+<div class="mobile-bar" role="navigation" aria-label="Contatto rapido">
+  <a href={tel}>Chiama</a>
+  <a href={wa}>WhatsApp</a>
+</div>
+
+<style>
+  .mobile-bar { display: none; }
+  @media (max-width: 760px) {
+    .mobile-bar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 50;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      height: var(--mobile-bar-height);
+      padding-bottom: env(safe-area-inset-bottom);
+      background: var(--c-bg);
+    }
+    .mobile-bar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tap);
+      background: var(--c-surface);
+      color: var(--c-ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .mobile-bar a:last-child {
+      background: var(--c-action);
+      color: var(--c-on-action);
+    }
+  }
+</style>

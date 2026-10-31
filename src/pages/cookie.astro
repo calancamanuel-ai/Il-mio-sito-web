@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/ui/LegalPage.astro';
+import Value from '../components/ui/Value.astro';
+import { contenuti } from '../config/sito';
+const updated = '2026-10-31';
+---
+<BaseLayout title="Cookie" description="Quali cookie usa il sito: solo tecnici, nessun cookie di profilazione, nessun banner.">
+  <LegalPage title="Cookie" updated={updated}>
+    <p>Il sito non usa cookie di profilazione né di marketing. Per questo non ti chiede un consenso con un banner.</p>
+
+    <h2>Cosa viene salvato nel tuo browser</h2>
+    <ul>
+      <li><strong>Preferenze del sito</strong> (per esempio tema giorno o notte): restano nel tuo browser, servono solo a ricordare la scelta e non vengono inviate a nessuno.</li>
+      <li><strong>Protezione del form</strong>: Cloudflare Turnstile può usare dati tecnici necessari a bloccare lo spam quando invii una richiesta.</li>
+      <li><strong>Statistiche</strong>: <Value value={contenuti.analytics} />, scelto tra strumenti che non usano cookie.</li>
+    </ul>
+
+    <h2>Se cambia qualcosa</h2>
+    <p>Se in futuro venissero aggiunti cookie non tecnici, il sito mostrerà un banner con "Accetta" e "Rifiuta" della stessa evidenza, senza consenso tramite scroll e senza bloccare la navigazione, come chiedono le linee guida del Garante.</p>
+  </LegalPage>
+</BaseLayout>

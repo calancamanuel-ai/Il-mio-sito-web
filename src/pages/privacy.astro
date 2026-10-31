@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalPage from '../components/ui/LegalPage.astro';
+import Value from '../components/ui/Value.astro';
+import { datiLegali, contatti, contenuti } from '../config/sito';
+const updated = '2026-10-31';
+---
+<BaseLayout title="Privacy" description="Come vengono trattati i dati personali raccolti dal sito: form di contatto, demo, email e statistiche.">
+  <LegalPage title="Informativa sulla privacy" updated={updated}>
+    <p>Questa informativa spiega quali dati personali raccoglie il sito, perché, per quanto tempo e quali sono i tuoi diritti, ai sensi del Regolamento (UE) 2016/679 (GDPR).</p>
+
+    <h2>Chi tratta i dati</h2>
+    <p>Titolare del trattamento: <Value value={datiLegali.ragioneSociale} />, sede <Value value={datiLegali.sedeLegale} />, P.IVA <Value value={datiLegali.partitaIva} />, C.F. <Value value={datiLegali.codiceFiscale} />. Contatto per la privacy: <Value value={contatti.email} />.</p>
+
+    <h2>Quali dati e perché</h2>
+    <ul>
+      <li><strong>Form di contatto e richiesta di call</strong>: nome, email, eventuale telefono e il testo che scrivi. Servono a risponderti e a preparare la call. Base giuridica: misure precontrattuali richieste da te (art. 6.1.b GDPR).</li>
+      <li><strong>Demo del sito</strong> (calcolatore, "Costruisci la tua automazione"): le scelte restano nel tuo browser. Solo se chiedi di ricevere il risultato via email, l'indirizzo e il risultato vengono inviati e trattati come una richiesta di contatto.</li>
+      <li><strong>Comunicazioni commerciali</strong>: solo se spunti l'apposita casella, separata dall'invio della richiesta e non preselezionata. Base giuridica: consenso (art. 6.1.a), revocabile in ogni momento.</li>
+      <li><strong>Statistiche di visita</strong>: <Value value={contenuti.analytics} />. Lo strumento scelto non usa cookie di profilazione e raccoglie dati aggregati.</li>
+      <li><strong>Protezione antispam</strong>: il form usa Cloudflare Turnstile, che analizza segnali tecnici del browser per distinguere persone e programmi automatici.</li>
+    </ul>
+
+    <h2>Come vengono trattati</h2>
+    <p>Le richieste passano da un endpoint su Cloudflare e vengono elaborate da un'automazione n8n. Il testo della richiesta può essere riassunto con un modello di intelligenza artificiale (Claude, di Anthropic) per preparare una risposta: non viene usato per prendere decisioni automatiche che ti riguardano.</p>
+
+    <h2>A chi possono arrivare</h2>
+    <p>Fornitori che agiscono come responsabili del trattamento: hosting e protezione (Cloudflare), automazione (<em class="placeholder">[DA COMPLETARE: dove gira n8n]</em>), modello AI (Anthropic), servizio email (<em class="placeholder">[DA COMPLETARE: servizio email]</em>), calendario per le prenotazioni (<em class="placeholder">[DA COMPLETARE: Cal.com, Calendly o Google Calendar]</em>). Alcuni hanno sede fuori dall'Unione europea: il trasferimento avviene con le garanzie previste dal GDPR.</p>
+
+    <h2>Per quanto tempo</h2>
+    <p>Le richieste di contatto si conservano per <em class="placeholder">[DA COMPLETARE: periodo di conservazione]</em>, poi vengono cancellate, salvo che diventino un rapporto di lavoro. I consensi per le comunicazioni commerciali valgono fino alla revoca.</p>
+
+    <h2>I tuoi diritti</h2>
+    <p>Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità e opporti al trattamento scrivendo a <Value value={contatti.email} />. Puoi anche presentare reclamo al Garante per la protezione dei dati personali.</p>
+  </LegalPage>
+</BaseLayout>

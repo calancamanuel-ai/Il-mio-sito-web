@@ -1,0 +1,69 @@
+---
+import { brand, contatti, datiLegali, zona, ultimoAggiornamento } from '../../config/sito';
+import Value from '../ui/Value.astro';
+---
+<footer class="site-footer wrap">
+  <p class="footer-name"><Value value={brand.nome} /></p>
+  <div class="footer-cols">
+    <address>
+      <span>Email: <Value value={contatti.email} /></span>
+      <span>Base: {zona.base}, Bologna e Modena · anche da remoto</span>
+    </address>
+    <ul class="footer-links">
+      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="/cookie">Cookie</a></li>
+      <li><a href="/blog">Blog</a></li>
+    </ul>
+  </div>
+  <p class="legal">
+    <Value value={datiLegali.ragioneSociale} /> · P.IVA <Value value={datiLegali.partitaIva} /> ·
+    C.F. <Value value={datiLegali.codiceFiscale} /> · REA <Value value={datiLegali.rea} />
+  </p>
+  <p class="legal">Ultimo aggiornamento del sito: <time datetime={ultimoAggiornamento}>{ultimoAggiornamento}</time></p>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--gap-section);
+    padding-block: var(--space-5) var(--space-4);
+    background: var(--c-surface);
+  }
+  .footer-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: var(--tracking-display);
+  }
+  .footer-cols {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-block: var(--space-4);
+  }
+  address {
+    display: grid;
+    gap: var(--space-1);
+    font-style: normal;
+  }
+  .footer-links {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .footer-links a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+  .legal {
+    font-size: var(--step-small);
+    color: var(--c-ink-soft);
+  }
+  .legal + .legal { margin-top: var(--space-1); }
+  @media (max-width: 760px) {
+    .site-footer { padding-bottom: calc(var(--mobile-bar-height) + var(--space-4)); }
+  }
+</style>
