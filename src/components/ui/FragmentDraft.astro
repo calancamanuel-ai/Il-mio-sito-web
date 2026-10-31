@@ -1,0 +1,44 @@
+---
+/** Frammento d'interfaccia: bozza di preventivo preparata da un software su misura. Dati d'esempio. */
+interface Props { class?: string }
+const { class: extra = '' } = Astro.props;
+const righe = [
+  { voce: 'Sopralluogo e misure', q: 1, prezzo: 80 },
+  { voce: 'Sostituzione caldaia a condensazione', q: 1, prezzo: 2350 },
+  { voce: 'Smaltimento vecchio impianto', q: 1, prezzo: 120 },
+];
+const tot = righe.reduce((s, r) => s + r.q * r.prezzo, 0);
+const eur = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
+---
+<figure class:list={['frag', extra]} data-ui>
+  <div class="frag-bar"><span>Bozza di preventivo n. 2026-118</span><span class="frag-tag">da rivedere</span></div>
+  <div class="draft">
+    <p class="draft-from"><strong>Richiesta:</strong> "Buongiorno, la caldaia perde acqua, quanto costa cambiarla? Sono a Crevalcore." · email, ore 07:42</p>
+    <table>
+      <thead><tr><th scope="col">Voce</th><th scope="col">Q.tà</th><th scope="col">Importo</th></tr></thead>
+      <tbody>
+        {righe.map((r) => <tr><td>{r.voce}</td><td>{r.q}</td><td>{eur.format(r.q * r.prezzo)}</td></tr>)}
+      </tbody>
+      <tfoot><tr><th scope="row" colspan="2">Totale imponibile</th><td>{eur.format(tot)}</td></tr></tfoot>
+    </table>
+    <p class="draft-actions"><span class="pill-ok">Approva e invia</span><span class="pill">Modifica</span></p>
+  </div>
+  <figcaption class="visually-hidden">Esempio: una richiesta via email trasformata in bozza di preventivo da approvare. Cliente e importi inventati a scopo dimostrativo.</figcaption>
+</figure>
+<style>
+  .frag { margin: 0; background: var(--c-surface); color: var(--c-ink); font-size: 0.95rem; min-height: 220px; }
+  .frag-bar { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; background: var(--c-line); font-weight: 600; }
+  .frag-tag { font-family: var(--font-mono); color: var(--c-placeholder); font-weight: 500; }
+  .draft { display: grid; gap: 0.9rem; padding: 1rem; }
+  .draft-from { color: var(--c-ink-soft); }
+  .draft-from strong { color: var(--c-ink); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.45rem 0.4rem; text-align: left; border-bottom: 2px solid var(--c-line); }
+  td:last-child, th:last-child { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+  td:nth-child(2) { font-family: var(--font-mono); }
+  tfoot th, tfoot td { border-bottom: 0; font-weight: 700; }
+  .draft-actions { display: flex; gap: 0.5rem; }
+  .pill-ok, .pill { padding: 0.45rem 0.8rem; font-weight: 700; }
+  .pill-ok { background: var(--c-action); color: var(--c-on-action); }
+  .pill { background: var(--c-bg); }
+</style>

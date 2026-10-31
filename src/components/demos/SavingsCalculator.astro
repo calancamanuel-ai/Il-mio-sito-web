@@ -1,0 +1,199 @@
+---
+/**
+ * Calcolatore di risparmio (bozza). Logica nel browser, nessun dato inviato.
+ * Le ipotesi sono scritte sotto il risultato e sono modificabili.
+ */
+import ButtonLink from '../ui/ButtonLink.astro';
+import { contatti } from '../../config/sito';
+
+const tasks = [
+  { id: 'preventivi', label: 'Rispondere alle richieste di preventivo', min: 180 },
+  { id: 'fatture', label: 'Copiare i dati delle fatture nel gestionale', min: 120 },
+  { id: 'promemoria', label: 'Mandare promemoria e solleciti', min: 60 },
+  { id: 'appuntamenti', label: 'Fissare e spostare appuntamenti', min: 90 },
+  { id: 'report', label: 'Preparare il riepilogo settimanale', min: 60 },
+];
+const sectors = [
+  { id: 'studio', label: 'Studio professionale', preset: ['preventivi', 'fatture', 'appuntamenti'] },
+  { id: 'artigiano', label: 'Artigiano o impresa edile', preset: ['preventivi', 'promemoria'] },
+  { id: 'commercio', label: 'Commercio', preset: ['fatture', 'promemoria', 'report'] },
+  { id: 'agricoltura', label: 'Azienda agricola o agriturismo', preset: ['appuntamenti', 'fatture'] },
+];
+const WEEKS = 46;
+const SHARE = 0.7;
+---
+<div class="calc" data-calc data-weeks={WEEKS} data-share={SHARE}>
+  <form class="calc-form" aria-label="Calcolatore di risparmio">
+    <label class="field">
+      <span>La tua attività</span>
+      <select name="settore">
+        {sectors.map((s) => <option value={s.id} data-preset={s.preset.join(',')}>{s.label}</option>)}
+      </select>
+    </label>
+    <fieldset>
+      <legend>Cosa ti porta via tempo ogni settimana</legend>
+      {tasks.map((t, i) => (
+        <label class="task">
+          <input type="checkbox" name="task" value={t.id} data-min={t.min} checked={sectors[0].preset.includes(t.id)} />
+          <span class="task-label">{t.label}</span>
+          <span class="task-min">{t.min} min</span>
+        </label>
+      ))}
+    </fieldset>
+    <label class="field">
+      <span>Quanto vale un'ora del tuo tempo</span>
+      <span class="money"><input type="number" name="costo" min="10" max="200" step="5" value="30" inputmode="numeric" /> €</span>
+    </label>
+  </form>
+
+  <div class="calc-result" aria-live="polite">
+    <p class="result-line"><span class="num" data-out="ore">0</span> <span class="unit">ore all'anno</span></p>
+    <p class="result-line result-line--money"><span class="num" data-out="euro">0</span> <span class="unit">€ di tempo restituito</span></p>
+    <p class="assumptions">Stima, non promessa. Ipotesi: {WEEKS} settimane lavorative l'anno, il {Math.round(SHARE * 100)}% del tempo indicato passa al sistema, i minuti a settimana sono un esempio medio per attività. Il numero vero esce dall'analisi gratuita.</p>
+    <ButtonLink href={contatti.linkPrenotazione}>Vuoi questo per la tua attività? Prenota una call</ButtonLink>
+  </div>
+</div>
+
+<script>
+  const fmt = new Intl.NumberFormat('it-IT');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-calc]').forEach((root) => {
+    const form = root.querySelector('form')!;
+    const weeks = Number(root.dataset.weeks);
+    const share = Number(root.dataset.share);
+    const outs = {
+      ore: root.querySelector<HTMLElement>('[data-out="ore"]')!,
+      euro: root.querySelector<HTMLElement>('[data-out="euro"]')!,
+    };
+    const current = { ore: 0, euro: 0 };
+    const tween = (key: 'ore' | 'euro', to: number) => {
+      const from = current[key];
+      current[key] = to;
+      if (reduce) { outs[key].textContent = fmt.format(to); return; }
+      const t0 = performance.now();
+      const step = (t: number) => {
+        const p = Math.min(1, (t - t0) / 600);
+        const e = 1 - Math.pow(1 - p, 3);
+        outs[key].textContent = fmt.format(Math.round(from + (to - from) * e));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const update = () => {
+      const minutes = [...form.querySelectorAll<HTMLInputElement>('input[name="task"]:checked')]
+        .reduce((sum, el) => sum + Number(el.dataset.min), 0);
+      const hours = Math.round((minutes / 60) * weeks * share);
+      const cost = Number((form.elements.namedItem('costo') as HTMLInputElement).value) || 0;
+      tween('ore', hours);
+      tween('euro', hours * cost);
+    };
+    form.querySelector('select')!.addEventListener('change', (e) => {
+      const opt = (e.target as HTMLSelectElement).selectedOptions[0];
+      const preset = (opt.dataset.preset || '').split(',');
+      form.querySelectorAll<HTMLInputElement>('input[name="task"]').forEach((el) => { el.checked = preset.includes(el.value); });
+      update();
+    });
+    form.addEventListener('input', update);
+    update();
+  });
+</script>
+
+<style>
+  .calc {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .calc-form {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .field {
+    display: grid;
+    gap: 0.4rem;
+    font-weight: 600;
+  }
+  select,
+  input[type='number'] {
+    min-height: var(--tap);
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--c-line);
+    border-radius: var(--radius);
+    background: var(--c-bg);
+    color: var(--c-ink);
+    font: inherit;
+    font-weight: 400;
+  }
+  input[type='number'] { width: 6.5rem; }
+  .money { display: flex; align-items: center; gap: 0.5rem; }
+  fieldset {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  legend {
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+  .task {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.5rem 1rem;
+    background: var(--c-surface);
+    cursor: pointer;
+    transition: background-color var(--dur-ui) var(--ease-out);
+  }
+  .task:has(input:checked) { background: var(--c-line); }
+  .task input {
+    width: 1.35rem;
+    height: 1.35rem;
+    accent-color: var(--c-action);
+  }
+  .task-min {
+    font-family: var(--font-mono);
+    color: var(--c-ink-soft);
+    font-size: 0.95rem;
+  }
+  .calc-result {
+    position: sticky;
+    top: var(--space-3);
+    display: grid;
+    gap: var(--space-2);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: var(--c-action);
+    color: var(--c-on-action);
+  }
+  .result-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    line-height: 1;
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .result-line--money .num { font-size: clamp(2rem, 1.5rem + 2vw, 3.25rem); }
+  .unit { font-weight: 700; font-size: var(--step-lead); }
+  .assumptions { font-size: 1rem; }
+  .calc-result :global(.btn) {
+    justify-self: start;
+    background: var(--c-on-action);
+    color: var(--c-action);
+  }
+  .calc-result :global(.btn:hover) { background: var(--c-bg); color: var(--c-ink); }
+  @media (max-width: 860px) {
+    .calc { grid-template-columns: 1fr; }
+    .calc-result { position: static; }
+  }
+</style>

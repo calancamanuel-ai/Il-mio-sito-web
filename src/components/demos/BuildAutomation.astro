@@ -1,0 +1,237 @@
+---
+/**
+ * "Costruisci la tua automazione" (bozza): tre blocchi, il workflow si anima,
+ * stima di tempo con ipotesi scritte, fascia di prezzo da sito.ts.
+ */
+import { prezzi } from '../../config/sito';
+
+const blocks = [
+  {
+    id: 'arriva', title: 'Cosa arriva',
+    options: [
+      { id: 'email', label: 'Email di richiesta', vol: 25, min: 6 },
+      { id: 'form', label: 'Moduli dal sito', vol: 15, min: 5 },
+      { id: 'wa', label: 'Messaggi WhatsApp', vol: 30, min: 3 },
+      { id: 'pdf', label: 'Fatture in PDF', vol: 20, min: 4 },
+    ],
+  },
+  {
+    id: 'fa', title: "Cosa fa l'AI",
+    options: [
+      { id: 'estrae', label: 'Estrae i dati', factor: 1, ai: true },
+      { id: 'bozza', label: 'Prepara una bozza di risposta', factor: 1.3, ai: true },
+      { id: 'classifica', label: 'Smista per urgenza', factor: 0.6, ai: true },
+      { id: 'regole', label: 'Niente AI, solo regole fisse', factor: 0.5, ai: false },
+    ],
+  },
+  {
+    id: 'fine', title: 'Cosa succede alla fine',
+    options: [
+      { id: 'foglio', label: 'Una riga nel foglio' },
+      { id: 'notifica', label: 'Una notifica sul telefono' },
+      { id: 'preventivo', label: 'Una bozza di preventivo' },
+      { id: 'cliente', label: 'Una email al cliente' },
+    ],
+  },
+];
+const priceAi = prezzi.voci.find((v) => v.id === 'workflow-ai')!.da;
+const priceBase = prezzi.voci.find((v) => v.id === 'workflow-semplice')!.da;
+---
+<div class="build" data-build data-price-ai={priceAi} data-price-base={priceBase}>
+  <form class="build-blocks" aria-label="Costruisci la tua automazione">
+    {blocks.map((b, bi) => (
+      <fieldset class="block">
+        <legend>{b.title}</legend>
+        <div class="choices">
+          {b.options.map((o: any, oi) => (
+            <label class="choice">
+              <input type="radio" name={b.id} value={o.id} checked={oi === 0}
+                data-label={o.label} data-vol={o.vol} data-min={o.min} data-factor={o.factor} data-ai={o.ai === undefined ? undefined : String(o.ai)} />
+              <span>{o.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+  </form>
+
+  <div class="build-result">
+    <ol class="wf" data-ui aria-label="Il tuo workflow">
+      <li class="wf-node"><span class="wf-tag">Trigger</span><span data-wf="arriva">Email di richiesta</span></li>
+      <li class="wf-node"><span class="wf-tag">Claude</span><span data-wf="fa">Estrae i dati</span></li>
+      <li class="wf-node"><span class="wf-tag">Azione</span><span data-wf="fine">Una riga nel foglio</span></li>
+    </ol>
+    <dl class="wf-figures" aria-live="polite">
+      <div><dt>Tempo restituito</dt><dd><span data-out="ore">0</span> ore al mese</dd></div>
+      <div><dt>Prezzo di lancio</dt><dd>da <span data-out="prezzo">0</span> €</dd></div>
+    </dl>
+    <p class="wf-note">Stima con volumi d'esempio (per esempio 25 email a settimana da 6 minuti l'una) e 4,3 settimane al mese. Dopo l'analisi gratuita ricevi un preventivo a prezzo fisso.</p>
+    <a class="wf-cta" data-out="link" href="/contatti">Vuoi questo per la tua attività? Prenota una call</a>
+  </div>
+</div>
+
+<script>
+  const fmt = new Intl.NumberFormat('it-IT');
+  document.querySelectorAll<HTMLElement>('[data-build]').forEach((root) => {
+    const form = root.querySelector('form')!;
+    const pick = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)!;
+    const wf = root.querySelector('.wf')!;
+    const update = () => {
+      const a = pick('arriva'), f = pick('fa'), e = pick('fine');
+      root.querySelector('[data-wf="arriva"]')!.textContent = a.dataset.label!;
+      root.querySelector('[data-wf="fa"]')!.textContent = f.dataset.label!;
+      root.querySelector('[data-wf="fine"]')!.textContent = e.dataset.label!;
+      root.querySelectorAll('.wf-tag')[1].textContent = f.dataset.ai === 'true' ? 'Claude' : 'Regole';
+      const hours = (Number(a.dataset.vol) * Number(a.dataset.min) * Number(f.dataset.factor) * 4.3) / 60;
+      root.querySelector('[data-out="ore"]')!.textContent = fmt.format(Math.round(hours));
+      const price = f.dataset.ai === 'true' ? root.dataset.priceAi! : root.dataset.priceBase!;
+      root.querySelector('[data-out="prezzo"]')!.textContent = fmt.format(Number(price));
+      const q = new URLSearchParams({ workflow: `${a.dataset.label} → ${f.dataset.label} → ${e.dataset.label}` });
+      root.querySelector<HTMLAnchorElement>('[data-out="link"]')!.href = `/contatti?${q}`;
+      (wf as HTMLElement).style.setProperty('--wf-h', `${(wf as HTMLElement).offsetHeight - 20}px`);
+      wf.classList.remove('is-running');
+      void (wf as HTMLElement).offsetWidth;
+      wf.classList.add('is-running');
+    };
+    form.addEventListener('change', update);
+    update();
+  });
+</script>
+
+<style>
+  .build {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+  }
+  .build-blocks { display: grid; gap: var(--space-4); }
+  .block { margin: 0; padding: 0; border: 0; }
+  legend {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+  }
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .choice {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 3.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--c-surface);
+    color: var(--c-ink);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+  }
+  .choice:hover { background: var(--c-line); }
+  .choice:active { transform: scale(0.98); }
+  .choice input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .choice:has(input:checked) { background: var(--c-action); color: var(--c-on-action); }
+  .choice:has(input:focus-visible) { outline: 3px solid var(--c-ink); outline-offset: 2px; }
+
+  .build-result {
+    align-self: start;
+    position: sticky;
+    top: var(--space-3);
+    display: grid;
+    gap: var(--space-3);
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+    background: var(--c-surface);
+  }
+  .wf {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .wf::before {
+    content: '';
+    position: absolute;
+    left: 1.1rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 3px;
+    background: var(--c-line);
+  }
+  .wf::after {
+    content: '';
+    position: absolute;
+    left: calc(1.1rem - 4.5px);
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--c-action);
+    opacity: 0;
+  }
+  .wf.is-running::after { animation: travel 1.4s var(--ease-out) forwards; }
+  @keyframes travel {
+    0% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(calc(var(--wf-h, 10rem))); }
+  }
+  .wf-node {
+    position: relative;
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    background: var(--c-bg);
+    font-weight: 700;
+  }
+  .wf-node::before {
+    content: '';
+    position: absolute;
+    left: 0.7rem;
+    top: 50%;
+    width: 0.9rem;
+    height: 0.9rem;
+    translate: 0 -50%;
+    background: var(--c-accent);
+  }
+  .wf-tag {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--c-ink-soft);
+  }
+  .wf-figures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    margin: 0;
+  }
+  .wf-figures dt { font-weight: 600; }
+  .wf-figures dd {
+    margin: 0;
+    font-size: var(--step-lead);
+    font-weight: 800;
+  }
+  .wf-figures dd span { font-family: var(--font-mono); }
+  .wf-note { font-size: 1rem; }
+  .wf-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0.7em 1.25em;
+    background: var(--c-action);
+    color: var(--c-on-action);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .wf-cta:hover { background: var(--c-ink); }
+  @media (max-width: 860px) {
+    .build { grid-template-columns: 1fr; }
+    .build-result { position: static; }
+  }
+  @media (max-width: 480px) {
+    .choices { grid-template-columns: 1fr; }
+  }
+</style>
