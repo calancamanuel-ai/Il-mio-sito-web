@@ -1,0 +1,69 @@
+---
+/**
+ * "Contattami" nella barra fissa: sempre raggiungibile, apre le quattro strade
+ * per contattare Manuel. Funziona anche senza JavaScript (details/summary).
+ */
+import { contatti, isPlaceholder } from '../../config/sito';
+import Value from './Value.astro';
+const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti' : contatti.linkPrenotazione;
+const tel = isPlaceholder(contatti.telefono) ? '/contatti' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
+const wa = isPlaceholder(contatti.whatsapp) ? '/contatti' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
+---
+<details class="contact-menu" data-dropdown>
+  <summary class="contact-btn">Contattami</summary>
+  <div class="panel">
+    <p class="panel-h">Come preferisci?</p>
+    <ul>
+      <li><a class="opt opt--main" href={booking}><strong>Prenota una call</strong><span>{contatti.durataCallMinuti} minuti, gratis, scegli tu l'orario</span></a></li>
+      <li><a class="opt" href={tel}><strong>Chiamami</strong><span><Value value={contatti.telefono} /></span></a></li>
+      <li><a class="opt" href={wa}><strong>Scrivimi su WhatsApp</strong><span><Value value={contatti.whatsapp} /></span></a></li>
+      <li><a class="opt" href="/contatti#modulo"><strong>Compila il modulo</strong><span>Due righe su cosa ti porta via tempo</span></a></li>
+    </ul>
+  </div>
+</details>
+
+<style>
+  .contact-menu { position: static; }
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 1.1rem;
+    background: var(--c-action);
+    color: var(--c-on-action);
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    transition: background-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+  }
+  .contact-btn::-webkit-details-marker { display: none; }
+  .contact-btn:hover, .contact-menu[open] .contact-btn { background: var(--c-ink); }
+  .contact-btn:active { transform: scale(0.98); }
+  .panel {
+    position: absolute;
+    right: var(--margin);
+    top: 100%;
+    z-index: 50;
+    width: min(26rem, calc(100vw - 2 * var(--margin)));
+    padding: var(--space-3);
+    background: var(--c-surface);
+    box-shadow: 0 18px 40px rgb(0 0 0 / 0.55);
+  }
+  .contact-menu:not([open]) .panel { display: none; }
+  .panel-h { margin-bottom: var(--space-2); font-weight: 600; }
+  ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  .opt {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.8rem 1rem;
+    background: var(--c-bg);
+    color: var(--c-ink);
+    text-decoration: none;
+    transition: background-color var(--dur-ui) var(--ease-out);
+  }
+  .opt:hover { background: var(--c-line); }
+  .opt span { color: var(--c-ink-soft); font-size: var(--step-small); }
+  .opt--main { background: var(--c-action); color: var(--c-on-action); }
+  .opt--main span { color: var(--c-on-action); }
+  .opt--main:hover { background: var(--c-ink); }
+</style>

@@ -68,7 +68,8 @@ automazione
           (form con n8n e Claude, calendario;
            WhatsApp nella barra mobile)
 
-Ovunque: footer con P.IVA, CF, REA · Privacy · Cookie · Blog; barra di stato stile terminale; interruttore "vista tecnica"
+Ovunque: barra in alto fissa con logo, icona del menu e "Contattami" (prenota, chiama, WhatsApp, modulo);
+footer con P.IVA, CF, REA · Privacy · Cookie · Blog; barra di stato stile terminale; interruttore "vista tecnica"
 Pagina 404: "workflow rotto"
 ```
 

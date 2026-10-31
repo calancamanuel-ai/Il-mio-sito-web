@@ -1,6 +1,6 @@
 ---
-import { brand, contatti } from '../../config/sito';
-import ButtonLink from '../ui/ButtonLink.astro';
+import { brand } from '../../config/sito';
+import ContactMenu from '../ui/ContactMenu.astro';
 import Value from '../ui/Value.astro';
 
 const links = [
@@ -21,29 +21,42 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
       ))}
     </ul>
   </nav>
-  <ButtonLink href={contatti.linkPrenotazione} class="header-cta">Prenota una call</ButtonLink>
-  <details class="nav-mobile">
-    <summary>Menu</summary>
-    <nav aria-label="Principale (mobile)">
-      <ul>
-        {links.map((l) => (
-          <li><a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>
-        ))}
-        <li><a href="/contatti">Contatti</a></li>
-      </ul>
-    </nav>
-  </details>
+  <div class="header-actions">
+    <ContactMenu />
+    <details class="nav-mobile" data-dropdown>
+      <summary aria-label="Menu">
+        <svg class="burger" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+          <rect class="b1" x="3" y="5" width="18" height="2.5" />
+          <rect class="b2" x="3" y="10.75" width="18" height="2.5" />
+          <rect class="b3" x="3" y="16.5" width="18" height="2.5" />
+        </svg>
+      </summary>
+      <nav aria-label="Principale (mobile)">
+        <ul>
+          {links.map((l) => (
+            <li><a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>
+          ))}
+          <li><a href="/contatti">Contatti</a></li>
+        </ul>
+      </nav>
+    </details>
+  </div>
 </header>
 
 <script>
-  // Il menu mobile si chiude con Esc, con un clic fuori o scegliendo una voce.
-  const menu = document.querySelector<HTMLDetailsElement>('.nav-mobile');
-  if (menu) {
-    const close = () => { menu.open = false; };
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.open) { close(); menu.querySelector('summary')?.focus(); } });
-    document.addEventListener('click', (e) => { if (menu.open && !menu.contains(e.target as Node)) close(); });
-    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
-  }
+  // Menu e "Contattami": uno aperto alla volta; si chiudono con Esc, con un clic fuori o scegliendo una voce.
+  const drops = [...document.querySelectorAll<HTMLDetailsElement>('[data-dropdown]')];
+  drops.forEach((d) => {
+    d.addEventListener('toggle', () => { if (d.open) drops.forEach((o) => { if (o !== d) o.open = false; }); });
+    d.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { d.open = false; }));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    drops.filter((d) => d.open).forEach((d) => { d.open = false; d.querySelector('summary')?.focus(); });
+  });
+  document.addEventListener('click', (e) => {
+    drops.forEach((d) => { if (d.open && !d.contains(e.target as Node)) d.open = false; });
+  });
 </script>
 
 <style>
@@ -51,12 +64,12 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
     position: sticky;
     top: env(safe-area-inset-top, 0px);
     z-index: 45;
-    background: var(--c-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
     padding-block: var(--space-2);
+    background: var(--c-bg);
   }
   .wordmark {
     color: var(--c-ink);
@@ -83,38 +96,43 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
     color: var(--c-action);
     text-decoration: underline;
   }
+  .header-actions { display: flex; align-items: center; gap: 0.5rem; }
   .nav-mobile { display: none; }
+  .nav-mobile summary {
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    background: var(--c-surface);
+    color: var(--c-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .nav-mobile summary::-webkit-details-marker { display: none; }
+  .nav-mobile[open] summary { background: var(--c-line); }
+  .burger rect { fill: currentColor; transform-origin: 12px 12px; transition: transform var(--dur-ui) var(--ease-out), opacity var(--dur-ui) var(--ease-out); }
+  .nav-mobile[open] .b1 { transform: translateY(5.75px) rotate(45deg); }
+  .nav-mobile[open] .b2 { opacity: 0; }
+  .nav-mobile[open] .b3 { transform: translateY(-5.75px) rotate(-45deg); }
+  .nav-mobile nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 40;
+    padding: var(--space-2) var(--margin) var(--space-3);
+    background: var(--c-line);
+  }
+  .nav-mobile:not([open]) nav { display: none; }
+  .nav-mobile ul { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+  .nav-mobile a { display: block; padding-block: 0.75rem; font-size: var(--step-lead); }
   @media (max-width: 960px) {
     .nav-desktop { display: none; }
     .nav-mobile { display: block; }
-    .site-header { flex-wrap: wrap; }
     .wordmark { flex: 1; }
-    summary {
-      display: inline-flex;
-      align-items: center;
-      min-height: var(--tap);
-      padding: 0 1rem;
-      background: var(--c-surface);
-      cursor: pointer;
-      font-weight: 600;
-      list-style: none;
-    }
-    summary::-webkit-details-marker { display: none; }
-    details[open] summary { background: var(--c-line); }
-    .nav-mobile nav {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 100%;
-      z-index: 40;
-      padding: var(--space-2) var(--margin) var(--space-3);
-      background: var(--c-line);
-    }
-    .nav-mobile:not([open]) nav { display: none; }
-    .nav-mobile ul { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
-    .nav-mobile a { display: block; padding-block: 0.75rem; font-size: var(--step-lead); }
   }
-  @media (max-width: 520px) {
-    .site-header :global(.header-cta) { display: none; }
+  @media (max-width: 400px) {
+    .site-header { gap: 0.5rem; }
+    .wordmark { font-size: 0.9375rem; }
   }
 </style>
