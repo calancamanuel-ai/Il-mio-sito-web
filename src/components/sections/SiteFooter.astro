@@ -2,7 +2,7 @@
 /** Chiusura del sito: il contatto è la riga in grande; dati legali su ogni pagina. */
 import { brand, contatti, datiLegali, zona, ultimoAggiornamento, isPlaceholder } from '../../config/sito';
 import Value from '../ui/Value.astro';
-const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti' : contatti.linkPrenotazione;
+const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti#prenota' : contatti.linkPrenotazione;
 ---
 <footer class="site-footer">
   <div class="notes wrap">

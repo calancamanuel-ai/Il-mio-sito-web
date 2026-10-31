@@ -5,9 +5,9 @@
  */
 import { contatti, isPlaceholder } from '../../config/sito';
 import Value from './Value.astro';
-const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti' : contatti.linkPrenotazione;
-const tel = isPlaceholder(contatti.telefono) ? '/contatti' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
-const wa = isPlaceholder(contatti.whatsapp) ? '/contatti' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
+const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti#prenota' : contatti.linkPrenotazione;
+const tel = isPlaceholder(contatti.telefono) ? '/contatti#canali' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
+const wa = isPlaceholder(contatti.whatsapp) ? '/contatti#canali' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
 ---
 <details class="contact-menu" data-dropdown>
   <summary class="contact-btn">Contattami</summary>

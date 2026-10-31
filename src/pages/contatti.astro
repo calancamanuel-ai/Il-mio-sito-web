@@ -3,38 +3,83 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/demos/ContactForm.astro';
 import AfterContact from '../components/sections/AfterContact.astro';
 import PersonNote from '../components/sections/PersonNote.astro';
-import ButtonLink from '../components/ui/ButtonLink.astro';
 import Value from '../components/ui/Value.astro';
-import { contatti, zona } from '../config/sito';
+import { contatti, zona, isPlaceholder } from '../config/sito';
+const bookingReady = !isPlaceholder(contatti.linkPrenotazione);
 ---
 <BaseLayout title="Contatti" description="Prenota una call conoscitiva di 20 minuti o scrivi cosa ti porta via tempo: ti risponde Manuel.">
-  <section class="contact section" aria-labelledby="titolo">
-    <div class="contact-main" id="modulo">
-      <h1 id="titolo">Raccontami cosa ti porta via tempo</h1>
-      <p class="lead">Una call di {contatti.durataCallMinuti} minuti, gratuita e senza impegno. Oppure scrivi due righe qui sotto.</p>
-      <ContactForm />
+  <section class="contact-intro section" aria-labelledby="titolo">
+    <h1 id="titolo">Prenota una call o scrivimi</h1>
+    <p class="lead">Venti minuti, gratis e senza impegno, per capire cosa puoi togliere dalla tua settimana. Se preferisci, scrivi due righe.</p>
+  </section>
+
+  <div class="contact">
+    <div class="contact-main">
+      <section class="block block--booking" id="prenota" aria-labelledby="prenota-h">
+        <h2 id="prenota-h">Prenota la call di {contatti.durataCallMinuti} minuti</h2>
+        <p>Scegli giorno e ora nel calendario. La call si fa al telefono o in videochiamata, come preferisci.</p>
+        {bookingReady ? (
+          <a class="booking-btn" href={contatti.linkPrenotazione} target="_blank" rel="noopener">Scegli giorno e ora</a>
+        ) : (
+          <div class="booking-missing">
+            <p>Qui arriva il calendario per prenotare.</p>
+            <p><Value value={contatti.linkPrenotazione} /></p>
+          </div>
+        )}
+      </section>
+
+      <section class="block" id="modulo" aria-labelledby="modulo-h">
+        <h2 id="modulo-h">Oppure scrivimi</h2>
+        <p>Raccontami cosa ti porta via tempo: ti rispondo io.</p>
+        <ContactForm />
+      </section>
     </div>
-    <aside class="contact-side" aria-label="Altri modi per contattarmi">
-      <ButtonLink href={contatti.linkPrenotazione}>Prenota direttamente la call</ButtonLink>
+
+    <aside class="contact-side" id="canali" aria-label="Recapiti">
+      <h2 class="side-h">Recapiti</h2>
       <dl class="channels">
-        <div><dt>Email</dt><dd><Value value={contatti.email} /></dd></div>
         <div><dt>Telefono</dt><dd><Value value={contatti.telefono} /></dd></div>
         <div><dt>WhatsApp</dt><dd><Value value={contatti.whatsapp} /></dd></div>
+        <div><dt>Email</dt><dd><Value value={contatti.email} /></dd></div>
         <div><dt>Dove</dt><dd>{zona.base}, Bologna e Modena. Anche da remoto.</dd></div>
       </dl>
       <AfterContact level="h2" />
       <PersonNote />
     </aside>
-  </section>
+  </div>
 </BaseLayout>
 <style>
-  .contact { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); padding-top: clamp(3rem, 8vh, 6rem); align-items: start; }
-  .contact-main { display: grid; gap: var(--space-3); }
+  .contact-intro { display: grid; gap: var(--space-3); padding-top: clamp(3rem, 8vh, 6rem); }
   h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
-  .contact-side { display: grid; gap: var(--space-4); justify-items: start; padding: var(--space-4); background: var(--c-surface); }
+  .contact { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); align-items: start; padding: var(--space-5) var(--margin) 0; }
+  .contact-main { display: grid; gap: var(--space-5); }
+  .block { display: grid; gap: var(--space-2); }
+  .block h2 { font-size: var(--step-lead); font-weight: 500; }
+  .block > p { max-width: 52ch; }
+  .block--booking { padding: var(--space-4); background: var(--c-surface); }
+  .booking-btn {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 52px;
+    margin-top: var(--space-2);
+    padding: 0.7em 1.5em;
+    background: var(--c-action);
+    color: var(--c-on-action);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .booking-btn:hover { background: var(--c-ink); }
+  .booking-missing { display: grid; gap: 0.5rem; margin-top: var(--space-2); padding: var(--space-3); background: var(--c-bg); }
+  .contact-side { position: sticky; top: 6rem; display: grid; gap: var(--space-4); justify-items: start; padding: var(--space-4); background: var(--c-surface); }
+  .side-h { font-size: var(--step-lead); font-weight: 500; }
   .contact-side :global(.person .photo) { background: var(--c-bg); }
   .channels { display: grid; gap: var(--space-2); margin: 0; }
   .channels dt { color: var(--c-ink-soft); }
   .channels dd { margin: 0; }
-  @media (max-width: 900px) { .contact { grid-template-columns: minmax(0, 1fr); } .contact-side { padding: var(--space-3); } }
+  @media (max-width: 900px) {
+    .contact { grid-template-columns: minmax(0, 1fr); }
+    .contact-side { position: static; padding: var(--space-3); }
+    .block--booking { padding: var(--space-3); }
+  }
 </style>

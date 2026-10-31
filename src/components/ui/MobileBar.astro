@@ -1,8 +1,8 @@
 ---
 /** Barra fissa in basso su mobile: Chiama e WhatsApp (piatta, target >= 44px). */
 import { contatti, isPlaceholder } from '../../config/sito';
-const tel = isPlaceholder(contatti.telefono) ? '/contatti' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
-const wa = isPlaceholder(contatti.whatsapp) ? '/contatti' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
+const tel = isPlaceholder(contatti.telefono) ? '/contatti#canali' : `tel:${contatti.telefono.replace(/\s/g, '')}`;
+const wa = isPlaceholder(contatti.whatsapp) ? '/contatti#canali' : `https://wa.me/${contatti.whatsapp.replace(/\D/g, '')}`;
 ---
 <div class="mobile-bar" role="navigation" aria-label="Contatto rapido">
   <a href={tel}>Chiama</a>

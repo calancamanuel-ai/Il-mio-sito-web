@@ -87,7 +87,7 @@ const priceBase = prezzi.voci.find((v) => v.id === 'workflow-semplice')!.da;
       const price = f.dataset.ai === 'true' ? root.dataset.priceAi! : root.dataset.priceBase!;
       root.querySelector('[data-out="prezzo"]')!.textContent = fmt.format(Number(price));
       const q = new URLSearchParams({ workflow: `${a.dataset.label} → ${f.dataset.label} → ${e.dataset.label}` });
-      root.querySelector<HTMLAnchorElement>('[data-out="link"]')!.href = `/contatti?${q}`;
+      root.querySelector<HTMLAnchorElement>('[data-out="link"]')!.href = `/contatti?${q}#modulo`;
       (wf as HTMLElement).style.setProperty('--wf-h', `${(wf as HTMLElement).offsetHeight - 20}px`);
       wf.classList.remove('is-running');
       void (wf as HTMLElement).offsetWidth;

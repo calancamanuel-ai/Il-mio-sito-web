@@ -11,7 +11,7 @@ interface Props {
 }
 const { href, variant = 'primary', class: extra = '' } = Astro.props;
 const missing = isPlaceholder(href);
-const target = missing ? '/contatti' : href;
+const target = missing ? '/contatti#prenota' : href;
 ---
 <a class:list={['btn', `btn--${variant}`, extra]} href={target} data-missing-link={missing ? '' : undefined}>
   <slot />
