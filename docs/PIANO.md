@@ -80,7 +80,7 @@ La home racconta tutto in breve; le pagine servizio approfondiscono. Sezioni del
 4. Demo vive: "Costruisci la tua automazione", calcolatore e simulazione WhatsApp.
 5. Casi d'uso per settore, presentati come "log di sistema".
 6. Come lavoro: call, analisi, prototipo, consegna, supporto, con cosa succede dopo il primo contatto (tempi di risposta e passi successivi).
-7. Prezzi di lancio "da X €", con preventivo fisso dopo l'analisi gratuita.
+7. Prezzi "da X €", con preventivo fisso dopo l'analisi gratuita.
 8. "Quando non conviene automatizzare" (vedi Fiducia).
 9. FAQ (con una risposta sui voucher per le imprese di Bologna e Modena) e invito finale con form.
 
@@ -184,6 +184,7 @@ Ogni variante definisce gli stessi ruoli e tutte le combinazioni testo/sfondo de
 
 - Prima della fase 2, proponi 3 direzioni molto diverse (una sicura, una audace, una sperimentale), ognuna con anteprima della home a 390 e 1440 px, palette, font e una delle interazioni sopra realizzata in bozza. Manuel sceglie, anche mescolando.
 - Per ogni direzione indica in una riga in cosa si distingue da 3 siti concorrenti tipici.
+- **Scelta di Manuel (fine fase 1)**: direzione C, "La frase che si accende" (sperimentale): palette Terminale (quasi nero con verde segnale), Fraunces per titoli e testo, Geist Mono per i dettagli tecnici; il flusso prende il posto di una parola nel titolo. Bozza in `/lab/direzione-c`.
 
 ## Regole sulle skill
 
@@ -286,9 +287,9 @@ Per ora non ci sono testimonianze né clienti: il sito crea fiducia con quello c
 
 ## Prezzi ed esempi di progetto
 
-Il sito mostra prezzi "a partire da", presentati come prezzo di lancio per i primi 5 clienti, e promette un preventivo a prezzo fisso dopo l'analisi gratuita.
+Il sito mostra prezzi "a partire da", scritti direttamente (senza presentarli come prezzi di lancio o promozioni), e promette un preventivo a prezzo fisso dopo l'analisi gratuita.
 
-| Servizio | Esempio tipico | Prezzo di lancio |
+| Servizio | Esempio tipico | Prezzo |
 | --- | --- | --- |
 | Analisi iniziale | call di 30–45 minuti e proposta scritta | gratuita |
 | Primo workflow semplice | richieste dal sito raccolte in un foglio, con avviso sul telefono | da 300 € |
@@ -302,7 +303,7 @@ Il sito mostra prezzi "a partire da", presentati come prezzo di lancio per i pri
 - Una frase decisa, non una lista di avvertenze: "Da 300 €. Dopo l'analisi gratuita ricevi un preventivo a prezzo fisso, che non cambia in corso d'opera."
 - Due righe su cosa fa variare il prezzo: quanti passaggi, quanti programmi da collegare, se serve l'AI.
 - Costi ricorrenti scritti chiaramente e a parte: server n8n (circa 5–20 € al mese), chiamate AI, risposte AI su WhatsApp (0,0572 € l'una in Italia).
-- "Prezzo di lancio per i primi 5 clienti" e un rimando ai voucher digitali camerali.
+- Un rimando ai voucher digitali camerali. Niente "prezzo di lancio" né "per i primi clienti": i prezzi si scrivono e basta (decisione di Manuel, fine fase 1).
 - Le fasce di prezzo stanno in `src/config/sito.ts`, così si aggiornano in un punto solo.
 
 ## Requisiti legali in Italia
