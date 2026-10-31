@@ -15,7 +15,8 @@ export interface Look {
   /** Tubi tondi luminosi o piste piatte ad angolo retto. */
   tracks: 'tube' | 'pcb';
   board: boolean;
-  materials: () => {
+  /** lite = telefono: niente trasparenza calcolata (costa un secondo rendering della scena). */
+  materials: (lite: boolean) => {
     node: THREE.Material;
     nodeOn: THREE.Material;
     connector: THREE.Material;
@@ -43,9 +44,13 @@ export const looks: Record<LookId, Look> = {
     tracks: 'tube',
     board: false,
     envIntensity: 0.55,
-    materials: () => ({
-      node: new THREE.MeshPhysicalMaterial({ color: 0xbfe9fb, roughness: 0.42, metalness: 0, transmission: 0.85, thickness: 0.6, ior: 1.45, attenuationColor: new THREE.Color(BLUE), attenuationDistance: 1.4 }),
-      nodeOn: new THREE.MeshPhysicalMaterial({ color: BLUE, roughness: 0.35, metalness: 0, transmission: 0.55, thickness: 0.6, ior: 1.45, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.55 }),
+    materials: (lite) => ({
+      node: lite
+        ? new THREE.MeshStandardMaterial({ color: 0x9fc9dc, roughness: 0.35, metalness: 0, transparent: true, opacity: 0.88 })
+        : new THREE.MeshPhysicalMaterial({ color: 0xbfe9fb, roughness: 0.42, metalness: 0, transmission: 0.85, thickness: 0.6, ior: 1.45, attenuationColor: new THREE.Color(BLUE), attenuationDistance: 1.4 }),
+      nodeOn: lite
+        ? new THREE.MeshStandardMaterial({ color: BLUE, roughness: 0.3, metalness: 0, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.6 })
+        : new THREE.MeshPhysicalMaterial({ color: BLUE, roughness: 0.35, metalness: 0, transmission: 0.55, thickness: 0.6, ior: 1.45, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.55 }),
       connector: new THREE.MeshStandardMaterial({ color: 0x9fb4c8, metalness: 1, roughness: 0.32 }),
       track: new THREE.MeshStandardMaterial({ color: 0x0f2a1a, emissive: new THREE.Color(GREEN), emissiveIntensity: 0.15, roughness: 0.4 }),
       paper: new THREE.MeshStandardMaterial({ color: 0xb9c6bd, roughness: 0.8 }),
@@ -68,7 +73,7 @@ export const looks: Record<LookId, Look> = {
     bloom: false,
     tracks: 'pcb',
     board: true,
-    envIntensity: 0.45,
+    envIntensity: 0,
     materials: () => ({
       node: new THREE.MeshStandardMaterial({ color: 0x1b2420, roughness: 0.55, metalness: 0.2 }),
       nodeOn: new THREE.MeshStandardMaterial({ color: 0x1b2420, roughness: 0.5, metalness: 0.2, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.35 }),

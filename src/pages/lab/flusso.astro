@@ -35,12 +35,21 @@ const tappe = [0, 40, 70, 100];
   ))}
 
   <p class="section stats mono" data-stats aria-live="polite"></p>
+  <script is:inline>
+    // ?solo=vetro o ?solo=circuito: una sola variante, per misurarne il peso (tolta prima del primo disegno)
+    (function () {
+      var solo = new URLSearchParams(location.search).get('solo');
+      if (!solo) return;
+      document.querySelectorAll('[data-flow]').forEach(function (f) { if (f.dataset.look !== solo) f.closest('section').remove(); });
+    })();
+  </script>
 </BaseLayout>
 
 <script>
   type Scene = import('../../components/three/flow-scene').FlowScene;
   document.querySelectorAll<HTMLElement>('[data-controls]').forEach((ctl) => {
     const root = document.getElementById(ctl.dataset.controls!) as HTMLElement & { flow?: Scene };
+    if (!root) return;
     const range = ctl.querySelector<HTMLInputElement>('[data-range]')!;
     const out = ctl.querySelector<HTMLOutputElement>('[data-out]')!;
     const set = (v: number) => { range.value = String(v); out.value = String(Math.round(v)); root.flow?.setProgress(v / 100); };

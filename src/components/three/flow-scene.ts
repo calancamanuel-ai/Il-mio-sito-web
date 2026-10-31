@@ -36,18 +36,24 @@ const ease = (v: number) => v * v * (3 - 2 * v);
 
 export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts: Options = {}): FlowScene {
   const look = looks[lookId];
-  const M = look.materials();
+  const lite = !matchMedia('(min-width: 761px) and (pointer: fine)').matches;
+  const M = look.materials(lite);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = look.envIntensity;
-  pmrem.dispose();
+  // l'ambiente di luce generato è il passo più costoso dell'avvio: solo su desktop
+  if (look.envIntensity > 0 && !lite) {
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    // ambiente piccolo (64 px): bastano riflessi morbidi, e su telefono costa molto meno
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04, 0.1, 100, { size: 64 }).texture;
+    scene.environmentIntensity = look.envIntensity;
+    pmrem.dispose();
+  }
   look.lights(scene);
+  if (lite && look.envIntensity > 0) scene.add(new THREE.HemisphereLight(0xdfeef5, 0x0a0d0b, 1.4));
 
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   const root = new THREE.Group();
@@ -70,7 +76,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   // --- il caos: email, WhatsApp, PDF, fogli ---
   const kinds = ['email', 'wa', 'pdf', 'sheet'] as const;
   const rnd = (() => { let s = 7; return () => ((s = (s * 16807) % 2147483647) / 2147483647); })();
-  const chaos: { obj: THREE.Group; home: THREE.Vector3; rot: THREE.Euler; phase: number }[] = [];
+  const chaos: { obj: THREE.Group; home: THREE.Vector3; rot: THREE.Euler }[] = [];
   for (let i = 0; i < 10; i++) {
     const kind = kinds[i % 4];
     const obj = new THREE.Group();
@@ -82,7 +88,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     const home = new THREE.Vector3(-4.3 + rnd() * 1.6, -1.25 + rnd() * 2.5, -0.5 + rnd() * 0.9);
     const rot = new THREE.Euler((rnd() - 0.5) * 0.6, (rnd() - 0.5) * 0.9, (rnd() - 0.5) * 1.3);
     root.add(obj);
-    chaos.push({ obj, home, rot, phase: rnd() * Math.PI * 2 });
+    chaos.push({ obj, home, rot });
   }
 
   // --- la catena: quattro nodi ---
@@ -153,7 +159,8 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     }
     root.add(track);
     nodes.forEach((n) => n.grp.position.copy(P(n.u, n.v, 0)));
-    outs.forEach((o) => o.grp.position.copy(P(3.55, o.v, 0)));
+    // in verticale i risultati si mettono in colonna sotto la catena
+    outs.forEach((o, i) => o.grp.position.copy(portrait ? P(3.0 + i * 0.62, 0, 0) : P(3.55, o.v, 0)));
     if (look.board) {
       if (!board) { board = new THREE.Mesh(g(new THREE.PlaneGeometry(1, 1)), M.board!); root.add(board); }
       board.scale.set(60, 60, 1);
@@ -167,7 +174,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   const aim = { x: 0, y: 0 }, cur = { x: 0, y: 0 };
   let dist = 12;
   function fit() {
-    const w = portrait ? 4.3 : 9.6, h = portrait ? 9.2 : 3.6;
+    const w = portrait ? 4.3 : 9.6, h = portrait ? 9.6 : 3.6;
     const vf = THREE.MathUtils.degToRad(camera.fov);
     const hf = 2 * Math.atan(Math.tan(vf / 2) * camera.aspect);
     dist = Math.max(w / 2 / Math.tan(hf / 2), h / 2 / Math.tan(vf / 2)) * 1.08;
@@ -183,7 +190,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
 
   // post-processing: bagliore lieve solo sugli accenti, solo su schermi grandi
   let composer: EffectComposer | null = null;
-  const wantBloom = look.bloom && matchMedia('(min-width: 761px) and (pointer: fine)').matches;
+  const wantBloom = look.bloom && !lite;
   if (wantBloom) {
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
@@ -200,7 +207,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     camera.updateProjectionMatrix();
     const p = w / h < 0.9;
     if (p !== portrait || !path) { portrait = p; build(); } else fit();
-    apply();
+    dirty = true;
   }
 
   // --- stato ---
@@ -208,7 +215,8 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   let selected: number | null = null;
   const tmp = new THREE.Vector3();
   const start = new THREE.Vector3();
-  let elapsed = 0;
+  // si ridisegna solo quando qualcosa cambia: a riposo la scena non costa nulla
+  let dirty = true;
 
   function apply() {
     if (!path) return;
@@ -217,7 +225,6 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     chaos.forEach((c, i) => {
       const s = clamp01((t - 0.6 - i * 0.016) / 0.22);
       const home = P(c.home.x, c.home.y, c.home.z);
-      home.y += Math.sin(elapsed * 0.8 + c.phase) * 0.04 * (1 - s);
       if (s <= 0) {
         c.obj.position.copy(home);
         c.obj.rotation.copy(c.rot);
@@ -272,6 +279,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     const r = canvas.getBoundingClientRect();
     aim.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
     aim.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    dirty = true;
   };
   if (opts.orbit) window.addEventListener('pointermove', onMove, { passive: true });
 
@@ -279,7 +287,9 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   timer.connect(document);
   function frame() {
     timer.update();
-    elapsed = timer.getElapsed();
+    const moving = Math.abs(aim.x - cur.x) > 0.001 || Math.abs(aim.y - cur.y) > 0.001;
+    if (!dirty && !moving) return;
+    dirty = false;
     cur.x += (aim.x - cur.x) * 0.06;
     cur.y += (aim.y - cur.y) * 0.06;
     placeCamera();
@@ -292,11 +302,14 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   ro.observe(canvas);
   resize();
   const io = new IntersectionObserver(([e]) => renderer.setAnimationLoop(e.isIntersecting ? frame : null));
-  io.observe(canvas);
+  // shader compilati prima del primo disegno, in modo asincrono dove il browser lo permette
+  placeCamera();
+  apply();
+  renderer.compileAsync(scene, camera).catch(() => {}).finally(() => io.observe(canvas));
 
   return {
-    setProgress(t) { progress = clamp01(t); },
-    select(i) { selected = i; },
+    setProgress(t) { const v = clamp01(t); if (v !== progress) { progress = v; dirty = true; } },
+    select(i) { selected = i; dirty = true; },
     info: () => ({ calls: renderer.info.render.calls, triangles: renderer.info.render.triangles }),
     dispose() {
       renderer.setAnimationLoop(null);

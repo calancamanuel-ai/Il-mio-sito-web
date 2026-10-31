@@ -53,6 +53,7 @@ const nodes = [
       if (!e.isIntersecting) return;
       io.disconnect();
       const { createFlowScene } = await import('./flow-scene');
+      await new Promise((r) => requestAnimationFrame(r)); // lascia respirare il thread prima di avviare WebGL
       stage.hidden = false;
       root.querySelector<HTMLElement>('.fm-fallback')!.hidden = true;
       scene = createFlowScene(canvas, root.dataset.look as 'vetro' | 'circuito', {
