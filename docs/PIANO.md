@@ -79,9 +79,10 @@ La home racconta tutto in breve; le pagine servizio approfondiscono. Sezioni del
 3. Servizi: automazioni, software con Claude, siti web, collegati dalla linea di flusso come nodi del circuito.
 4. Demo vive: "Costruisci la tua automazione", calcolatore e simulazione WhatsApp.
 5. Casi d'uso per settore, presentati come "log di sistema".
-6. Come lavoro: call, analisi, prototipo, consegna, supporto.
+6. Come lavoro: call, analisi, prototipo, consegna, supporto, con cosa succede dopo il primo contatto (tempi di risposta e passi successivi).
 7. Prezzi di lancio "da X €", con preventivo fisso dopo l'analisi gratuita.
-8. FAQ (con una risposta sui voucher per le imprese di Bologna e Modena) e invito finale con form.
+8. "Quando non conviene automatizzare" (vedi Fiducia).
+9. FAQ (con una risposta sui voucher per le imprese di Bologna e Modena) e invito finale con form.
 
 L'ordine è una base: nella proposta delle 3 direzioni creative può cambiare, purché ogni sezione porti verso il contatto.
 
@@ -126,7 +127,7 @@ Ogni variante definisce gli stessi ruoli e tutte le combinazioni testo/sfondo de
 
 **Componenti secondari (leggeri)**
 
-- Pagina **Siti web**: un dispositivo 3D semplice (telefono e laptop stilizzati) che ruota allo scroll e mostra screenshot dei tuoi lavori.
+- Pagina **Siti web**: un dispositivo 3D semplice (telefono e laptop stilizzati) che ruota allo scroll e mostra i progetti dimostrativi; i progetti sono presentati come casi studio brevi (vedi Contenuti e portfolio), non come griglia di screenshot.
 - Pagina **Automazioni**: schemi di workflow animati in SVG, non 3D.
 - **Micro-interazioni** pensate caso per caso (feedback su tap e hover, stati dei pulsanti); niente reveal uguale su ogni sezione.
 
@@ -202,7 +203,7 @@ Le skill di design hanno regole proprie che in alcuni punti contraddicono questo
 | Home | "Costruisci la tua automazione" | 3D "La macchina del flusso", "Il lunedì mattina", linea di flusso |
 | Automazioni | Calcolatore di risparmio | Schemi di workflow SVG animati, prima/dopo con cursore |
 | Software AI | Simulazione WhatsApp | Frammento di interfaccia di un software su misura |
-| Siti web | Dispositivo 3D leggero con i progetti dimostrativi | Confronto tra gli stili dei progetti |
+| Siti web | Dispositivo 3D leggero con i progetti dimostrativi | Casi studio brevi dei progetti, confronto tra gli stili |
 | Casi d'uso | Filtro dei "log di sistema" per settore | — |
 | Chi sono | Mappa a circuito: tap su un paese | — |
 | Contatti | Form intelligente; "chiedi al sito" solo se confermato | — |
@@ -262,9 +263,26 @@ I testi partono dai messaggi chiave di Manuel e il portfolio iniziale è fatto d
 - **Messaggi chiave**: Manuel fornisce 4–5 frasi (perché lui, per chi lavora, cosa cambia per il cliente, come lavora, la zona) in `riferimenti/messaggi.md`. Scrivi le bozze dei testi partendo da quelle e marcale `[BOZZA]` finché non vengono approvate. Se il file manca, aggiungilo a `MANCANTI.md` e usa testi segnaposto.
 - **Lingua**: solo italiano.
 - **Portfolio senza clienti**: 2–3 siti dimostrativi per attività di settori diversi (per esempio officina, studio professionale, agriturismo), ognuno con uno stile proprio, con nomi inventati e la dicitura "progetto dimostrativo" ben visibile. Niente nomi o loghi di aziende reali, niente testimonianze inventate.
+- **Casi studio, non griglia**: nella pagina Siti web ogni progetto dimostrativo è un caso studio breve con: il brief (attività inventata e dichiarata come tale), le scelte di design e il perché, cosa fa il sito per quell'attività, l'anteprima navigabile o le immagini. Il lavoro viene prima del testo: l'anteprima apre il caso, la spiegazione la segue.
+- **Stili diversi**: almeno uno dei progetti è sobrio e classico, curato ma non spettacolare, e originale (vale il filtro anti-template). Serve a far capire che il sito di Manuel è una vetrina delle sue capacità, non l'unico stile che propone. Sulla pagina una riga lo dice esplicitamente: lo stile si decide con il cliente, in base all'attività e a chi la visita.
 - **Casi studio veri**: sostituiscono i dimostrativi man mano che arrivano i primi clienti.
 - **Nessun riferimento esterno**: in `riferimenti/` c'è solo `messaggi.md`. Non usare materiale di progetti precedenti.
 - **Email del form**: mittente provvisorio come segnaposto finché non c'è il dominio.
+
+## Fiducia
+
+Per ora non ci sono testimonianze né clienti: il sito crea fiducia con quello che c'è, senza inventare nulla.
+
+| Elemento | Cosa contiene | Dove compare |
+| --- | --- | --- |
+| Una persona vera | Foto di Manuel (segnaposto finché manca), tono diretto, il territorio da cui parte, "consulente, non agenzia" | Chi sono, home (vicino all'invito finale), contatti |
+| Trasparenza | Prezzi "da", preventivo a prezzo fisso dopo l'analisi gratuita, cosa succede dopo il primo contatto: tempi di risposta e passi successivi | Home (Come lavoro, Prezzi), pagine servizio, contatti, conferma del form |
+| Onestà | Sezione "Quando non conviene automatizzare": i casi in cui un'automazione non ripaga (attività rare, processi che cambiano ogni settimana, volumi troppo bassi) e cosa consigliare invece | Home e Automazioni |
+| Prova pratica | Le demo funzionanti e il sito stesso: velocità, cura, vista tecnica | Home, pagine servizio, vista tecnica su tutto il sito |
+| Testimonianze e casi veri | Spazio già pronto nel codice ma nascosto finché non ci sono contenuti reali; si attiva da `src/config/sito.ts` | Home, Casi d'uso, Siti web |
+
+- I tempi di risposta stanno in `src/config/sito.ts` come segnaposto finché Manuel non li conferma.
+- Nessun numero, logo, recensione o "clienti soddisfatti" finto per riempire lo spazio.
 
 ## Prezzi ed esempi di progetto
 
@@ -376,7 +394,7 @@ Regole: un componente per file; nessun file oltre le 500 righe, dividilo prima; 
 Sei fasi, ognuna chiusa da un'anteprima. Alla fine di ogni fase: fermati, fai un riepilogo breve, dai il link di anteprima, screenshot a 390 e 1440 px, elenco di cosa manca, e aspetta l'ok prima di proseguire. Il sito deve funzionare e convertire già alla fase 2, senza 3D.
 
 1. **Fondamenta**: progetto Astro statico con TypeScript, design token provvisori (base Circuito, da sostituire con la direzione scelta), font da @fontsource, layout, header, footer, pagine privacy/cookie, `src/config/sito.ts` con segnaposto, `MANCANTI.md`, `noindex`, wrangler per Cloudflare Workers static assets. Niente 3D né animazioni. Alla fine della fase proponi le 3 direzioni creative (sezione Direzione creativa) e aspetta la scelta.
-2. **Pagine statiche complete**: tutti i testi, tutte le sezioni, form funzionante. Nessun effetto.
+2. **Pagine statiche complete**: tutti i testi, tutte le sezioni (incluse quelle della sezione Fiducia e i casi studio della pagina Siti web), form funzionante. Nessun effetto.
 3. **Componente 3D principale** in isolamento su `/lab/flusso` come isola `client:visible`, poi integrato in home, coerente con la direzione scelta. Proponi prima 2 varianti di look del 3D e aspetta la scelta.
 4. **Movimento e identità**: linea di flusso, sezione pinnata, "Il lunedì mattina", mappa a circuito, micro-interazioni, tema giorno/notte, pagina 404, componenti 3D secondari.
 5. **Demo e automazioni**: form collegato a un endpoint Cloudflare Worker che verifica Turnstile e inoltra a un webhook n8n (URL in variabile d'ambiente, mai nel codice); calcolatore di risparmio con le ipotesi scritte; simulazione WhatsApp; "Costruisci la tua automazione"; vista tecnica e barra di stato; "chiedi al sito" solo se Manuel lo conferma; test con Playwright inclusi errore e spam simulato.
@@ -388,6 +406,8 @@ Sei fasi, ognuna chiusa da un'anteprima. Alla fine di ogni fase: fermati, fai un
 - [ ] Dati fiscali: P.IVA, codice fiscale, REA se presente.
 - [ ] Testi "Chi sono".
 - [ ] 2–3 casi d'uso reali o demo con numeri veri; niente testimonianze inventate.
+- [ ] Tempi di risposta da promettere dopo il primo contatto.
+- [ ] Testimonianze vere, quando arrivano (con il consenso di chi le scrive).
 - [ ] Screenshot di siti fatti per clienti, solo con il loro permesso.
 - [ ] Link per prenotare la call (Cal.com, Calendly o Google Calendar).
 - [ ] Numero WhatsApp Business.
