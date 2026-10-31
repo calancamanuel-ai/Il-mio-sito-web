@@ -40,3 +40,14 @@ Le pagine in `/lab/` sono prove di lavoro (in fase 3 il 3D), non collegate dalla
 ## Form di contatto
 
 Il form invia JSON a `/api/contatto`. L'endpoint (Cloudflare Worker con Turnstile e inoltro a n8n) arriva in fase 5: fino ad allora il form valida i campi e dice che l'invio non è ancora attivo.
+
+## Anteprima navigabile per la revisione
+
+Per rivedere il sito senza Cloudflare, `tools/anteprima-artefatto.mjs` trasforma `dist/` in una versione con link relativi e font incorporati, pubblicabile come artefatto privato su claude.ai:
+
+```bash
+npm run build
+node tools/anteprima-artefatto.mjs /percorso/anteprima
+```
+
+È solo uno strumento di revisione: non cambia il sito pubblicato.
