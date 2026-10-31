@@ -99,6 +99,11 @@ a:hover {
   padding-inline: var(--margin);
 }
 
+/* La barra in alto resta fissa: i link interni si fermano sotto di lei */
+[id] {
+  scroll-margin-top: 6.5rem;
+}
+
 /* Etichette tecniche: unico uso del monospace (eccezione del piano) */
 .mono {
   font-family: var(--font-mono);

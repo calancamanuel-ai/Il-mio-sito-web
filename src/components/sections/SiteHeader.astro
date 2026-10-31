@@ -35,9 +35,23 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
   </details>
 </header>
 
+<script>
+  // Il menu mobile si chiude con Esc, con un clic fuori o scegliendo una voce.
+  const menu = document.querySelector<HTMLDetailsElement>('.nav-mobile');
+  if (menu) {
+    const close = () => { menu.open = false; };
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.open) { close(); menu.querySelector('summary')?.focus(); } });
+    document.addEventListener('click', (e) => { if (menu.open && !menu.contains(e.target as Node)) close(); });
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  }
+</script>
+
 <style>
   .site-header {
-    position: relative;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 45;
+    background: var(--c-bg);
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -46,7 +46,7 @@ const prezzoDi = (pid: string) => { const v = prezzi.voci.find((x) => x.id === p
   .price { color: var(--c-action); }
   @media (max-width: 760px) {
     .chain { grid-template-columns: minmax(0, 1fr); }
-    .chain::before { left: calc(var(--space-3) + 1.2rem); right: auto; top: var(--space-3); bottom: var(--space-3); width: 3px; height: auto; }
-    .chain li { padding-left: 0; }
+    .chain::before { left: calc(var(--space-3) + 0.25rem); right: auto; top: var(--space-3); bottom: var(--space-3); width: 3px; height: auto; }
+    .chain li { padding-left: 1.5rem; }
   }
 </style>
