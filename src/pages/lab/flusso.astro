@@ -9,6 +9,10 @@ const varianti = [
 const tappe = [0, 40, 70, 100];
 ---
 <BaseLayout title="Prova: la macchina del flusso" description="Due varianti di look per la scena 3D della home.">
+  <script is:inline slot="head">
+    // ?solo=vetro o ?solo=circuito: una sola variante, per misurarne il peso. Deciso prima del primo disegno.
+    (function () { var s = new URLSearchParams(location.search).get('solo'); if (s === 'vetro' || s === 'circuito') document.documentElement.dataset.solo = s; })();
+  </script>
   <section class="section lab-intro" aria-labelledby="titolo">
     <h1 id="titolo">La macchina del flusso, due look</h1>
     <p class="lead">Stessa scena e stessa coreografia, due materiali e due camere. Muovi il cursore per vedere le tappe (in home lo farà lo scroll) e tocca un nodo per sapere cosa fa.</p>
@@ -35,14 +39,7 @@ const tappe = [0, 40, 70, 100];
   ))}
 
   <p class="section stats mono" data-stats aria-live="polite"></p>
-  <script is:inline>
-    // ?solo=vetro o ?solo=circuito: una sola variante, per misurarne il peso (tolta prima del primo disegno)
-    (function () {
-      var solo = new URLSearchParams(location.search).get('solo');
-      if (!solo) return;
-      document.querySelectorAll('[data-flow]').forEach(function (f) { if (f.dataset.look !== solo) f.closest('section').remove(); });
-    })();
-  </script>
+
 </BaseLayout>
 
 <script>
@@ -85,5 +82,7 @@ const tappe = [0, 40, 70, 100];
   .stops button:hover { background: var(--c-line); }
   .stops .play { background: var(--c-action); color: var(--c-on-action); font-weight: 700; }
   .stats { color: var(--c-ink-soft); font-size: var(--step-small); }
+  :global(html[data-solo='vetro'] .variant:has([data-look='circuito'])),
+  :global(html[data-solo='circuito'] .variant:has([data-look='vetro'])) { display: none; }
   @media (max-width: 760px) { .variant-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); } }
 </style>

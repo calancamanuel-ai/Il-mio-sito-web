@@ -1,10 +1,12 @@
 ---
 /** "Il lunedì mattina": le attività ripetitive e cosa ne resta quando le fa un sistema. Statico in fase 2. */
 import { lunedi } from '../../content/home';
+import ArchiveFigure from '../ui/ArchiveFigure.astro';
 const totale = lunedi.reduce((s, m) => s + m.min, 0);
 ---
 <section class="monday section" aria-labelledby="lunedi">
   <h2 id="lunedi" class="section-title">Il lunedì mattina</h2>
+  <div class="monday-grid">
   <ol class="monday-list">
     {lunedi.map((m) => (
       <li>
@@ -14,10 +16,15 @@ const totale = lunedi.reduce((s, m) => s + m.min, 0);
       </li>
     ))}
   </ol>
+  <ArchiveFigure id="curtiMercato" class="monday-fig" />
+  </div>
   <p class="sum">Una mattina d'esempio: <span class="mono">{Math.floor(totale / 60)} h {totale % 60} min</span> che tornano a te. Attività e minuti veri li misuriamo nell'analisi gratuita.</p>
 </section>
 <style>
-  .monday-list { display: grid; gap: var(--space-4); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+  .monday-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-5); align-items: start; margin-top: var(--space-5); }
+  .monday-grid :global(.monday-fig) { position: sticky; top: 6rem; }
+  @media (max-width: 900px) { .monday-grid { grid-template-columns: minmax(0, 1fr); } .monday-grid :global(.monday-fig) { position: static; } }
+  .monday-list { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
   .monday-list li { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 0.4rem var(--space-3); }
   .time { grid-row: span 2; color: var(--c-action); padding-top: 0.5em; }
   .was { font-size: var(--step-lead); line-height: 1.2; }

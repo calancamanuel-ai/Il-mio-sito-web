@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/sections/PageIntro.astro';
 import CloseInverted from '../components/sections/CloseInverted.astro';
+import ArchiveFigure from '../components/ui/ArchiveFigure.astro';
 import { mostraTestimonianze, testimonianze } from '../config/sito';
 
 /**
@@ -42,6 +43,8 @@ const settori = [
     </nav>
   </PageIntro>
 
+  <div class="section trades"><ArchiveFigure id="curtiTessitori" sizes="(max-width: 900px) 100vw, 70vw" /><p class="lead trades-note">I mestieri cambiano, i compiti ripetitivi restano.</p></div>
+
   {settori.map((s) => (
     <section class="log-section section" id={s.id} aria-labelledby={`${s.id}-h`}>
       <h2 id={`${s.id}-h`} class="section-title">{s.nome}</h2>
@@ -75,6 +78,8 @@ const settori = [
   .sectors a { display: block !important; padding: 0.9rem 1.25rem !important; background: var(--c-surface); text-decoration: none; }
   .sectors a:hover { background: var(--c-line); }
   .sectors a { display: inline-block; padding-block: 0.4rem; }
+  .trades { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--space-4); align-items: end; }
+  @media (max-width: 900px) { .trades { grid-template-columns: minmax(0, 1fr); } }
   .log { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: var(--space-4) 0 0; padding: 0; list-style: none; }
   .entry { display: grid; gap: var(--space-2); padding: var(--space-3); background: var(--c-surface); }
   .entry-id { color: var(--c-action); }

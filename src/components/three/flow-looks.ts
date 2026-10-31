@@ -43,7 +43,7 @@ export const looks: Record<LookId, Look> = {
     bloom: true,
     tracks: 'tube',
     board: false,
-    envIntensity: 0.55,
+    envIntensity: 0.85,
     materials: (lite) => ({
       node: lite
         ? new THREE.MeshStandardMaterial({ color: 0x9fc9dc, roughness: 0.35, metalness: 0, transparent: true, opacity: 0.88 })
@@ -73,9 +73,9 @@ export const looks: Record<LookId, Look> = {
     bloom: false,
     tracks: 'pcb',
     board: true,
-    envIntensity: 0,
+    envIntensity: 1.1,
     materials: () => ({
-      node: new THREE.MeshStandardMaterial({ color: 0x1b2420, roughness: 0.55, metalness: 0.2 }),
+      node: new THREE.MeshStandardMaterial({ color: 0x2a3a32, roughness: 0.5, metalness: 0.2 }),
       nodeOn: new THREE.MeshStandardMaterial({ color: 0x1b2420, roughness: 0.5, metalness: 0.2, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.35 }),
       connector: new THREE.MeshStandardMaterial({ color: 0xc8b27a, metalness: 1, roughness: 0.38 }),
       track: new THREE.MeshStandardMaterial({ color: 0x1d4a2f, emissive: new THREE.Color(GREEN), emissiveIntensity: 0.12, roughness: 0.6 }),
@@ -83,7 +83,7 @@ export const looks: Record<LookId, Look> = {
       wa: new THREE.MeshStandardMaterial({ color: 0x3a8a5a, roughness: 0.85 }),
       pdf: new THREE.MeshStandardMaterial({ color: 0x9a4646, roughness: 0.85 }),
       out: new THREE.MeshStandardMaterial({ color: 0xe7efe9, roughness: 0.8 }),
-      board: new THREE.MeshStandardMaterial({ color: 0x0f1a14, roughness: 0.9 }),
+      board: new THREE.MeshStandardMaterial({ color: 0x17241c, roughness: 0.85 }),
       pin: new THREE.MeshStandardMaterial({ color: 0xc8b27a, metalness: 1, roughness: 0.4 }),
     }),
     lights: (scene) => {

@@ -51,3 +51,13 @@ node tools/anteprima-artefatto.mjs /percorso/anteprima
 ```
 
 È solo uno strumento di revisione: non cambia il sito pubblicato.
+
+## HDRI del 3D
+
+L'illuminazione della scena 3D usa un HDRI di Poly Haven (CC0) ridotto per stare nel budget:
+
+```bash
+node tools/riduci-hdri.mjs studio_small_09_1k.hdr public/3d/studio_small_09_512.hdr.gz 512
+```
+
+Immagini d'archivio: in `src/assets/archivio/`, con fonte e licenza in `src/content/archivio.ts` (crediti nel footer).

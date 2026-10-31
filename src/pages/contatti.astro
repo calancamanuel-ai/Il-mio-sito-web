@@ -4,6 +4,7 @@ import ContactForm from '../components/demos/ContactForm.astro';
 import AfterContact from '../components/sections/AfterContact.astro';
 import PersonNote from '../components/sections/PersonNote.astro';
 import Value from '../components/ui/Value.astro';
+import ArchiveFigure from '../components/ui/ArchiveFigure.astro';
 import { contatti, zona, isPlaceholder } from '../config/sito';
 const bookingReady = !isPlaceholder(contatti.linkPrenotazione);
 ---
@@ -45,6 +46,7 @@ const bookingReady = !isPlaceholder(contatti.linkPrenotazione);
       </dl>
       <AfterContact level="h2" />
       <PersonNote />
+      <ArchiveFigure id="mitelliBologna" sizes="(max-width: 900px) 100vw, 35vw" />
     </aside>
   </div>
 </BaseLayout>

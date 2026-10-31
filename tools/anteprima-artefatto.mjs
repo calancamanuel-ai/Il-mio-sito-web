@@ -33,20 +33,28 @@ const fixUrl = (u) => {
 for (const f of pages) {
   let html = readFileSync(join(src, f), 'utf8');
   html = html.replace(/<link rel="preload"[^>]*as="font"[^>]*>/g, '');
-  html = html.replace(/(href|src|action)="([^"]*)"/g, (_, a, u) => `${a}="${fixUrl(u)}"`);
+  html = html.replace(/(href|src|action|data-hdri)="([^"]*)"/g, (_, a, u) => `${a}="${fixUrl(u)}${a === 'data-hdri' && u.endsWith('.gz') ? '.wasm' : ''}"`);
+  // srcset: più URL separati da virgole, ognuno con la sua larghezza
+  html = html.replace(/srcset="([^"]*)"/g, (_, v) => `srcset="${v.split(',').map((part) => { const [u, ...rest] = part.trim().split(/\s+/); return [fixUrl(u), ...rest].join(' '); }).join(', ')}"`);
   html = html.replace(/`\/contatti\?/g, '`contatti.html?');
   writeFileSync(join(out, f === 'index.html' ? 'home.html' : `${flat(f)}.html`), html);
 }
 
 for (const f of readdirSync(join(src, '_astro'))) {
-  if (f.endsWith('.js')) { copyFileSync(join(src, '_astro', f), join(out, 'risorse', f)); continue; }
-  if (!f.endsWith('.css')) continue;
+  if (!f.endsWith('.css')) { if (!f.endsWith('.woff2')) copyFileSync(join(src, '_astro', f), join(out, 'risorse', f)); continue; }
   let css = readFileSync(join(src, '_astro', f), 'utf8');
   css = css.replace(/url\(\/_astro\/([^)]+\.woff2)\)/g, (_, file) =>
     `url(data:font/woff2;base64,${readFileSync(join(src, '_astro', file)).toString('base64')})`);
   writeFileSync(join(out, 'risorse', f), css);
 }
 copyFileSync(join(src, 'favicon.svg'), join(out, 'favicon.svg'));
+// file serviti così come sono (es. HDRI in public/3d)
+if (existsSync(join(src, '3d'))) {
+  mkdirSync(join(out, '3d'), { recursive: true });
+  // gli artefatti non servono .gz: l'HDRI compresso prende un'estensione ammessa (.wasm);
+  // la scena riconosce comunque il gzip dai primi byte
+  for (const f of readdirSync(join(src, '3d'))) copyFileSync(join(src, '3d', f), join(out, '3d', f.endsWith('.gz') ? `${f}.wasm` : f));
+}
 
 // Pagina d'ingresso: l'artefatto la avvolge nel proprio scheletro HTML.
 writeFileSync(join(out, 'index.html'), `<title>Anteprima sito Manuel</title>

@@ -2,6 +2,7 @@
 /** Chiusura del sito: il contatto è la riga in grande; dati legali su ogni pagina. */
 import { brand, contatti, datiLegali, zona, ultimoAggiornamento, isPlaceholder } from '../../config/sito';
 import Value from '../ui/Value.astro';
+import ArchiveCredits from '../ui/ArchiveCredits.astro';
 const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti#prenota' : contatti.linkPrenotazione;
 ---
 <footer class="site-footer">
@@ -23,6 +24,7 @@ const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti#prenota' :
       <Value value={datiLegali.ragioneSociale} /> · P.IVA <Value value={datiLegali.partitaIva} /> ·
       C.F. <Value value={datiLegali.codiceFiscale} /> · REA <Value value={datiLegali.rea} />
     </p>
+    <ArchiveCredits />
     <p class="legal">Ultimo aggiornamento: <time class="mono" datetime={ultimoAggiornamento}>{ultimoAggiornamento}</time></p>
   </div>
 </footer>

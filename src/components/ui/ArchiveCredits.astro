@@ -1,0 +1,14 @@
+---
+/** Crediti delle immagini d'archivio e dei materiali di terzi, nel footer di ogni pagina. */
+import { archivio, altriCrediti } from '../../content/archivio';
+const voci = [...Object.values(archivio).map((a) => ({ credito: a.credito, fonte: a.fonte })), ...altriCrediti];
+---
+<details class="credits">
+  <summary>Crediti delle immagini d'archivio e del 3D</summary>
+  <ul>{voci.map((v) => <li>{v.credito} <a href={v.fonte} rel="noopener">Fonte</a></li>)}</ul>
+</details>
+<style>
+  .credits { color: var(--c-ink-soft); font-size: var(--step-small); }
+  summary { display: inline-block; padding-block: 0.6rem; cursor: pointer; }
+  ul { display: grid; gap: 0.4rem; margin: 0.4rem 0 0; padding-left: 1.1em; max-width: 62ch; }
+</style>

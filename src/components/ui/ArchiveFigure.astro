@@ -1,0 +1,17 @@
+---
+/** Immagine d'archivio con didascalia: ridimensionata da Astro (AVIF/WebP), caricamento lazy. */
+import { Picture } from 'astro:assets';
+import { archivio, type ArchivioId } from '../../content/archivio';
+interface Props { id: ArchivioId; sizes?: string; class?: string; eager?: boolean }
+const { id, sizes = '(max-width: 900px) 100vw, 50vw', class: extra = '', eager = false } = Astro.props;
+const a = archivio[id];
+---
+<figure class:list={['arch', extra]}>
+  <Picture src={a.src} alt={a.alt} formats={['avif', 'webp']} widths={[480, 800, 1200, 1600]} sizes={sizes} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  <figcaption>{a.didascalia}</figcaption>
+</figure>
+<style>
+  .arch { margin: 0; display: grid; gap: 0.6rem; }
+  .arch :global(img) { width: 100%; height: auto; background: var(--c-surface); }
+  figcaption { color: var(--c-ink-soft); font-size: var(--step-small); max-width: 60ch; }
+</style>

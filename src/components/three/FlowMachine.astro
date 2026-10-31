@@ -9,6 +9,8 @@ import FlowFallback from './FlowFallback.astro';
 import type { LookId } from './flow-looks';
 interface Props { look: LookId; id: string }
 const { look, id } = Astro.props;
+/** HDRI da studio di Poly Haven (CC0), ridotto con tools/riduci-hdri.mjs. */
+const hdri = '/3d/studio_small_09_512.hdr.gz';
 const nodes = [
   { label: 'Ricevi', text: 'Raccoglie email, messaggi e moduli in un unico punto.' },
   { label: 'Leggi con Claude', text: 'Capisce cosa chiede il cliente ed estrae i dati utili.' },
@@ -16,7 +18,7 @@ const nodes = [
   { label: 'Notifica', text: 'Ti avvisa sul telefono solo quando serve una tua decisione.' },
 ];
 ---
-<div class="fm" id={id} data-flow data-look={look} data-texts={JSON.stringify(nodes.map((n) => n.text))}>
+<div class="fm" id={id} data-flow data-look={look} data-hdri={hdri} data-texts={JSON.stringify(nodes.map((n) => n.text))}>
   <div class="fm-stage" hidden>
     <canvas class="fm-canvas" role="img" aria-label="Animazione: email, messaggi e documenti sparsi passano da quattro nodi (ricevi, leggi con Claude, archivia, notifica) e diventano un preventivo, una riga in tabella e una notifica."></canvas>
     <div class="fm-labels">
@@ -58,6 +60,7 @@ const nodes = [
       root.querySelector<HTMLElement>('.fm-fallback')!.hidden = true;
       scene = createFlowScene(canvas, root.dataset.look as 'vetro' | 'circuito', {
         orbit: matchMedia('(pointer: fine)').matches,
+        hdri: root.dataset.hdri,
         onSelect: select,
         onLabels: (pts, portrait) => pts.forEach((p, i) => {
           labels[i].style.transform = portrait

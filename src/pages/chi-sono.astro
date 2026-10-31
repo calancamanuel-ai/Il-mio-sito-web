@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CircuitMap from '../components/ui/CircuitMap.astro';
+import ArchiveFigure from '../components/ui/ArchiveFigure.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
 import Value from '../components/ui/Value.astro';
 import CloseInverted from '../components/sections/CloseInverted.astro';
@@ -32,7 +33,11 @@ const principi = [
 
   <section class="section" aria-labelledby="zona">
     <h2 id="zona" class="section-title">Da dove parto</h2>
-    <CircuitMap />
+    <div class="zone">
+      <CircuitMap />
+      <ArchiveFigure id="persiceto1838" sizes="(max-width: 900px) 100vw, 30vw" />
+    </div>
+    <ArchiveFigure id="mitelliBologna" class="zone-bo" sizes="(max-width: 900px) 100vw, 40vw" />
   </section>
 
   <CloseInverted title="Una call, e ci conosciamo." />
@@ -43,11 +48,13 @@ const principi = [
   .about-text { display: grid; gap: var(--space-3); justify-items: start; }
   h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 16ch; }
   .story { max-width: var(--measure); }
+  :global(.zone-bo) { max-width: 34rem; margin-top: var(--space-4); }
+  .zone { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--space-4); align-items: start; margin-top: var(--space-4); }
   .principles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); margin: var(--space-5) 0 0; padding: 0; list-style: none; }
   .principles h3 { font-size: var(--step-lead); font-weight: 500; margin-bottom: 0.4rem; }
   .principles p { max-width: 44ch; }
   @media (max-width: 760px) {
-    .about, .principles { grid-template-columns: minmax(0, 1fr); }
+    .about, .principles, .zone { grid-template-columns: minmax(0, 1fr); }
     .photo { max-width: 16rem; }
   }
 </style>

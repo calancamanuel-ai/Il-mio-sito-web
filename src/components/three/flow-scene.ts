@@ -10,7 +10,7 @@
  */
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
@@ -29,6 +29,27 @@ interface Options {
   onSelect?: (i: number) => void;
   /** Movimento leggero della camera col puntatore (solo desktop). */
   orbit?: boolean;
+  /** HDRI equirettangolare (.hdr o .hdr.gz) per l'illuminazione: Poly Haven, CC0. */
+  hdri?: string;
+}
+
+/** Scarica l'HDRI (anche compresso con gzip) e lo prepara come mappa d'ambiente. */
+async function loadHdri(url: string): Promise<THREE.DataTexture> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HDRI ${res.status}`);
+  let buf = await res.arrayBuffer();
+  // compresso con gzip? si riconosce dai primi due byte, non dal nome del file
+  const head = new Uint8Array(buf, 0, 2);
+  if (head[0] === 0x1f && head[1] === 0x8b) {
+    buf = await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+  }
+  const loader = new HDRLoader();
+  const tex = new THREE.DataTexture();
+  // stessa preparazione di HDRLoader.load(): filtri lineari, flipY, spazio colore lineare
+  (loader as unknown as { _applyTexData(t: THREE.Texture, d: unknown): void })._applyTexData(tex, loader.parse(buf));
+  tex.needsUpdate = true;
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  return tex;
 }
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -44,16 +65,10 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
-  // l'ambiente di luce generato è il passo più costoso dell'avvio: solo su desktop
-  if (look.envIntensity > 0 && !lite) {
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    // ambiente piccolo (64 px): bastano riflessi morbidi, e su telefono costa molto meno
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04, 0.1, 100, { size: 64 }).texture;
-    scene.environmentIntensity = look.envIntensity;
-    pmrem.dispose();
-  }
   look.lights(scene);
-  if (lite && look.envIntensity > 0) scene.add(new THREE.HemisphereLight(0xdfeef5, 0x0a0d0b, 1.4));
+  // Illuminazione: HDRI da studio di Poly Haven (512x256, 315 KB). Il renderer lo prefiltra da solo
+  // (PMREM 256 px, il minimo di three.js). Finché non arriva, bastano le luci della variante.
+  let envTex: THREE.DataTexture | null = null;
 
   const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   const root = new THREE.Group();
@@ -217,6 +232,14 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   const start = new THREE.Vector3();
   // si ridisegna solo quando qualcosa cambia: a riposo la scena non costa nulla
   let dirty = true;
+  if (opts.hdri && look.envIntensity > 0) {
+    loadHdri(opts.hdri).then((t) => {
+      envTex = t;
+      scene.environment = t;
+      scene.environmentIntensity = look.envIntensity;
+      dirty = true;
+    }).catch(() => { /* senza HDRI restano le luci della variante */ });
+  }
 
   function apply() {
     if (!path) return;
@@ -320,7 +343,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
       geos.forEach((x) => x.dispose());
       if (track) track.traverse((o) => (o as THREE.Mesh).geometry?.dispose());
       Object.values(M).forEach((m) => (m as THREE.Material | undefined)?.dispose());
-      scene.environment?.dispose();
+      envTex?.dispose();
       composer?.dispose();
       renderer.dispose();
     },
