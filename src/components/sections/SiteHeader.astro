@@ -10,11 +10,11 @@ const links = [
   { href: '/casi-d-uso', label: "Casi d'uso" },
   { href: '/chi-sono', label: 'Chi sono' },
 ];
-const current = Astro.url.pathname;
+const current = Astro.url.pathname.replace(/\.html$/, '');
 ---
 <header class="site-header wrap">
-  <a class="wordmark" href="/" aria-label="Home"><Value value={brand.nome} /></a>
-  <nav aria-label="Principale">
+  <a class="wordmark" href="/"><Value value={brand.nome} /><span class="visually-hidden"> (home)</span></a>
+  <nav class="nav-desktop" aria-label="Principale">
     <ul>
       {links.map((l) => (
         <li><a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>
@@ -22,27 +22,36 @@ const current = Astro.url.pathname;
     </ul>
   </nav>
   <ButtonLink href={contatti.linkPrenotazione} class="header-cta">Prenota una call</ButtonLink>
+  <details class="nav-mobile">
+    <summary>Menu</summary>
+    <nav aria-label="Principale (mobile)">
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+        <li><a href="/contatti">Contatti</a></li>
+      </ul>
+    </nav>
+  </details>
 </header>
 
 <style>
   .site-header {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
     padding-block: var(--space-2);
-    background: var(--c-bg);
   }
   .wordmark {
     color: var(--c-ink);
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: var(--step-body);
+    font-weight: 600;
     text-decoration: none;
-    max-width: 16ch;
-    line-height: 1.15;
+    max-width: 18ch;
+    line-height: 1.2;
   }
-  nav ul {
+  .nav-desktop ul {
     display: flex;
     gap: var(--space-3);
     margin: 0;
@@ -54,13 +63,44 @@ const current = Astro.url.pathname;
     padding-block: 0.6rem;
     color: var(--c-ink);
     text-decoration: none;
-    font-weight: 500;
   }
   nav a:hover,
   nav a[aria-current='page'] {
     color: var(--c-action);
+    text-decoration: underline;
   }
-  @media (max-width: 900px) {
-    nav { display: none; }
+  .nav-mobile { display: none; }
+  @media (max-width: 960px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+    .site-header { flex-wrap: wrap; }
+    .wordmark { flex: 1; }
+    summary {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--tap);
+      padding: 0 1rem;
+      background: var(--c-surface);
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--c-line); }
+    .nav-mobile nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      z-index: 40;
+      padding: var(--space-2) var(--margin) var(--space-3);
+      background: var(--c-surface);
+      box-shadow: 0 16px 32px rgb(0 0 0 / 0.5);
+    }
+    .nav-mobile ul { display: grid; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+    .nav-mobile a { display: block; padding-block: 0.75rem; font-size: var(--step-lead); }
+  }
+  @media (max-width: 520px) {
+    .site-header :global(.header-cta) { display: none; }
   }
 </style>

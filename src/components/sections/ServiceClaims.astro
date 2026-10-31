@@ -1,0 +1,31 @@
+---
+/** Servizi come affermazioni con la loro prova accanto (frammento d'interfaccia d'esempio). */
+import FragmentWorkflow from '../ui/FragmentWorkflow.astro';
+import FragmentDraft from '../ui/FragmentDraft.astro';
+import FragmentSite from '../ui/FragmentSite.astro';
+import { servizi } from '../../content/home';
+---
+<section class="claims section" aria-labelledby="servizi">
+  <h2 id="servizi" class="section-title">Tre modi di togliere lavoro</h2>
+  {servizi.map((s) => (
+    <article class="claim">
+      <div class="claim-text">
+        <h3>{s.h}</h3>
+        <p>{s.p}</p>
+        <a href={s.url}>{s.link}</a>
+      </div>
+      {s.id === 'wf' && <FragmentWorkflow />}
+      {s.id === 'draft' && <FragmentDraft />}
+      {s.id === 'site' && <FragmentSite />}
+    </article>
+  ))}
+</section>
+<style>
+  .claims { display: grid; gap: var(--space-5); }
+  .claim { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-4); align-items: center; }
+  .claim-text { display: grid; gap: var(--space-2); justify-items: start; }
+  .claim h3 { font-size: var(--step-head); font-weight: 300; line-height: 1; }
+  .claim p { max-width: 40ch; }
+  .claim a { display: inline-block; padding-block: 0.5rem; }
+  @media (max-width: 900px) { .claim { grid-template-columns: minmax(0, 1fr); } }
+</style>

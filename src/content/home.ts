@@ -21,9 +21,9 @@ export const lunedi = [
 ];
 
 export const servizi = [
-  { id: 'wf', h: 'Automazioni n8n', p: 'Richieste, fatture e promemoria passano da un flusso che lavora anche quando sei in cantiere o in udienza.' },
-  { id: 'draft', h: 'Software su misura con Claude', p: 'Piccoli programmi che leggono le email, capiscono cosa chiede il cliente e preparano la bozza. Decidi sempre tu.' },
-  { id: 'site', h: 'Siti web che portano contatti', p: 'Veloci sul telefono, chiari su cosa fai e collegati alle automazioni: la richiesta arriva già ordinata.' },
+  { id: 'wf', h: 'Automazioni n8n', p: 'Richieste, fatture e promemoria passano da un flusso che lavora anche quando sei in cantiere o in udienza.', url: '/automazioni', link: 'Come funzionano le automazioni' },
+  { id: 'draft', h: 'Software su misura con Claude', p: 'Piccoli programmi che leggono le email, capiscono cosa chiede il cliente e preparano la bozza. Decidi sempre tu.', url: '/software', link: 'Cosa può fare un software su misura' },
+  { id: 'site', h: 'Siti web che portano contatti', p: 'Veloci sul telefono, chiari su cosa fai e collegati alle automazioni: la richiesta arriva già ordinata.', url: '/siti-web', link: 'Guarda i progetti dimostrativi' },
 ] as const;
 
 export const passi = [
@@ -37,6 +37,9 @@ export const passi = [
 export const faq: { q: string; a: string; segnaposto?: string; dopo?: string }[] = [
   { q: 'Quanto costa, alla fine?', a: `Dopo l'analisi gratuita ricevi un preventivo a prezzo fisso, che non cambia in corso d'opera. ${prezzi.fattoriPrezzo}` },
   { q: 'Devo cambiare i programmi che uso?', a: 'Quasi mai. Il flusso si collega a quello che hai già: email, fogli di calcolo, gestionale, WhatsApp.' },
+  { q: 'Mi serve sapere cos\u2019è n8n?', a: 'No. È lo strumento con cui costruisco i flussi; a te arriva il risultato: il foglio compilato, la bozza pronta, la notifica sul telefono.' },
+  { q: 'I dati dei miei clienti dove finiscono?', a: 'Solo nei servizi che servono al flusso, scelti insieme e scritti nella proposta. Quando serve l\u2019AI, le passo solo il testo necessario e mai per decisioni automatiche sui tuoi clienti.' },
+  { q: 'E se un\u2019automazione si rompe?', a: 'Te ne accorgi da una notifica, non da un cliente arrabbiato. Con l\u2019assistenza (da 30 € al mese) controllo, aggiorno e sistemo; senza, intervengo a chiamata.' },
   { q: 'Lavori solo nella zona di Bologna e Modena?', a: 'Si parte da qui, ma si lavora anche da remoto: call e consegne si fanno in video.' },
   {
     q: 'Posso usare i voucher digitali?',

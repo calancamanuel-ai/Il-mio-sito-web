@@ -1,0 +1,28 @@
+---
+/** Domande e risposte, tutte aperte: domanda grande a sinistra, risposta accanto. */
+import Value from '../ui/Value.astro';
+interface Item { q: string; a: string; segnaposto?: string; dopo?: string }
+interface Props { items: Item[]; title?: string; id?: string }
+const { items, title = 'Domande, risposte', id = 'faq' } = Astro.props;
+---
+<section class="faq section" aria-labelledby={id}>
+  <h2 id={id} class="faq-title">{title}</h2>
+  {items.map((f) => (
+    <div class="qa">
+      <h3>{f.q}</h3>
+      <p>{f.a}{f.segnaposto && <Value value={f.segnaposto} />}{f.dopo}</p>
+    </div>
+  ))}
+</section>
+<style>
+  .faq-title, .qa { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 1fr) minmax(0, 5fr); }
+  .faq-title { color: var(--c-ink-soft); font-size: var(--step-lead); margin-bottom: var(--space-5); max-width: none; }
+  .qa + .qa { margin-top: var(--space-5); }
+  .qa h3 { grid-column: 1; font-size: var(--step-lead); font-weight: 500; line-height: 1.15; }
+  .qa p { grid-column: 3; max-width: 42ch; }
+  @media (max-width: 760px) {
+    .faq-title, .qa { grid-template-columns: minmax(0, 1fr); }
+    .qa p { grid-column: 1; margin-top: 0.75rem; }
+    .qa + .qa { margin-top: var(--space-4); }
+  }
+</style>

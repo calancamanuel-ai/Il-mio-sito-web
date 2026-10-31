@@ -1,69 +1,56 @@
 ---
-import { brand, contatti, datiLegali, zona, ultimoAggiornamento } from '../../config/sito';
+/** Chiusura del sito: il contatto è la riga in grande; dati legali su ogni pagina. */
+import { brand, contatti, datiLegali, zona, ultimoAggiornamento, isPlaceholder } from '../../config/sito';
 import Value from '../ui/Value.astro';
+const booking = isPlaceholder(contatti.linkPrenotazione) ? '/contatti' : contatti.linkPrenotazione;
 ---
-<footer class="site-footer wrap">
-  <p class="footer-name"><Value value={brand.nome} /></p>
-  <div class="footer-cols">
-    <address>
-      <span>Email: <Value value={contatti.email} /></span>
-      <span>Base: {zona.base}, Bologna e Modena · anche da remoto</span>
-    </address>
-    <ul class="footer-links">
+<footer class="site-footer">
+  <div class="notes wrap">
+    <p><Value value={brand.nome} /> · {brand.ruolo}</p>
+    <p>Da {zona.base}, Bologna e Modena. Anche da remoto.</p>
+    <a class="top" href="#contenuto">Torna su</a>
+  </div>
+  <p class="contact-line wrap"><a href={booking}>Prenota una call</a></p>
+  <div class="meta wrap">
+    <ul class="links">
+      <li><a href="/contatti">Contatti</a></li>
       <li><a href="/privacy">Privacy</a></li>
       <li><a href="/cookie">Cookie</a></li>
       <li><a href="/blog">Blog</a></li>
     </ul>
+    <p>Email: <Value value={contatti.email} /></p>
+    <p class="legal">
+      <Value value={datiLegali.ragioneSociale} /> · P.IVA <Value value={datiLegali.partitaIva} /> ·
+      C.F. <Value value={datiLegali.codiceFiscale} /> · REA <Value value={datiLegali.rea} />
+    </p>
+    <p class="legal">Ultimo aggiornamento: <time class="mono" datetime={ultimoAggiornamento}>{ultimoAggiornamento}</time></p>
   </div>
-  <p class="legal">
-    <Value value={datiLegali.ragioneSociale} /> · P.IVA <Value value={datiLegali.partitaIva} /> ·
-    C.F. <Value value={datiLegali.codiceFiscale} /> · REA <Value value={datiLegali.rea} />
-  </p>
-  <p class="legal">Ultimo aggiornamento del sito: <time datetime={ultimoAggiornamento}>{ultimoAggiornamento}</time></p>
 </footer>
 
 <style>
   .site-footer {
     margin-top: var(--gap-section);
-    padding-block: var(--space-5) var(--space-4);
+    padding-block: var(--space-4);
     background: var(--c-surface);
   }
-  .footer-name {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: var(--step-head);
-    line-height: 1;
-    letter-spacing: var(--tracking-display);
-  }
-  .footer-cols {
+  .notes {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-4);
-    margin-block: var(--space-4);
+    gap: var(--space-1) var(--space-4);
+    align-items: baseline;
   }
-  address {
-    display: grid;
-    gap: var(--space-1);
-    font-style: normal;
+  .top { margin-left: auto; display: inline-block; padding-block: 0.6rem; }
+  .contact-line {
+    margin-block: clamp(4rem, 12vh, 9rem) var(--space-4);
+    font-size: clamp(3rem, 1rem + 7.4vw, 8.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 300;
   }
-  .footer-links {
-    display: flex;
-    gap: var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .footer-links a {
-    display: inline-block;
-    padding-block: 0.6rem;
-  }
-  .legal {
-    font-size: var(--step-small);
-    color: var(--c-ink-soft);
-  }
-  .legal + .legal { margin-top: var(--space-1); }
-  @media (max-width: 760px) {
-    .site-footer { padding-bottom: calc(var(--mobile-bar-height) + var(--space-4)); }
-  }
+  .contact-line a { color: var(--c-ink); text-decoration-thickness: 0.05em; text-underline-offset: 0.12em; }
+  .contact-line a:hover { color: var(--c-action); }
+  .meta { display: grid; gap: var(--space-1); }
+  .links { display: flex; flex-wrap: wrap; gap: 0 var(--space-3); margin: 0 0 var(--space-1); padding: 0; list-style: none; }
+  .links a { display: inline-block; padding-block: 0.6rem; }
+  .legal { color: var(--c-ink-soft); font-size: var(--step-small); }
 </style>

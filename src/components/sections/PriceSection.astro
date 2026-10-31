@@ -1,0 +1,56 @@
+---
+/** Prezzi "da", scritti direttamente, con preventivo fisso e costi ricorrenti a parte. */
+import ButtonLink from '../ui/ButtonLink.astro';
+import { contatti, prezzi } from '../../config/sito';
+interface Props { ids?: string[] }
+const { ids } = Astro.props;
+const eur = (n: number) => new Intl.NumberFormat('it-IT').format(n) + ' €';
+const base = prezzi.voci.find((v) => v.id === 'workflow-semplice')!;
+const voci = ids ? prezzi.voci.filter((v) => ids.includes(v.id)) : prezzi.voci;
+---
+<section class="prices" aria-labelledby="prezzi">
+  <h2 id="prezzi" class="price-sentence">Un primo flusso parte da <span class="price-block">{eur(base.da)}</span></h2>
+  <div class="price-body">
+    <table>
+      <caption class="visually-hidden">Prezzi a partire da</caption>
+      <thead><tr><th scope="col">Servizio</th><th scope="col">Esempio tipico</th><th scope="col">Da</th></tr></thead>
+      <tbody>
+        {voci.map((v) => (
+          <tr>
+            <th scope="row">{v.nome}</th>
+            <td>{v.esempio}</td>
+            <td class="mono">{v.gratuita ? 'gratuita' : `${eur(v.da)}${v.periodo ? ` al ${v.periodo}` : ''}`}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <div class="price-notes">
+      <p><strong>Prezzo fisso.</strong> Dopo l'analisi gratuita ricevi un preventivo che non cambia in corso d'opera.</p>
+      <p>{prezzi.fattoriPrezzo}</p>
+      <p><strong>Costi ricorrenti, a parte:</strong> {prezzi.costiRicorrenti.map((c) => `${c.nome.toLowerCase()} ${c.valore}`).join('; ')}.</p>
+      <p>Per i voucher digitali della Camera di Commercio, guarda le domande frequenti.</p>
+      <ButtonLink href={contatti.linkPrenotazione}>Chiedi il tuo preventivo</ButtonLink>
+    </div>
+  </div>
+</section>
+<style>
+  .prices { display: grid; gap: var(--space-5); margin-top: var(--gap-section); padding: var(--space-5) var(--margin); background: var(--c-surface); }
+  .price-sentence { font-size: var(--step-display); font-weight: 300; line-height: 0.95; max-width: none; }
+  .price-block { display: inline-block; padding: 0 0.15em; background: var(--c-action); color: var(--c-on-action); font-weight: 500; }
+  .price-body { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); align-items: start; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.9rem 0.75rem 0.9rem 0; text-align: left; vertical-align: top; border-bottom: 2px solid var(--c-line); }
+  thead th { color: var(--c-ink-soft); font-weight: 400; }
+  tbody th { font-weight: 600; }
+  td.mono { white-space: nowrap; color: var(--c-action); }
+  .price-notes { display: grid; gap: var(--space-2); justify-items: start; max-width: 46ch; }
+  .price-notes :global(.btn) { margin-top: var(--space-2); }
+  @media (max-width: 900px) {
+    .price-body { grid-template-columns: minmax(0, 1fr); }
+    .price-sentence { font-size: 11vw; }
+    thead { display: none; }
+    table, tbody, tr, th, td { display: block; }
+    tr { padding-block: 0.9rem; border-bottom: 2px solid var(--c-line); }
+    th, td { padding: 0.1rem 0; border: 0; }
+  }
+</style>

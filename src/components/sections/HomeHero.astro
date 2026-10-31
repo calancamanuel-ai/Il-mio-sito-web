@@ -1,0 +1,74 @@
+---
+/**
+ * Hero della home (direzione C): una frase in cui il flusso prende il posto di una parola.
+ * HTML puro: titolo e pulsante si vedono subito, anche senza script e prima del 3D.
+ */
+import ButtonLink from '../ui/ButtonLink.astro';
+import { contatti } from '../../config/sito';
+import { hero } from '../../content/home';
+---
+<section class="hero" aria-labelledby="titolo">
+  <h1 id="titolo" class="sentence">
+    <span class="w">Caos</span>
+    <span class="strip" data-ui aria-hidden="true">
+      <span class="strip-line"></span>
+      <span class="strip-node">Ricevi</span><span class="strip-node">Leggi</span><span class="strip-node">Archivia</span><span class="strip-node">Notifica</span>
+    </span>
+    <span class="visually-hidden">che diventa</span>
+    <span class="w">flusso.</span>
+  </h1>
+  <div class="hero-foot">
+    <p class="hero-sub">{hero.sottotitolo}</p>
+    <div class="hero-actions">
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota una call di 20 minuti</ButtonLink>
+      <a class="hero-link" href="#costruisci">Prova a costruire un flusso</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { display: grid; gap: var(--space-5); padding: clamp(3.5rem, 11vh, 8rem) var(--margin) 0; }
+  .sentence {
+    display: flex;
+    align-items: center;
+    gap: 0.18em;
+    font-size: var(--step-display);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .w { white-space: nowrap; }
+  .strip {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 0.78em;
+    padding-inline: 0.25em;
+    border-radius: var(--radius-strip);
+    background: var(--c-surface);
+  }
+  .strip-line { position: absolute; left: 0.5em; right: 0.5em; top: 50%; height: 3px; background: var(--c-action); }
+  .strip-node {
+    position: relative;
+    padding: 0.4rem 0.6rem;
+    background: var(--c-bg);
+    color: var(--c-ink);
+    font-family: var(--font-mono);
+    font-size: clamp(0.8125rem, 0.6rem + 0.4vw, 1rem);
+    letter-spacing: 0;
+  }
+  .hero-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-3); }
+  .hero-sub { max-width: 44ch; font-size: var(--step-lead); line-height: 1.35; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .hero-link { display: inline-block; padding-block: 0.6rem; }
+  @media (max-width: 900px) {
+    .sentence { flex-wrap: wrap; font-size: 21vw; gap: 0.1em 0; }
+    .strip { order: 1; flex: 1 0 100%; height: auto; aspect-ratio: 5 / 2; display: grid; grid-template-columns: 1fr 1fr; place-content: center; gap: 0.6rem; padding: 1rem; }
+    .strip-line { left: 50%; right: auto; top: 1rem; bottom: 1rem; width: 3px; height: auto; }
+    .strip-node { text-align: center; }
+    .w:last-of-type { order: 2; }
+    .hero-sub { font-size: var(--step-body); }
+  }
+</style>

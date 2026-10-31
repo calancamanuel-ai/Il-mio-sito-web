@@ -1,30 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ButtonLink from '../components/ui/ButtonLink.astro';
-import { brand, contatti } from '../config/sito';
-const direzioni = [
-  { href: '/lab/direzione-a', nome: 'A · Il quaderno tecnico', tipo: 'sicura' },
-  { href: '/lab/direzione-b', nome: 'B · Capitoli di colore', tipo: 'audace' },
-  { href: '/lab/direzione-c', nome: 'C · La frase che si accende', tipo: 'sperimentale' },
-];
+import HomeHero from '../components/sections/HomeHero.astro';
+import MachineSection from '../components/sections/MachineSection.astro';
+import MondayList from '../components/sections/MondayList.astro';
+import ServiceClaims from '../components/sections/ServiceClaims.astro';
+import BuildAutomation from '../components/demos/BuildAutomation.astro';
+import MethodStairs from '../components/sections/MethodStairs.astro';
+import PriceSection from '../components/sections/PriceSection.astro';
+import NotWorthIt from '../components/sections/NotWorthIt.astro';
+import Faq from '../components/sections/Faq.astro';
+import CloseInverted from '../components/sections/CloseInverted.astro';
+import { brand } from '../config/sito';
+import { faq } from '../content/home';
 ---
-<BaseLayout title="Sito in costruzione" description={brand.promessa}>
-  <section class="wrap home-temp">
-    <h1>Le attività ripetitive le fa un sistema.</h1>
-    <p class="lead">Tu fai il tuo lavoro. Automazioni n8n, software su misura con Claude e siti web, da Persiceto, Bologna e Modena o da remoto.</p>
-    <ButtonLink href={contatti.linkPrenotazione}>Prenota una call</ButtonLink>
-    <h2>Fase 1: tre direzioni da scegliere</h2>
-    <ul>
-      {direzioni.map((d) => <li><a href={d.href}>{d.nome}</a> ({d.tipo})</li>)}
-    </ul>
+<BaseLayout title="Automazioni, software con Claude e siti web" description={`${brand.promessa} Automazioni n8n, software su misura con Claude e siti web, da Persiceto, Bologna e Modena o da remoto.`}>
+  <HomeHero />
+  <MachineSection />
+  <MondayList />
+  <ServiceClaims />
+
+  <section class="section" id="costruisci" aria-labelledby="costruisci-h">
+    <h2 id="costruisci-h" class="section-title">Costruisci la tua automazione</h2>
+    <p class="lead build-lead">Scegli tre blocchi: cosa arriva, cosa fa l'AI, cosa succede alla fine. Vedi il flusso, il tempo che ti restituisce e il prezzo da cui parte.</p>
+    <BuildAutomation />
   </section>
+
+  <MethodStairs />
+  <PriceSection />
+  <NotWorthIt class="home-nw" />
+  <Faq items={faq} />
+  <CloseInverted />
 </BaseLayout>
 
 <style>
-  .home-temp { padding-block: var(--space-5); }
-  h1 { font-size: var(--step-display); line-height: var(--leading-display); max-width: 14ch; }
-  .lead { margin-block: var(--space-3) var(--space-4); font-size: var(--step-lead); max-width: 40ch; }
-  h2 { font-size: var(--step-lead); margin-block: var(--space-5) var(--space-2); }
-  ul { padding-left: 1.2em; }
-  li { margin-bottom: var(--space-1); }
+  .build-lead { margin-block: var(--space-3) var(--space-5); }
+  :global(.home-nw) { margin-top: var(--gap-section); --nw-ground: var(--c-bg); }
 </style>

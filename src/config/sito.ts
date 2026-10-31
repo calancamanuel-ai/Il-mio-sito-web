@@ -64,11 +64,10 @@ export const servizi = [
 ] as const;
 
 /**
- * Prezzi di lancio dal piano ("a partire da", per i primi 5 clienti).
+ * Prezzi "a partire da", scritti direttamente (niente "prezzo di lancio").
  * Da confermare dopo i primi progetti (MANCANTI.md).
  */
 export const prezzi = {
-  clientiLancio: 5,
   valuta: 'EUR',
   voci: [
     { id: 'analisi', nome: 'Analisi iniziale', esempio: 'Call di 30–45 minuti e proposta scritta', da: 0, gratuita: true },

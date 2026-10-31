@@ -1,0 +1,20 @@
+---
+/**
+ * "La macchina del flusso": in fase 2 è il fotogramma finale statico (anche fallback del 3D).
+ * In fase 3 qui arriva la scena three.js come isola client:visible.
+ */
+import FlowFallback from '../three/FlowFallback.astro';
+import { macchina } from '../../content/home';
+---
+<section class="machine section" aria-labelledby="macchina">
+  <h2 id="macchina" class="visually-hidden">La macchina del flusso</h2>
+  <p class="statement">{macchina}</p>
+  <FlowFallback />
+  <p class="hint">Tocca un nodo per sapere cosa fa. L'esempio mostra un flusso tipico: richieste sparse in ingresso, un preventivo, una riga in tabella e una notifica in uscita.</p>
+</section>
+<style>
+  .machine { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .statement { font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem); line-height: 1.15; max-width: 30ch; }
+  .machine :global(.flow) { min-height: 46svh; font-family: var(--font-text); font-size: 1.0625rem; }
+  .hint { max-width: var(--measure); color: var(--c-ink-soft); }
+</style>

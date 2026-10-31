@@ -1,0 +1,29 @@
+---
+/** Come lavoro: quattro frasi a scala, poi cosa succede dopo il primo contatto. */
+import AfterContact from './AfterContact.astro';
+const scala = [
+  { l: 'Prima ci sentiamo venti minuti.', p: 'Mi racconti dove perdi tempo. Nessun impegno.' },
+  { l: 'Poi guardo come lavori.', p: 'Analisi gratuita e proposta scritta, con un prezzo fisso e i tempi.' },
+  { l: 'Vedi il prototipo funzionare.', p: 'Sui tuoi dati, prima di decidere se andare avanti.' },
+  { l: 'Lo consegno e resto lì.', p: 'Ti spiego come controllarlo; se cambia qualcosa nel tuo lavoro, il flusso cambia con te.' },
+];
+---
+<section class="stairs section" aria-labelledby="metodo">
+  <h2 id="metodo" class="section-title">Come lavoro</h2>
+  <ol>
+    {scala.map((s, i) => <li style={`--step:${i}`}><p class="stair">{s.l}</p><p class="stair-note">{s.p}</p></li>)}
+  </ol>
+  <div class="after-box"><AfterContact /></div>
+</section>
+<style>
+  .stairs ol { display: grid; gap: 3.5rem; margin: var(--space-5) 0 0; padding: 0; list-style: none; }
+  .stairs li { padding-left: calc(var(--step) * 14%); }
+  .stair { font-size: var(--step-head); font-weight: 300; line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.75rem; max-width: 18ch; }
+  .stairs li:last-child .stair { color: var(--c-action); }
+  .stair-note { max-width: 40ch; color: var(--c-ink-soft); }
+  .after-box { margin: var(--space-5) 0 0 42%; padding: var(--space-4); background: var(--c-surface); }
+  @media (max-width: 900px) {
+    .stairs li { padding-left: calc(var(--step) * 6vw); }
+    .after-box { margin-left: 0; padding: var(--space-3); }
+  }
+</style>
