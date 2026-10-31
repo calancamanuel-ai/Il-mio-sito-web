@@ -34,6 +34,10 @@ Il sito ha un solo compito: far prenotare una call conoscitiva di 20 minuti. Ogn
 
 Astro statico + TypeScript, Cloudflare Workers static assets (`wrangler.jsonc`), three.js vanilla, GSAP + ScrollTrigger + Lenis solo dove servono. Font e librerie da npm (`@fontsource`), mai da CDN. Niente Vite standalone, Netlify o Vercel. Prima di usare API o configurazioni di librerie e servizi, verifica la documentazione aggiornata.
 
+## Rete
+
+Se una richiesta di rete viene bloccata, non ripiegare in silenzio. Scrivimi subito il dominio bloccato e a cosa serve. Se puoi continuare con altro nel frattempo, fallo, ma segnala nel riepilogo di fase ogni lavoro fatto con un ripiego (documentazione non letta, immagini disegnate invece che cercate) per poterlo rifare dopo.
+
 ## Regole sulle skill
 
 Regia: pro-design. Direzione visiva: design-taste-frontend. 3D: sito-3d-premium e threejs-web-3d. Animazioni: gsap-scroll-animation. Test: playwright-cli. Revisione finale: web-design-guidelines. Quello che il piano fissa vince; per il resto vale la tabella "chi vince su cosa" di pro-design.
