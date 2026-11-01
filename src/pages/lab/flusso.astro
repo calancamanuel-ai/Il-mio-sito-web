@@ -3,19 +3,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FlowMachine from '../../components/three/FlowMachine.astro';
 const varianti = [
-  { id: 'v-vetro', look: 'vetro' as const, nome: 'Variante 1 · Vetro e luce', idea: 'Nodi di vetro satinato, connettori di metallo, un tubo di luce verde. Camera quasi frontale, bagliore lieve solo dentro la scena (su desktop). È la più scenografica.' },
-  { id: 'v-circuito', look: 'circuito' as const, nome: 'Variante 2 · Scheda elettronica', idea: 'Una scheda vista dall’alto: chip opachi con i piedini, piste verdi ad angolo retto, carte opache. Niente bagliore. È più tecnica, si collega alla mappa a circuito di "Chi sono" e costa meno al telefono.' },
+  { id: 'v-vetro', look: 'vetro' as const, nome: 'Vetro e luce (scelta)', idea: 'Nodi di vetro satinato, connettori di metallo, un tubo di luce verde, HDRI da studio di Poly Haven. Bagliore lieve solo dentro la scena e solo su desktop; su telefono vetro semplificato.' },
 ];
 const tappe = [0, 40, 70, 100];
 ---
-<BaseLayout title="Prova: la macchina del flusso" description="Due varianti di look per la scena 3D della home.">
-  <script is:inline slot="head">
-    // ?solo=vetro o ?solo=circuito: una sola variante, per misurarne il peso. Deciso prima del primo disegno.
-    (function () { var s = new URLSearchParams(location.search).get('solo'); if (s === 'vetro' || s === 'circuito') document.documentElement.dataset.solo = s; })();
-  </script>
+<BaseLayout title="Prova: la macchina del flusso" description="Prova isolata della scena 3D della home.">
   <section class="section lab-intro" aria-labelledby="titolo">
-    <h1 id="titolo">La macchina del flusso, due look</h1>
-    <p class="lead">Stessa scena e stessa coreografia, due materiali e due camere. Muovi il cursore per vedere le tappe (in home lo farà lo scroll) e tocca un nodo per sapere cosa fa.</p>
+    <h1 id="titolo">La macchina del flusso</h1>
+    <p class="lead">La scena da sola, per provarla. Muovi il cursore per vedere le tappe (in home in fase 4 lo farà lo scroll) e tocca un nodo per sapere cosa fa.</p>
   </section>
 
   {varianti.map((v) => (
@@ -82,7 +77,5 @@ const tappe = [0, 40, 70, 100];
   .stops button:hover { background: var(--c-line); }
   .stops .play { background: var(--c-action); color: var(--c-on-action); font-weight: 700; }
   .stats { color: var(--c-ink-soft); font-size: var(--step-small); }
-  :global(html[data-solo='vetro'] .variant:has([data-look='circuito'])),
-  :global(html[data-solo='circuito'] .variant:has([data-look='vetro'])) { display: none; }
   @media (max-width: 760px) { .variant-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); } }
 </style>

@@ -84,8 +84,7 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
   const bubble = g(new RoundedBoxGeometry(0.86, 0.46, 0.06, 3, 0.16));
   const strip = g(new THREE.BoxGeometry(0.62, 0.06, 0.012));
   const tab = g(new THREE.BoxGeometry(0.22, 0.22, 0.012));
-  const nodeGeo = look.board ? g(new RoundedBoxGeometry(0.72, 0.72, 0.16, 2, 0.03)) : g(new RoundedBoxGeometry(0.62, 0.62, 0.62, 4, 0.12));
-  const pinGeo = g(new THREE.BoxGeometry(0.07, 0.16, 0.03));
+  const nodeGeo = g(new RoundedBoxGeometry(0.62, 0.62, 0.62, 4, 0.12));
   const collarGeo = g(new THREE.CylinderGeometry(0.1, 0.1, 0.12, 24));
 
   // --- il caos: email, WhatsApp, PDF, fogli ---
@@ -113,19 +112,11 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     const mesh = new THREE.Mesh(nodeGeo, M.node);
     mesh.userData.index = i;
     grp.add(mesh);
-    if (look.board) {
-      for (let k = 0; k < 4; k++) for (const side of [-1, 1]) {
-        const pin = new THREE.Mesh(pinGeo, M.pin!);
-        pin.position.set(-0.24 + k * 0.16, side * 0.42, -0.02);
-        grp.add(pin);
-      }
-    } else {
-      for (const side of [-1, 1]) {
-        const c = new THREE.Mesh(collarGeo, M.connector);
-        c.rotation.z = Math.PI / 2;
-        c.position.x = side * 0.36;
-        grp.add(c);
-      }
+    for (const side of [-1, 1]) {
+      const c = new THREE.Mesh(collarGeo, M.connector);
+      c.rotation.z = Math.PI / 2;
+      c.position.x = side * 0.36;
+      grp.add(c);
     }
     root.add(grp);
     return { grp, mesh, u, v: i % 2 ? -0.18 : 0.18 };
@@ -142,45 +133,19 @@ export function createFlowScene(canvas: HTMLCanvasElement, lookId: LookId, opts:
     return { grp, v };
   });
 
-  // --- la linea di flusso (tubo luminoso o pista) ---
+  // --- la linea di flusso: un tubo di luce che passa dai nodi ---
   let track: THREE.Object3D | null = null;
   let path: THREE.Curve<THREE.Vector3> | null = null;
-  let board: THREE.Mesh | null = null;
 
   function build() {
     if (track) { root.remove(track); track.traverse((o) => { if ((o as THREE.Mesh).geometry) (o as THREE.Mesh).geometry.dispose(); }); }
     const pts = [P(-2.6, 0, 0), ...nodes.map((n) => P(n.u, n.v, 0)), P(2.6, 0, 0)];
-    if (look.tracks === 'tube') {
-      path = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
-      track = new THREE.Mesh(new THREE.TubeGeometry(path, 240, 0.05, 12, false), M.track);
-    } else {
-      const cp = new THREE.CurvePath<THREE.Vector3>();
-      const grp = new THREE.Group();
-      for (let i = 0; i < pts.length - 1; i++) {
-        const a = pts[i], b = pts[i + 1];
-        const mid = portrait ? new THREE.Vector3(b.x, a.y, 0) : new THREE.Vector3(a.x, b.y, 0);
-        for (const [s, e] of [[a, mid], [mid, b]] as const) {
-          const len = s.distanceTo(e);
-          if (len < 1e-3) continue;
-          cp.add(new THREE.LineCurve3(s.clone(), e.clone()));
-          const seg = new THREE.Mesh(new THREE.BoxGeometry(len + 0.09, 0.09, 0.02), M.track);
-          seg.position.copy(s).add(e).multiplyScalar(0.5);
-          seg.rotation.z = Math.atan2(e.y - s.y, e.x - s.x);
-          grp.add(seg);
-        }
-      }
-      path = cp;
-      track = grp;
-    }
+    path = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
+    track = new THREE.Mesh(new THREE.TubeGeometry(path, 240, 0.05, 12, false), M.track);
     root.add(track);
     nodes.forEach((n) => n.grp.position.copy(P(n.u, n.v, 0)));
     // in verticale i risultati si mettono in colonna sotto la catena
     outs.forEach((o, i) => o.grp.position.copy(portrait ? P(3.0 + i * 0.62, 0, 0) : P(3.55, o.v, 0)));
-    if (look.board) {
-      if (!board) { board = new THREE.Mesh(g(new THREE.PlaneGeometry(1, 1)), M.board!); root.add(board); }
-      board.scale.set(60, 60, 1);
-      board.position.set(0, 0, -0.62);
-    }
     fit();
   }
 

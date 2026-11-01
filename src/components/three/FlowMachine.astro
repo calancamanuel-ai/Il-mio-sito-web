@@ -7,8 +7,13 @@
  */
 import FlowFallback from './FlowFallback.astro';
 import type { LookId } from './flow-looks';
-interface Props { look: LookId; id: string }
-const { look, id } = Astro.props;
+interface Props {
+  look: LookId;
+  id: string;
+  /** In home: la coreografia parte da sola una volta quando la scena entra nello schermo. */
+  autoplay?: boolean;
+}
+const { look, id, autoplay = false } = Astro.props;
 /** HDRI da studio di Poly Haven (CC0), ridotto con tools/riduci-hdri.mjs. */
 const hdri = '/3d/studio_small_09_512.hdr.gz';
 const nodes = [
@@ -18,7 +23,7 @@ const nodes = [
   { label: 'Notifica', text: 'Ti avvisa sul telefono solo quando serve una tua decisione.' },
 ];
 ---
-<div class="fm" id={id} data-flow data-look={look} data-hdri={hdri} data-texts={JSON.stringify(nodes.map((n) => n.text))}>
+<div class="fm" id={id} data-flow data-look={look} data-hdri={hdri} data-autoplay={autoplay ? '' : undefined} data-texts={JSON.stringify(nodes.map((n) => n.text))}>
   <div class="fm-stage" hidden>
     <canvas class="fm-canvas" role="img" aria-label="Animazione: email, messaggi e documenti sparsi passano da quattro nodi (ricevi, leggi con Claude, archivia, notifica) e diventano un preventivo, una riga in tabella e una notifica."></canvas>
     <div class="fm-labels">
@@ -26,6 +31,7 @@ const nodes = [
     </div>
     <p class="fm-info" aria-live="polite" data-info></p>
   </div>
+  {autoplay && <button type="button" class="fm-replay" data-replay hidden>Rivedi il flusso</button>}
   <div class="fm-fallback"><FlowFallback /></div>
 </div>
 
@@ -51,6 +57,7 @@ const nodes = [
     };
     labels.forEach((b, i) => b.addEventListener('click', () => select(i)));
 
+    // si carica quando almeno un terzo della scena è visibile: su desktop non pesa sul primo caricamento
     const io = new IntersectionObserver(async ([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
@@ -58,7 +65,7 @@ const nodes = [
       await new Promise((r) => requestAnimationFrame(r)); // lascia respirare il thread prima di avviare WebGL
       stage.hidden = false;
       root.querySelector<HTMLElement>('.fm-fallback')!.hidden = true;
-      scene = createFlowScene(canvas, root.dataset.look as 'vetro' | 'circuito', {
+      scene = createFlowScene(canvas, root.dataset.look as 'vetro', {
         orbit: matchMedia('(pointer: fine)').matches,
         hdri: root.dataset.hdri,
         onSelect: select,
@@ -70,15 +77,31 @@ const nodes = [
         }),
       });
       (root as HTMLElement & { flow?: Scene }).flow = scene;
+      if (root.hasAttribute('data-autoplay')) {
+        // provvisorio fino alla fase 4 (lì la guiderà lo scroll): 0 -> 1 in 7 secondi, una volta
+        let raf = 0;
+        const play = () => {
+          cancelAnimationFrame(raf);
+          const t0 = performance.now();
+          const step = (t: number) => { const p = Math.min(1, (t - t0) / 7000); scene?.setProgress(p); if (p < 1) raf = requestAnimationFrame(step); };
+          raf = requestAnimationFrame(step);
+        };
+        // parte quando almeno metà della scena è visibile, non appena la pagina si carica
+        const seen = new IntersectionObserver(([en]) => { if (en.isIntersecting) { seen.disconnect(); play(); } }, { threshold: 0.5 });
+        seen.observe(stage);
+        const replay = root.querySelector<HTMLButtonElement>('[data-replay]');
+        if (replay) { replay.hidden = false; replay.addEventListener('click', play); }
+      }
       root.dispatchEvent(new CustomEvent('flow:ready', { detail: scene }));
-    }, { rootMargin: '300px 0px' });
+    }, { threshold: 0.33 });
     io.observe(root);
   });
 </script>
 
 <style>
   .fm { position: relative; }
-  .fm-stage { position: relative; aspect-ratio: 16 / 7; min-height: 340px; background: var(--c-surface); overflow: hidden; }
+  /* altezza flessibile, mai proporzioni fisse + altezza minima: allargherebbero la scena oltre la pagina */
+  .fm-stage { position: relative; width: 100%; height: clamp(340px, 50svh, 620px); background: var(--c-surface); overflow: hidden; }
   .fm-canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: pointer; }
   .fm-labels { position: absolute; inset: 0; pointer-events: none; }
   .fm-label {
@@ -99,10 +122,12 @@ const nodes = [
   .fm-label[data-on='false'] { opacity: 0.35; }
   .fm-label[data-on='true'] { color: var(--c-ink); }
   .fm-label[aria-pressed='true'] { background: var(--c-action); color: var(--c-on-action); opacity: 1; }
+  .fm-replay { display: block; margin: var(--space-2) 0 0 auto; min-height: var(--tap); padding: 0 1rem; border: 0; background: var(--c-surface); color: var(--c-ink); font: inherit; cursor: pointer; }
+  .fm-replay:hover { background: var(--c-line); }
   .fm-info { position: absolute; left: var(--space-3); bottom: var(--space-3); max-width: 34ch; min-height: 1.5em; padding: 0; }
   .fm-info:not(:empty) { padding: 0.6rem 0.8rem; background: var(--c-bg); }
   @media (max-width: 760px) {
-    .fm-stage { aspect-ratio: 3 / 5; min-height: 0; }
+    .fm-stage { height: auto; aspect-ratio: 3 / 5; }
     .fm-label { font-size: 0.8125rem; }
   }
 </style>

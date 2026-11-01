@@ -1,20 +1,17 @@
 /**
- * I due look proposti per "La macchina del flusso".
- * Stessa coreografia, materiali e camera diversi.
+ * Il look di "La macchina del flusso": "Vetro e luce", scelto da Manuel a fine fase 3
+ * (la variante "Scheda elettronica" resta nella storia git).
  * Colori dalla palette Terminale: tubi = accento (#4ade80), nodi = secondario (#7dd3fc).
  */
 import * as THREE from 'three';
 
-export type LookId = 'vetro' | 'circuito';
+export type LookId = 'vetro';
 
 export interface Look {
   id: LookId;
   /** Inclinazione della camera in gradi (0 = frontale, 90 = dall'alto). */
   tilt: number;
   bloom: boolean;
-  /** Tubi tondi luminosi o piste piatte ad angolo retto. */
-  tracks: 'tube' | 'pcb';
-  board: boolean;
   /** lite = telefono: niente trasparenza calcolata (costa un secondo rendering della scena). */
   materials: (lite: boolean) => {
     node: THREE.Material;
@@ -25,8 +22,6 @@ export interface Look {
     wa: THREE.Material;
     pdf: THREE.Material;
     out: THREE.Material;
-    board?: THREE.Material;
-    pin?: THREE.Material;
   };
   envIntensity: number;
   lights: (scene: THREE.Scene) => void;
@@ -41,8 +36,6 @@ export const looks: Record<LookId, Look> = {
     id: 'vetro',
     tilt: 14,
     bloom: true,
-    tracks: 'tube',
-    board: false,
     envIntensity: 0.85,
     materials: (lite) => ({
       node: lite
@@ -64,32 +57,6 @@ export const looks: Record<LookId, Look> = {
       const rim = new THREE.DirectionalLight(BLUE, 1.4);
       rim.position.set(-5, 2, -4);
       scene.add(key, rim, new THREE.AmbientLight(0x1a2a22, 0.6));
-    },
-  },
-  /** Variante 2: scheda elettronica vista dall'alto, chip opachi e piste verdi. */
-  circuito: {
-    id: 'circuito',
-    tilt: 62,
-    bloom: false,
-    tracks: 'pcb',
-    board: true,
-    envIntensity: 1.1,
-    materials: () => ({
-      node: new THREE.MeshStandardMaterial({ color: 0x2a3a32, roughness: 0.5, metalness: 0.2 }),
-      nodeOn: new THREE.MeshStandardMaterial({ color: 0x1b2420, roughness: 0.5, metalness: 0.2, emissive: new THREE.Color(BLUE), emissiveIntensity: 0.35 }),
-      connector: new THREE.MeshStandardMaterial({ color: 0xc8b27a, metalness: 1, roughness: 0.38 }),
-      track: new THREE.MeshStandardMaterial({ color: 0x1d4a2f, emissive: new THREE.Color(GREEN), emissiveIntensity: 0.12, roughness: 0.6 }),
-      paper: new THREE.MeshStandardMaterial({ color: 0xdfe7e1, roughness: 0.9 }),
-      wa: new THREE.MeshStandardMaterial({ color: 0x3a8a5a, roughness: 0.85 }),
-      pdf: new THREE.MeshStandardMaterial({ color: 0x9a4646, roughness: 0.85 }),
-      out: new THREE.MeshStandardMaterial({ color: 0xe7efe9, roughness: 0.8 }),
-      board: new THREE.MeshStandardMaterial({ color: 0x17241c, roughness: 0.85 }),
-      pin: new THREE.MeshStandardMaterial({ color: 0xc8b27a, metalness: 1, roughness: 0.4 }),
-    }),
-    lights: (scene) => {
-      const key = new THREE.DirectionalLight(0xffffff, 2.4);
-      key.position.set(-3, 8, 4);
-      scene.add(key, new THREE.HemisphereLight(0xdfe7e1, 0x0a0d0b, 0.7));
     },
   },
 };
