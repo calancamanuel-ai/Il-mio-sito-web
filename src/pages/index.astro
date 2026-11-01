@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/sections/HomeHero.astro';
 import MachineSection from '../components/sections/MachineSection.astro';
-import MondayList from '../components/sections/MondayList.astro';
+import MondayScene from '../components/sections/MondayScene.astro';
 import ServiceClaims from '../components/sections/ServiceClaims.astro';
 import BuildAutomation from '../components/demos/BuildAutomation.astro';
 import MethodStairs from '../components/sections/MethodStairs.astro';
@@ -10,13 +10,15 @@ import PriceSection from '../components/sections/PriceSection.astro';
 import NotWorthIt from '../components/sections/NotWorthIt.astro';
 import Faq from '../components/sections/Faq.astro';
 import CloseInverted from '../components/sections/CloseInverted.astro';
+import FlowTrack from '../components/sections/FlowTrack.astro';
 import { brand } from '../config/sito';
 import { faq } from '../content/home';
 ---
 <BaseLayout title="Automazioni, software con Claude e siti web" description={`${brand.promessa} Automazioni n8n, software su misura con Claude e siti web, da Persiceto, Bologna e Modena o da remoto.`}>
   <HomeHero />
   <MachineSection />
-  <MondayList />
+  <FlowTrack>
+  <MondayScene />
   <ServiceClaims />
 
   <section class="section" id="costruisci" aria-labelledby="costruisci-h">
@@ -29,6 +31,7 @@ import { faq } from '../content/home';
   <PriceSection />
   <NotWorthIt class="home-nw" />
   <Faq items={faq} />
+  </FlowTrack>
   <CloseInverted />
 </BaseLayout>
 

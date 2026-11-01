@@ -8,14 +8,16 @@ import { contatti } from '../../config/sito';
 import { hero } from '../../content/home';
 ---
 <section class="hero" aria-labelledby="titolo">
-  <h1 id="titolo" class="sentence">
-    <span class="w">Caos</span>
+  <h1 id="titolo">
+    <span class="visually-hidden">Caos che diventa flusso.</span>
+    <span class="sentence" aria-hidden="true">
+    <span class="w" data-decode>Caos</span>
     <span class="strip" data-ui aria-hidden="true">
       <span class="strip-line"></span>
       <span class="strip-node">Ricevi</span><span class="strip-node">Leggi</span><span class="strip-node">Archivia</span><span class="strip-node">Notifica</span>
     </span>
-    <span class="visually-hidden">che diventa</span>
-    <span class="w">flusso.</span>
+    <span class="w" data-decode>flusso.</span>
+    </span>
   </h1>
   <div class="hero-foot">
     <p class="hero-sub">{hero.sottotitolo}</p>
@@ -25,6 +27,31 @@ import { hero } from '../../content/home';
     </div>
   </div>
 </section>
+
+<script>
+  // Decodifica decorativa del titolo, una volta per visita: larghezza fissa (niente salti), < 0,7 s.
+  // Il testo vero è nell'h1 (visually-hidden) e i lettori di schermo lo leggono subito.
+  const words = document.querySelectorAll<HTMLElement>('[data-decode]');
+  let first = true;
+  try { first = !sessionStorage.getItem('titolo-visto'); sessionStorage.setItem('titolo-visto', '1'); } catch { /* storage non disponibile */ }
+  if (first && words.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const glyphs = 'ABCDEFGHKLMNOPRSTUVZ01<>/#';
+    words.forEach((el) => {
+      const final = el.textContent || '';
+      el.style.width = `${el.getBoundingClientRect().width}px`;
+      el.classList.add('is-decoding');
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / 650);
+        const shown = Math.floor(p * final.length);
+        el.textContent = final.split('').map((c, i) => (i < shown || c === '.') ? c : glyphs[(Math.random() * glyphs.length) | 0]).join('');
+        if (p < 1) requestAnimationFrame(tick);
+        else { el.textContent = final; el.classList.remove('is-decoding'); el.style.width = ''; }
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+</script>
 
 <style>
   .hero { display: grid; gap: var(--space-5); padding: clamp(3.5rem, 11vh, 8rem) var(--margin) 0; }
@@ -37,7 +64,8 @@ import { hero } from '../../content/home';
     line-height: 1;
     letter-spacing: -0.03em;
   }
-  .w { white-space: nowrap; }
+  .w { display: inline-block; white-space: nowrap; }
+  .w.is-decoding { overflow: hidden; font-family: var(--font-mono); font-weight: 400; color: var(--c-action); }
   .strip {
     position: relative;
     flex: 1;

@@ -2,7 +2,7 @@
 
 Tutti i valori stanno in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"`. Finché c'è almeno una voce **bloccante**, il sito resta su `*.workers.dev` con `noindex`.
 
-Ultimo aggiornamento: fine fase 3 (1 novembre 2026). Vedi anche `docs/VERIFICHE.md`.
+Ultimo aggiornamento: fine fase 4 (1 novembre 2026). Vedi anche `docs/VERIFICHE.md`.
 
 ## Bloccano il lancio
 
@@ -44,7 +44,7 @@ Ultimo aggiornamento: fine fase 3 (1 novembre 2026). Vedi anche `docs/VERIFICHE.
 | Periodo di conservazione delle richieste, servizi usati per n8n, email e calendario | `/privacy` | testo in `src/pages/privacy.astro` |
 | Verifica dei casi d'uso d'esempio (problemi e stime realistici per i tuoi settori) | `/casi-d-uso` | testo in `src/pages/casi-d-uso.astro` |
 | Altre foto e carte storiche del territorio: oggi ci sono 4 immagini d'archivio (Met, Internet Archive); Wikimedia limita le richieste | Chi sono, home, contatti | `src/content/archivio.ts` |
-| Prova del 3D su un telefono vero (le misure sono con grafica emulata) | Home ("La macchina del flusso") e `/lab/flusso` | — |
+| Prova su un telefono vero del 3D e delle scene allo scroll (le misure sono con grafica emulata) | Home, Siti web | — |
 | Profilo LinkedIn (facoltativo) | Footer | `contatti.linkedin` |
 | PEC (facoltativa) | Footer | `datiLegali.pec` |
 | Indirizzo `*.workers.dev` assegnato | README, test | `sito.urlProvvisorio` |

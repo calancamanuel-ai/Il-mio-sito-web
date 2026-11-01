@@ -19,9 +19,10 @@ const msgs = [
   <figcaption class="visually-hidden">Esempio: un cliente chiede un prezzo su WhatsApp e riceve risposta e appuntamento in automatico. Attività e prezzo inventati.</figcaption>
 </figure>
 <style>
-  .chat { margin: 0; background: #0e1611; color: var(--c-ink); min-height: 300px; }
+  /* interfaccia di WhatsApp in tema scuro: colori fissi, uguali in entrambi i temi del sito */
+  .chat { margin: 0; background: #0e1611; color: #e7efe9; min-height: 300px; }
   .chat-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.25rem 1rem; padding: 0.75rem 1rem; background: #1b2a20; font-weight: 600; }
-  .tag { color: var(--c-placeholder); font-weight: 400; font-size: 0.875rem; }
+  .tag { color: #fbbf24; font-weight: 400; font-size: 0.875rem; }
   .msgs { display: grid; gap: 0.6rem; margin: 0; padding: 1rem; list-style: none; }
   .msg { max-width: 82%; padding: 0.6rem 0.8rem; line-height: 1.35; }
   .msg--c { justify-self: start; background: #22302a; }

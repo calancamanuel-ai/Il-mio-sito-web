@@ -1,17 +1,60 @@
 ---
+/** Pagina 404 come un "workflow rotto": un nodo in errore, la linea spezzata, e la strada per ripartire. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+const vie = [
+  { href: '/automazioni', label: 'Automazioni' },
+  { href: '/software', label: 'Software AI' },
+  { href: '/siti-web', label: 'Siti web' },
+  { href: '/contatti', label: 'Contatti' },
+];
 ---
-<BaseLayout title="Pagina non trovata" description="Questa pagina non esiste.">
+<BaseLayout title="Pagina non trovata" description="Questa pagina non esiste: il flusso si è interrotto.">
   <section class="section nf" aria-labelledby="titolo">
-    <p class="mono err">errore · nodo "pagina" non trovato</p>
+    <figure class="broken" data-ui aria-label="Un flusso di tre passaggi: il secondo è in errore e la linea è interrotta">
+      <span class="b-line b-line--a" aria-hidden="true"></span>
+      <span class="b-line b-line--b" aria-hidden="true"></span>
+      <span class="b-spark" aria-hidden="true"></span>
+      <span class="b-node"><span class="mono">Ricevi</span><span class="b-state mono">ok</span></span>
+      <span class="b-node b-node--err"><span class="mono">Trova pagina</span><span class="b-state mono">errore 404</span></span>
+      <span class="b-node b-node--off"><span class="mono">Mostra</span><span class="b-state mono">in attesa</span></span>
+    </figure>
     <h1 id="titolo">Questo flusso si è rotto.</h1>
-    <p class="lead">La pagina che cerchi non c'è, o ha cambiato indirizzo. Succede anche ai sistemi migliori: ripartiamo dalla home.</p>
-    <ButtonLink href="/">Torna alla home</ButtonLink>
+    <p class="lead">La pagina che cerchi non c'è, o ha cambiato indirizzo. Si riparte da qui.</p>
+    <div class="nf-actions">
+      <ButtonLink href="/">Riparti dalla home</ButtonLink>
+      <ul class="nf-links">{vie.map((v) => <li><a href={v.href}>{v.label}</a></li>)}</ul>
+    </div>
   </section>
 </BaseLayout>
 <style>
-  .nf { display: grid; gap: var(--space-3); justify-items: start; padding-top: clamp(3rem, 10vh, 7rem); }
-  .err { color: var(--c-error); }
+  .nf { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3) var(--space-5); align-items: center; justify-items: start; padding-top: clamp(3rem, 10vh, 7rem); }
+  .nf > :not(.broken) { grid-column: 1; }
+  .nf .broken { grid-column: 2; grid-row: 1 / 5; }
+  @media (max-width: 900px) { .nf { grid-template-columns: minmax(0, 1fr); } .nf > *, .nf .broken { grid-column: 1; grid-row: auto; } }
   h1 { font-size: var(--step-head); font-weight: 300; line-height: 1; max-width: 14ch; }
+  .broken {
+    position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 6vw, 5rem);
+    width: 100%; margin: 0; padding: var(--space-4) var(--space-3); background: var(--c-surface);
+  }
+  .b-node { position: relative; z-index: 1; display: grid; gap: 0.3rem; padding: 0.9rem 1rem; background: var(--c-bg); }
+  .b-state { color: var(--c-ok); font-size: 0.875rem; }
+  .b-node--err { outline: 3px solid var(--c-error); outline-offset: -3px; animation: shake 2.4s ease-in-out 0.6s infinite; }
+  .b-node--err .b-state { color: var(--c-error); }
+  .b-node--off { opacity: 0.55; }
+  .b-node--off .b-state { color: var(--c-ink-soft); }
+  /* linea piena 3 px: intera fino al nodo in errore, poi spezzata */
+  .b-line { position: absolute; top: 50%; height: 3px; background: var(--c-action); }
+  .b-line--a { left: 10%; width: 34%; }
+  .b-line--b { left: 58%; width: 26%; background: var(--c-line); }
+  .b-spark { position: absolute; top: calc(50% - 5px); left: 64%; width: 10px; height: 10px; background: var(--c-error); animation: spark 1.2s steps(2) infinite; }
+  @keyframes spark { 50% { opacity: 0; transform: translate(6px, -6px) scale(0.6); } }
+  @keyframes shake { 0%, 88%, 100% { transform: none; } 90% { transform: translateX(-4px); } 94% { transform: translateX(4px); } }
+  .nf-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+  .nf-links { display: flex; flex-wrap: wrap; gap: 0 var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .nf-links a { display: inline-block; padding-block: 0.6rem; }
+  @media (max-width: 600px) {
+    .broken { grid-template-columns: minmax(0, 1fr); }
+    .b-line, .b-spark { display: none; }
+  }
 </style>

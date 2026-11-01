@@ -7,6 +7,7 @@ import MockOfficina from '../components/ui/MockOfficina.astro';
 import MockStudio from '../components/ui/MockStudio.astro';
 import MockAgriturismo from '../components/ui/MockAgriturismo.astro';
 import PriceSection from '../components/sections/PriceSection.astro';
+import DeviceShowcase from '../components/demos/DeviceShowcase.astro';
 import Faq from '../components/sections/Faq.astro';
 import CloseInverted from '../components/sections/CloseInverted.astro';
 
@@ -25,6 +26,8 @@ const faq = [
   <section class="section" aria-labelledby="progetti">
     <h2 id="progetti" class="section-title">Tre progetti, tre stili</h2>
     <p class="lead styles-line">Questo sito mostra cosa so fare. Il tuo avrà lo stile giusto per la tua attività, anche sobrio e classico.</p>
+    <DeviceShowcase />
+    <p class="cases-intro">Sotto, per ogni progetto: il brief, le scelte di design e cosa fa il sito.</p>
 
     <div class="cases">
       <CaseStudy id="caso-studio" nome="Studio Ravaglia Fantoni" settore="Studio di commercialisti"
@@ -55,5 +58,6 @@ const faq = [
   <CloseInverted title="Un sito che lavora di notte." />
 </BaseLayout>
 <style>
-  .styles-line { margin-block: var(--space-3) var(--space-5); max-width: 46ch; }
+  .styles-line { margin-block: var(--space-3) var(--space-4); max-width: 46ch; }
+  .cases-intro { margin-block: var(--space-4) var(--space-5); color: var(--c-ink-soft); }
 </style>

@@ -98,8 +98,8 @@ const outputs = [
     rotate: calc((var(--i) - 1.5) * 3.5deg);
     translate: calc((sin(var(--i) * 1.7rad) + 1) * 0.8rem) 0;
   }
-  .doc--wa { background: var(--flow-wa, #1f3b2e); }
-  .doc--pdf { background: var(--flow-pdf, #3a2330); }
+  .doc--wa { background: var(--flow-wa, var(--c-tint-wa)); }
+  .doc--pdf { background: var(--flow-pdf, var(--c-tint-pdf)); }
   .doc-title { font-weight: 700; }
   .doc-meta {
     color: var(--c-ink-soft);

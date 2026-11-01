@@ -1,0 +1,25 @@
+---
+/** "Il lunedì mattina", scena della home: gli interruttori si accendono scorrendo, a destra i mestieri di Bologna. */
+import MondayToggles from '../demos/MondayToggles.astro';
+import ArchiveFigure from '../ui/ArchiveFigure.astro';
+---
+<section class="monday-scene section" aria-labelledby="lunedi" data-scene="lunedi">
+  <h2 id="lunedi" class="section-title">Il lunedì mattina</h2>
+  <p class="lead hint">Accendi gli interruttori delle attività che vorresti non fare più.</p>
+  <div class="monday-grid">
+    <MondayToggles onAtLoad={[]} />
+    <ArchiveFigure id="curtiMercato" class="monday-fig" />
+  </div>
+</section>
+<style>
+  .hint { margin-top: var(--space-2); }
+  .monday-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); align-items: start; margin-top: var(--space-4); }
+  .monday-grid :global(.monday-list) { margin: 0; }
+  .monday-grid :global(.band) { padding-inline: var(--space-3); }
+  .monday-grid :global(.band-text) { font-size: clamp(1.375rem, 1rem + 1.3vw, 2.125rem); }
+  .monday-grid :global(.monday-fig) { position: sticky; top: 6rem; }
+  @media (max-width: 900px) {
+    .monday-grid { grid-template-columns: minmax(0, 1fr); }
+    .monday-grid :global(.monday-fig) { position: static; }
+  }
+</style>

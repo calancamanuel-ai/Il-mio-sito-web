@@ -77,20 +77,26 @@ const nodes = [
         }),
       });
       (root as HTMLElement & { flow?: Scene }).flow = scene;
-      if (root.hasAttribute('data-autoplay')) {
-        // provvisorio fino alla fase 4 (lì la guiderà lo scroll): 0 -> 1 in 7 secondi, una volta
+      // con le animazioni attive (fase 4) la coreografia la guida lo scroll: si riparte dal punto in cui è
+      if (root.dataset.progress) scene.setProgress(Number(root.dataset.progress));
+      const scrollDriven = () => document.documentElement.classList.contains('motion');
+      if (root.hasAttribute('data-autoplay') && !scrollDriven()) {
+        // senza animazioni di scroll (o finché non sono caricate): 0 -> 1 in 7 secondi, una volta
+        const replayBtn = root.querySelector<HTMLButtonElement>('[data-replay]');
         let raf = 0;
         const play = () => {
           cancelAnimationFrame(raf);
           const t0 = performance.now();
-          const step = (t: number) => { const p = Math.min(1, (t - t0) / 7000); scene?.setProgress(p); if (p < 1) raf = requestAnimationFrame(step); };
+          const step = (t: number) => {
+            if (scrollDriven()) { replayBtn?.setAttribute('hidden', ''); return; } // lo scroll ha preso il comando
+            const p = Math.min(1, (t - t0) / 7000); scene?.setProgress(p); if (p < 1) raf = requestAnimationFrame(step);
+          };
           raf = requestAnimationFrame(step);
         };
         // parte quando almeno metà della scena è visibile, non appena la pagina si carica
         const seen = new IntersectionObserver(([en]) => { if (en.isIntersecting) { seen.disconnect(); play(); } }, { threshold: 0.5 });
         seen.observe(stage);
-        const replay = root.querySelector<HTMLButtonElement>('[data-replay]');
-        if (replay) { replay.hidden = false; replay.addEventListener('click', play); }
+        if (replayBtn) { replayBtn.hidden = false; replayBtn.addEventListener('click', play); }
       }
       root.dispatchEvent(new CustomEvent('flow:ready', { detail: scene }));
     }, { threshold: 0.33 });
@@ -124,6 +130,8 @@ const nodes = [
   .fm-label[aria-pressed='true'] { background: var(--c-action); color: var(--c-on-action); opacity: 1; }
   .fm-replay { display: block; margin: var(--space-2) 0 0 auto; min-height: var(--tap); padding: 0 1rem; border: 0; background: var(--c-surface); color: var(--c-ink); font: inherit; cursor: pointer; }
   .fm-replay:hover { background: var(--c-line); }
+  /* con le animazioni di scroll la coreografia la guida lo scroll: niente pulsante */
+  :global(html.motion) .fm-replay { display: none; }
   .fm-info { position: absolute; left: var(--space-3); bottom: var(--space-3); max-width: 34ch; min-height: 1.5em; padding: 0; }
   .fm-info:not(:empty) { padding: 0.6rem 0.8rem; background: var(--c-bg); }
   @media (max-width: 760px) {

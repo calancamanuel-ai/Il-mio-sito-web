@@ -1,0 +1,80 @@
+---
+/**
+ * Prima / dopo con cursore: a sinistra le richieste come arrivano (sparse), a destra le stesse
+ * richieste dopo il flusso (in tabella). Il cursore è un vero <input type="range">:
+ * funziona con dito, mouse e tastiera. Dati d'esempio, dichiarati.
+ */
+const richieste = [
+  { da: 'Email', chi: 'M. Rossi', cosa: 'Preventivo caldaia', quando: 'lun 07:42' },
+  { da: 'WhatsApp', chi: 'Ferramenta Bassi', cosa: 'Ordine 40 pannelli', quando: 'lun 08:05' },
+  { da: 'Sito', chi: 'L. Neri', cosa: 'Appuntamento sopralluogo', quando: 'lun 08:31' },
+  { da: 'Telefono', chi: 'Studio Gallo', cosa: 'Richiamare per fattura', quando: 'lun 09:10' },
+];
+---
+<figure class="ba" data-ba data-ui>
+  <div class="ba-stage">
+    <div class="ba-before" aria-hidden="true">
+      <p class="ba-tag mono">prima</p>
+      <div class="ba-mess">
+        <span class="m1">RE: RE: preventivo?? (3)</span>
+        <span class="m2">"mi richiama quando può"</span>
+        <span class="m3">post-it: Ferramenta 40 pz</span>
+        <span class="m4">modulo sito: sopralluogo</span>
+        <span class="m5">fattura_def_DEF.pdf</span>
+        <span class="m6">Vocale 0:47</span>
+      </div>
+    </div>
+    <div class="ba-after" data-ba-after>
+      <p class="ba-tag mono">dopo</p>
+      <table>
+        <caption class="visually-hidden">Le stesse richieste, ordinate dal flusso (esempio)</caption>
+        <thead><tr><th scope="col">Da</th><th scope="col">Chi</th><th scope="col">Cosa</th><th scope="col">Quando</th></tr></thead>
+        <tbody>{richieste.map((r) => <tr><td class="mono">{r.da}</td><td>{r.chi}</td><td>{r.cosa}</td><td class="mono">{r.quando}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <span class="ba-handle" aria-hidden="true"></span>
+  </div>
+  <label class="ba-range">
+    <span class="visually-hidden">Sposta per confrontare prima e dopo</span>
+    <input type="range" min="0" max="100" value="50" data-ba-range />
+  </label>
+  <figcaption>Le stesse quattro richieste di un lunedì d'esempio: come arrivano, e come le trovi dopo il flusso.</figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((root) => {
+    const range = root.querySelector<HTMLInputElement>('[data-ba-range]')!;
+    const set = () => root.style.setProperty('--ba', `${range.value}%`);
+    range.addEventListener('input', set);
+    set();
+  });
+</script>
+
+<style>
+  .ba { --ba: 50%; margin: 0; display: grid; gap: var(--space-2); }
+  .ba-stage { position: relative; min-height: 340px; overflow: hidden; background: var(--c-surface); }
+  .ba-before, .ba-after { position: absolute; inset: 0; padding: var(--space-3); }
+  .ba-after { background: var(--c-bg); clip-path: inset(0 0 0 var(--ba)); }
+  .ba-tag { color: var(--c-ink-soft); margin-bottom: var(--space-2); }
+  .ba-after .ba-tag { text-align: right; }
+  .ba-mess { position: relative; height: 260px; }
+  .ba-mess span { position: absolute; padding: 0.5rem 0.75rem; background: var(--c-bg); color: var(--c-ink); white-space: nowrap; }
+  .m1 { left: 4%; top: 6%; rotate: -4deg; }
+  .m2 { left: 30%; top: 30%; rotate: 3deg; background: var(--c-tint-wa) !important; }
+  .m3 { left: 2%; top: 52%; rotate: -2deg; background: #f2d36b !important; color: #2a2205 !important; }
+  .m4 { left: 42%; top: 64%; rotate: 5deg; }
+  .m5 { left: 18%; top: 80%; rotate: -6deg; background: var(--c-tint-pdf) !important; }
+  .m6 { left: 55%; top: 10%; rotate: 2deg; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.55rem 0.5rem; text-align: left; border-bottom: 2px solid var(--c-line); }
+  th { color: var(--c-ink-soft); font-weight: 400; }
+  .ba-handle { position: absolute; top: 0; bottom: 0; left: var(--ba); width: 3px; translate: -1.5px 0; background: var(--c-action); pointer-events: none; }
+  .ba-range input { width: 100%; min-height: var(--tap); accent-color: var(--c-action); cursor: ew-resize; }
+  figcaption { color: var(--c-ink-soft); font-size: var(--step-small); }
+  @media (max-width: 600px) {
+    .ba-stage { min-height: 460px; }
+    th:nth-child(1), td:nth-child(1), th:nth-child(4), td:nth-child(4) { display: none; }
+    th, td { padding: 0.45rem 0.35rem; font-size: 0.9375rem; }
+    .ba-mess span { font-size: 0.9375rem; }
+  }
+</style>

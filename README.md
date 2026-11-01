@@ -61,3 +61,9 @@ node tools/riduci-hdri.mjs studio_small_09_1k.hdr public/3d/studio_small_09_512.
 ```
 
 Immagini d'archivio: in `src/assets/archivio/`, con fonte e licenza in `src/content/archivio.ts` (crediti nel footer).
+
+## Movimento (fase 4)
+
+GSAP 3.15 + ScrollTrigger e Lenis 1.3.27 (npm). Si caricano dopo il primo disegno e solo se il movimento non è ridotto (`src/layouts/BaseLayout.astro` → `src/scripts/motion.ts`): il JavaScript iniziale resta sotto i 50 KB. Scene in `src/scripts/motion-scenes.ts`, entrate delle sezioni in `src/scripts/motion-enter.ts`.
+
+Tema giorno/notte: segue il sistema; `?tema=chiaro` o `?tema=scuro` nell'indirizzo lo forzano (utile per i test).

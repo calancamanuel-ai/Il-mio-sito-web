@@ -1,42 +1,89 @@
 ---
 /**
  * Mappa della zona di partenza come circuito stampato (schema non in scala).
- * Le piste escono dai bordi: si parte da qui, non è un confine. Il tap sui paesi arriva in fase 4.
+ * Le piste escono dai bordi: si parte da qui, non è un confine.
+ * Interazione: tocca un paese (sulla mappa o nei pulsanti sotto) e si accende la sua pista da Persiceto.
+ * Con le animazioni attive le piste si disegnano una dopo l'altra (motion-scenes.ts).
  */
 const towns = [
-  { n: 'San Giovanni in Persiceto', x: 527, y: 192, main: true },
-  { n: 'Bologna', x: 782, y: 420 },
-  { n: 'Modena', x: 92, y: 176 },
-  { n: 'Crevalcore', x: 459, y: 70 },
-  { n: "Sant'Agata Bolognese", x: 400, y: 160 },
-  { n: 'Cento', x: 697, y: 56 },
-  { n: 'Castelfranco Emilia', x: 289, y: 272 },
-  { n: 'Anzola dell’Emilia', x: 560, y: 336 },
+  { id: 'persiceto', n: 'San Giovanni in Persiceto', x: 527, y: 192, main: true },
+  { id: 'bologna', n: 'Bologna', x: 782, y: 420 },
+  { id: 'modena', n: 'Modena', x: 92, y: 176 },
+  { id: 'crevalcore', n: 'Crevalcore', x: 459, y: 70 },
+  { id: 'santagata', n: "Sant'Agata Bolognese", x: 400, y: 160 },
+  { id: 'cento', n: 'Cento', x: 697, y: 56 },
+  { id: 'castelfranco', n: 'Castelfranco Emilia', x: 289, y: 272 },
+  { id: 'anzola', n: 'Anzola dell’Emilia', x: 560, y: 336 },
 ];
 const p = towns[0];
 const track = (t: { x: number; y: number }) => `M${p.x} ${p.y} H${(p.x + t.x) / 2} V${t.y} H${t.x}`;
 ---
-<figure class="map" data-ui>
+<figure class="map" data-ui data-circuit-map>
   <svg viewBox="0 0 880 480" role="img" aria-labelledby="map-title">
     <title id="map-title">Schema della zona: San Giovanni in Persiceto al centro, collegata a Bologna, Modena e ai paesi vicini; le piste continuano oltre il bordo.</title>
-    <rect width="880" height="480" style="fill: var(--c-surface)" />
-    <g fill="none" stroke-width="3" style="stroke: var(--c-line)">
+    <rect width="880" height="480" class="m-ground" />
+    <g class="m-edge" fill="none" stroke-width="3">
       <path d="M782 420 H880" /><path d="M92 176 H0" /><path d="M697 56 V0" /><path d="M782 420 V480" /><path d="M289 272 V480" />
     </g>
-    <g fill="none" stroke-width="3" style="stroke: var(--c-action)">
-      {towns.slice(1).map((t) => <path d={track(t)} />)}
+    <g fill="none" stroke-width="3">
+      {towns.slice(1).map((t) => <path class="m-track" data-track={t.id} d={track(t)} pathLength="1" stroke-dasharray="1" />)}
     </g>
     {towns.map((t) => (
-      <g>
-        <rect x={t.x - (t.main ? 14 : 9)} y={t.y - (t.main ? 14 : 9)} width={t.main ? 28 : 18} height={t.main ? 28 : 18} style={`fill: ${t.main ? 'var(--c-action)' : 'var(--c-accent)'}`} />
-        <text x={t.x + (t.x > 700 ? -16 : 16)} y={t.y - 16} text-anchor={t.x > 700 ? 'end' : 'start'} font-size="17" style="fill: var(--c-ink); font-family: var(--font-mono)">{t.n}</text>
+      <g class:list={['m-town', { 'm-town--main': t.main }]} data-town={t.id} data-name={t.n} tabindex="-1">
+        <rect class="m-hit" x={t.x - 30} y={t.y - 30} width="60" height="60" />
+        <rect class="m-pad" x={t.x - (t.main ? 14 : 9)} y={t.y - (t.main ? 14 : 9)} width={t.main ? 28 : 18} height={t.main ? 28 : 18} />
+        <text x={t.x + (t.x > 700 ? -16 : 16)} y={t.y - 16} text-anchor={t.x > 700 ? 'end' : 'start'} font-size="17">{t.n}</text>
       </g>
     ))}
   </svg>
-  <figcaption>Schema non in scala. Si parte da qui; per tutto il resto c'è la videochiamata.</figcaption>
+  <figcaption>
+    <span class="m-info" aria-live="polite" data-map-info>Schema non in scala. Tocca un paese: si parte da Persiceto, e per tutto il resto c'è la videochiamata.</span>
+    <span class="m-towns" role="group" aria-label="Paesi della zona">
+      {towns.slice(1).map((t) => <button type="button" class="m-btn" data-town-btn={t.id} aria-pressed="false">{t.n}</button>)}
+    </span>
+  </figcaption>
 </figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-circuit-map]').forEach((map) => {
+    const info = map.querySelector<HTMLElement>('[data-map-info]')!;
+    const base = info.textContent;
+    const select = (id: string | null) => {
+      map.querySelectorAll<SVGPathElement>('[data-track]').forEach((t) => t.classList.toggle('is-on', t.dataset.track === id));
+      map.querySelectorAll<SVGGElement>('[data-town]').forEach((t) => t.classList.toggle('is-on', t.dataset.town === id || (!!id && t.dataset.town === 'persiceto')));
+      map.querySelectorAll<HTMLButtonElement>('[data-town-btn]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.townBtn === id)));
+      const name = id && map.querySelector<SVGGElement>(`[data-town="${id}"]`)?.dataset.name;
+      info.textContent = name ? `Persiceto → ${name}: ci vediamo di persona, oppure in videochiamata.` : base;
+    };
+    map.querySelectorAll<SVGGElement>('[data-town]').forEach((t) => t.addEventListener('click', () => {
+      const id = t.dataset.town!;
+      select(id === 'persiceto' || t.classList.contains('is-on') ? null : id);
+    }));
+    map.querySelectorAll<HTMLButtonElement>('[data-town-btn]').forEach((b) => b.addEventListener('click', () => {
+      select(b.getAttribute('aria-pressed') === 'true' ? null : b.dataset.townBtn!);
+    }));
+  });
+</script>
+
 <style>
-  .map { margin: 0; display: grid; gap: var(--space-1); }
+  .map { margin: 0; display: grid; gap: var(--space-2); }
   svg { width: 100%; height: auto; }
-  figcaption { color: var(--c-ink-soft); }
+  .m-ground { fill: var(--c-surface); }
+  .m-edge { stroke: var(--c-line); }
+  .m-track { stroke: var(--c-action); stroke-dashoffset: 0; transition: stroke 200ms var(--ease-out), stroke-width 200ms var(--ease-out); }
+  .map:has(.m-track.is-on) .m-track:not(.is-on) { stroke: var(--c-line); }
+  .m-track.is-on { stroke-width: 5; }
+  .m-town { cursor: pointer; }
+  .m-hit { fill: transparent; }
+  .m-pad { fill: var(--c-accent); transition: fill 200ms var(--ease-out); transform-box: fill-box; transform-origin: center; }
+  .m-town--main .m-pad { fill: var(--c-action); }
+  .m-town.is-on .m-pad { fill: var(--c-action); }
+  .m-town:hover .m-pad { transform: scale(1.25); }
+  text { fill: var(--c-ink); font-family: var(--font-mono); }
+  figcaption { display: grid; gap: var(--space-2); }
+  .m-info { color: var(--c-ink); min-height: 1.5em; }
+  .m-towns { display: flex; flex-wrap: wrap; gap: 4px; }
+  .m-btn { min-height: var(--tap); padding: 0 0.9rem; border: 0; background: var(--c-surface); color: var(--c-ink); font: inherit; cursor: pointer; transition: background-color var(--dur-ui) var(--ease-out); }
+  .m-btn:hover { background: var(--c-line); }
+  .m-btn[aria-pressed='true'] { background: var(--c-action); color: var(--c-on-action); }
 </style>

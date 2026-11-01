@@ -19,9 +19,9 @@ const long = title.length > 24;
 </section>
 <style>
   .close {
-    --c-surface: #c9d6cc;
-    --c-placeholder: #7a4b00;
-    --c-ink-soft: #2c3a31;
+    --c-surface: var(--c-inverse-surface);
+    --c-placeholder: var(--c-inverse-placeholder);
+    --c-ink-soft: var(--c-inverse-soft);
     display: grid;
     align-content: space-between;
     gap: var(--space-5);
@@ -37,6 +37,6 @@ const long = title.length > 24;
   .close :global(.close-btn) { justify-self: start; }
   .close-text { display: grid; gap: var(--space-3); max-width: 44ch; font-size: var(--step-body); }
   .close :global(.close-btn) { min-height: 56px; background: var(--c-inverse-ink); color: var(--c-action); }
-  .close :global(.close-btn:hover) { background: #26332b; }
+  .close :global(.close-btn:hover) { background: var(--c-inverse-hover); }
   @media (max-width: 760px) { .close-row { grid-template-columns: minmax(0, 1fr); } .close { min-height: 0; } .close :global(.close-btn) { width: 100%; } }
 </style>

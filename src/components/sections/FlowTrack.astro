@@ -1,0 +1,50 @@
+---
+/**
+ * La linea di flusso: il tubo luminoso della macchina 3D continua nel margine sinistro
+ * e collega le sezioni come un circuito. Ogni sezione dentro lo slot ha un nodo che si
+ * accende quando la linea lo raggiunge (motion.ts). Senza animazioni: linea piena e nodi accesi.
+ * Regola del piano: linea piena di 3 px, colore piatto, nessun bagliore. Nascosta sotto i 760 px.
+ */
+---
+<div class="flow-track" data-flow-track>
+  <div class="flow-rail" aria-hidden="true"><span class="flow-fill" data-flow-fill></span></div>
+  <slot />
+</div>
+<style>
+  .flow-track { position: relative; }
+  .flow-rail {
+    position: absolute;
+    left: calc(var(--margin) / 2 - 1.5px);
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--c-line);
+    pointer-events: none;
+  }
+  .flow-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--c-action);
+    transform-origin: top;
+  }
+  /* nodo di ogni sezione, all'altezza del titolo */
+  .flow-track > :global(section),
+  .flow-track > :global(.section) { position: relative; }
+  .flow-track > :global(section)::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--margin) / 2 - 6px);
+    top: calc(var(--gap-section) + 0.6em);
+    width: 12px;
+    height: 12px;
+    background: var(--c-action);
+    transition: background-color 300ms var(--ease-out), transform 300ms var(--ease-out);
+  }
+  :global(html.motion) .flow-track > :global(section:not(.is-lit))::before { background: var(--c-line); transform: scale(0.75); }
+  /* sezioni a tutta larghezza con fondo proprio: il nodo sta in cima */
+  .flow-track > :global(section.prices)::before,
+  .flow-track > :global(section.nw)::before { top: var(--space-5); }
+  @media (max-width: 760px) {
+    .flow-rail, .flow-track > :global(section)::before { display: none; }
+  }
+</style>

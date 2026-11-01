@@ -13,7 +13,7 @@ const prezzoDi = (pid: string) => { const v = prezzi.voci.find((x) => x.id === p
     {items.map((it) => (
       <li class="flow-item">
         <h3>{it.titolo}</h3>
-        <ol class="chain" data-ui aria-label={`Esempio: ${it.titolo}`}>
+        <ol class="chain" data-ui data-chain aria-label={`Esempio: ${it.titolo}`}>
           <li><span class="mono tag">arriva</span>{it.arriva}</li>
           <li><span class="mono tag">fa</span>{it.fa}</li>
           <li><span class="mono tag">esce</span>{it.esce}</li>
@@ -41,6 +41,24 @@ const prezzoDi = (pid: string) => { const v = prezzi.voci.find((x) => x.id === p
   }
   .chain::before { content: ''; position: absolute; left: var(--space-3); right: var(--space-3); top: calc(var(--space-3) + 1.1rem); height: 3px; background: var(--c-action); }
   .chain li { position: relative; display: grid; gap: 0.4rem; align-content: start; }
+  /* impulso che percorre la linea quando lo schema entra nello schermo (classe da motion-scenes.ts) */
+  .chain::after {
+    content: '';
+    position: absolute;
+    left: var(--space-3);
+    top: calc(var(--space-3) + 1.1rem - 4.5px);
+    width: 12px;
+    height: 12px;
+    background: var(--c-ink);
+    opacity: 0;
+  }
+  .chain.is-live::after { animation: pulse-h 1.6s var(--ease-out) 0.2s 2 both; }
+  @keyframes pulse-h {
+    0% { opacity: 1; transform: translateX(0); }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(calc(100cqw - 2 * var(--space-3) - 12px)); }
+  }
+  .chain { container-type: inline-size; }
   .tag { justify-self: start; padding: 0.25rem 0.5rem; background: var(--c-bg); color: var(--c-action); }
   .meta { color: var(--c-ink-soft); }
   .price { color: var(--c-action); }
@@ -48,5 +66,6 @@ const prezzoDi = (pid: string) => { const v = prezzi.voci.find((x) => x.id === p
     .chain { grid-template-columns: minmax(0, 1fr); }
     .chain::before { left: calc(var(--space-3) + 0.25rem); right: auto; top: var(--space-3); bottom: var(--space-3); width: 3px; height: auto; }
     .chain li { padding-left: 1.5rem; }
+    .chain::after { display: none; }
   }
 </style>

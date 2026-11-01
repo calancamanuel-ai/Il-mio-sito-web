@@ -1,0 +1,80 @@
+---
+/**
+ * Siti web, la "cosa viva": un portatile in CSS 3D (niente WebGL, quasi zero peso) che mostra
+ * il progetto dimostrativo scelto. Si raddrizza scorrendo (motion-scenes.ts). Lo schermo è
+ * solo una vetrina visiva (inert): i contenuti veri dei progetti sono nei casi studio sotto.
+ */
+import MockStudio from '../ui/MockStudio.astro';
+import MockOfficina from '../ui/MockOfficina.astro';
+import MockAgriturismo from '../ui/MockAgriturismo.astro';
+const progetti = [
+  { id: 'studio', nome: 'Studio Ravaglia Fantoni', stile: 'sobrio e classico' },
+  { id: 'officina', nome: 'Officina Bertelli', stile: 'deciso e pratico' },
+  { id: 'agri', nome: "Ca' dei Gelsi", stile: 'caldo e visivo' },
+];
+---
+<div class="device" data-device>
+  <div class="device-pick" role="group" aria-label="Scegli il progetto da vedere sul portatile">
+    {progetti.map((p, i) => (
+      <button type="button" data-pick={p.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+        <span class="pick-name">{p.nome}</span><span class="pick-style">{p.stile}</span>
+      </button>
+    ))}
+  </div>
+  <div class="device-scene" aria-hidden="true">
+    <div class="device-body" data-device-body>
+      <div class="screen" inert>
+        <div class="proj" data-proj="studio"><MockStudio /></div>
+        <div class="proj" data-proj="officina" hidden><MockOfficina /></div>
+        <div class="proj" data-proj="agri" hidden><MockAgriturismo /></div>
+      </div>
+      <div class="deck"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-device]').forEach((root) => {
+    const btns = root.querySelectorAll<HTMLButtonElement>('[data-pick]');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      root.querySelectorAll<HTMLElement>('[data-proj]').forEach((p) => { p.hidden = p.dataset.proj !== b.dataset.pick; });
+    }));
+  });
+</script>
+
+<style>
+  .device { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-4); align-items: center; }
+  .device-pick { display: grid; gap: 4px; align-content: start; }
+  .device-pick button {
+    display: grid; gap: 0.15rem; justify-items: start; min-height: var(--tap); padding: 0.9rem 1rem;
+    border: 0; background: var(--c-surface); color: var(--c-ink); font: inherit; text-align: left; cursor: pointer;
+    transition: background-color var(--dur-ui) var(--ease-out), transform var(--dur-ui) var(--ease-out);
+  }
+  .device-pick button:hover { background: var(--c-line); }
+  .device-pick button:active { transform: scale(0.98); }
+  .device-pick button[aria-pressed='true'] { background: var(--c-action); color: var(--c-on-action); }
+  .pick-name { font-weight: 600; }
+  .pick-style { font-size: var(--step-small); }
+  /* il portatile inclinato non deve mai uscire dalla pagina */
+  .device-scene { perspective: 1600px; padding: var(--space-3) var(--space-3); overflow: clip; overflow-clip-margin: var(--space-3); }
+  .device-body { transform-style: preserve-3d; transform: rotateX(4deg) rotateY(-6deg); will-change: transform; }
+  .screen {
+    position: relative; height: clamp(320px, 42vw, 470px); overflow: hidden;
+    border: 14px solid #1b1f1c; border-bottom-width: 22px; border-radius: 14px 14px 0 0; background: #1b1f1c;
+  }
+  .proj { height: 100%; overflow: hidden; }
+  .proj :global(.mock) { min-height: 100%; }
+  .deck {
+    height: 22px; margin-inline: -4%; background: #2a302c; border-radius: 0 0 18px 18px;
+    transform-origin: top; transform: rotateX(-12deg);
+  }
+  @media (max-width: 900px) {
+    .device { grid-template-columns: minmax(0, 1fr); }
+    .device-pick { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pick-style { display: none; }
+    /* sul telefono il portatile diventa un telefono */
+    .screen { height: 520px; max-width: 300px; margin-inline: auto; border-width: 12px; border-radius: 28px; }
+    .deck { display: none; }
+  }
+</style>

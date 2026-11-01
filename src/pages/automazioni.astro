@@ -4,6 +4,7 @@ import PageIntro from '../components/sections/PageIntro.astro';
 import FragmentWorkflow from '../components/ui/FragmentWorkflow.astro';
 import ExampleFlows from '../components/sections/ExampleFlows.astro';
 import SavingsCalculator from '../components/demos/SavingsCalculator.astro';
+import BeforeAfter from '../components/demos/BeforeAfter.astro';
 import NotWorthIt from '../components/sections/NotWorthIt.astro';
 import PriceSection from '../components/sections/PriceSection.astro';
 import Faq from '../components/sections/Faq.astro';
@@ -29,6 +30,12 @@ const faq = [
 
   <ExampleFlows id="esempi" title="Quattro flussi che chiedono in molti" items={esempi} />
 
+  <section class="section" aria-labelledby="prima-dopo">
+    <h2 id="prima-dopo" class="section-title">Prima e dopo il flusso</h2>
+    <p class="lead ba-lead">Sposta il cursore: stesse richieste, due lunedì diversi.</p>
+    <BeforeAfter />
+  </section>
+
   <section class="section" id="calcolatore" aria-labelledby="calcolo">
     <h2 id="calcolo" class="section-title">Quante ore ti restituisce?</h2>
     <p class="lead calc-lead">Scegli la tua attività e cosa ti porta via tempo: il conto si aggiorna mentre scegli.</p>
@@ -42,5 +49,6 @@ const faq = [
 </BaseLayout>
 <style>
   .calc-lead { margin-block: var(--space-3) var(--space-5); }
+  .ba-lead { margin-block: var(--space-3) var(--space-4); }
   :global(.page-nw) { margin-top: var(--gap-section); }
 </style>

@@ -1,8 +1,12 @@
 ---
 /**
- * "Il lunedì mattina" con gli interruttori (bozza): ogni attività ripetitiva
- * si spegne quando la passi al sistema. Orari e minuti sono un esempio.
+ * "Il lunedì mattina" con gli interruttori: ogni attività ripetitiva si spegne quando
+ * la passi al sistema. In home, con il movimento attivo, gli interruttori scattano da soli
+ * mentre scorri (src/scripts/motion.ts); si possono sempre usare anche a mano.
+ * Orari e minuti sono un esempio, dichiarato nella nota.
  */
+interface Props { onAtLoad?: number[] }
+const { onAtLoad = [1, 3] } = Astro.props;
 const tasks = [
   { time: '08:05', text: 'Riscrivi a mano le richieste arrivate nel weekend', min: 40, then: 'Le trovi già in tabella, con nome e richiesta.' },
   { time: '08:45', text: 'Prepari tre preventivi copiando il listino', min: 55, then: 'Claude prepara le bozze, tu le rileggi e invii.' },
@@ -10,7 +14,6 @@ const tasks = [
   { time: '10:00', text: 'Mandi i promemoria degli appuntamenti', min: 25, then: 'Partono il giorno prima, su WhatsApp o per email.' },
   { time: '10:25', text: 'Rispondi a "a che punto è il mio ordine?"', min: 30, then: 'Il cliente riceve lo stato senza scriverti.' },
 ];
-const onAtLoad = [1, 3];
 ---
 <div class="monday" data-monday>
   <p class="monday-total" aria-live="polite">

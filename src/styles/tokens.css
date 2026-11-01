@@ -20,6 +20,12 @@
   --c-placeholder: #fbbf24; /* evidenza dei segnaposto [DA COMPLETARE] */
   --c-inverse-bg: #e7efe9;  /* chiusura invertita */
   --c-inverse-ink: #0a0d0b;
+  --c-inverse-surface: #c9d6cc;
+  --c-inverse-soft: #2c3a31;
+  --c-inverse-placeholder: #7a4b00;
+  --c-inverse-hover: #26332b;
+  --c-tint-wa: #1f3b2e;     /* carte "WhatsApp" e "PDF" nella macchina del flusso */
+  --c-tint-pdf: #3a2330;
 
   /* Tipografia: Fraunces per titoli e testo, Geist Mono solo per dettagli tecnici */
   --font-display: 'Fraunces Variable', Georgia, serif;
@@ -54,4 +60,31 @@
   --mobile-bar-height: 3.5rem;
   --dur-ui: 180ms;
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/*
+ * Tema chiaro: stessi ruoli, valori ricalcolati per il contrasto WCAG AA su fondo chiaro.
+ * Si attiva da preferenza di sistema o dal pulsante (attributo data-theme su <html>).
+ */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --c-bg: #f3f5f1;
+  --c-surface: #e3e9e3;
+  --c-line: #d0d9d2;
+  --c-ink: #0f1712;          /* 17:1 su --c-bg */
+  --c-ink-soft: #46554b;     /* 7,3:1 */
+  --c-action: #166534;       /* 6,9:1 su --c-bg, 5,9:1 su --c-surface: link e pulsanti */
+  --c-on-action: #ffffff;
+  --c-accent: #0369a1;
+  --c-ok: #166534;
+  --c-error: #b91c1c;
+  --c-placeholder: #6f4300;
+  --c-inverse-bg: #0f1712;
+  --c-inverse-ink: #f3f5f1;
+  --c-inverse-surface: #1f2a23;
+  --c-inverse-soft: #b9c6bd;
+  --c-inverse-placeholder: #fbbf24;
+  --c-inverse-hover: #dbe5dd;
+  --c-tint-wa: #cfe8d8;
+  --c-tint-pdf: #f0d5d5;
 }

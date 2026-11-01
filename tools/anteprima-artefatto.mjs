@@ -41,6 +41,13 @@ for (const f of pages) {
 }
 
 for (const f of readdirSync(join(src, '_astro'))) {
+  if (f.endsWith('.js')) {
+    // il caricamento anticipato di Vite costruisce '/' + '_astro/x.js' e lo risolve rispetto al modulo:
+    // nell'artefatto i file stanno tutti in risorse/, quindi basta './x.js'
+    const js = readFileSync(join(src, '_astro', f), 'utf8').replaceAll('"_astro/', '"./').replace(/return`\/`\+e/g, 'return e');
+    writeFileSync(join(out, 'risorse', f), js);
+    continue;
+  }
   if (!f.endsWith('.css')) { if (!f.endsWith('.woff2')) copyFileSync(join(src, '_astro', f), join(out, 'risorse', f)); continue; }
   let css = readFileSync(join(src, '_astro', f), 'utf8');
   css = css.replace(/url\(\/_astro\/([^)]+\.woff2)\)/g, (_, file) =>

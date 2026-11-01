@@ -12,14 +12,6 @@ export const hero = {
     'Automazioni n8n, software su misura con Claude e siti web per imprese, studi e professionisti. Si parte da Persiceto, Bologna e Modena; si lavora anche da remoto.',
 };
 
-/** Una mattina d'esempio: orari e minuti illustrativi, dichiarati come tali. */
-export const lunedi = [
-  { t: '08:05', prima: 'Ricopi nel foglio le richieste del weekend.', dopo: 'Arrivano già in tabella.', min: 40 },
-  { t: '08:45', prima: 'Prepari tre preventivi partendo dal listino.', dopo: 'Trovi le bozze pronte da rileggere.', min: 55 },
-  { t: '09:40', prima: 'Cerchi una fattura tra allegati e cartelle.', dopo: 'È già archiviata con il nome giusto.', min: 20 },
-  { t: '10:10', prima: 'Mandi i promemoria degli appuntamenti.', dopo: 'Partono da soli il giorno prima.', min: 25 },
-];
-
 export const servizi = [
   { id: 'wf', h: 'Automazioni n8n', p: 'Richieste, fatture e promemoria passano da un flusso che lavora anche quando sei in cantiere o in udienza.', url: '/automazioni', link: 'Come funzionano le automazioni' },
   { id: 'draft', h: 'Software su misura con Claude', p: 'Piccoli programmi che leggono le email, capiscono cosa chiede il cliente e preparano la bozza. Decidi sempre tu.', url: '/software', link: 'Cosa può fare un software su misura' },
