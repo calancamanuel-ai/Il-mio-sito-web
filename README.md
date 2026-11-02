@@ -67,3 +67,13 @@ Immagini d'archivio: in `src/assets/archivio/`, con fonte e licenza in `src/cont
 GSAP 3.15 + ScrollTrigger e Lenis 1.3.27 (npm). Si caricano dopo il primo disegno e solo se il movimento non è ridotto (`src/layouts/BaseLayout.astro` → `src/scripts/motion.ts`): il JavaScript iniziale resta sotto i 50 KB. Scene in `src/scripts/motion-scenes.ts`, entrate delle sezioni in `src/scripts/motion-enter.ts`.
 
 Tema giorno/notte: segue il sistema; `?tema=chiaro` o `?tema=scuro` nell'indirizzo lo forzano (utile per i test).
+
+### Prova: hero a livelli (ramo `lab-hero-livelli`)
+
+`/lab/hero-livelli` è la home con la macchina del flusso in parallasse 2.5D, senza WebGL. Le immagini si generano con Gemini usando i prompt in `riferimenti/livelli/PROMPT.md`, si salvano in `riferimenti/livelli/` e poi si preparano così:
+
+```sh
+node tools/prepara-livelli.mjs   # scontorna, ritaglia, crea AVIF/WebP in public/livelli e aggiorna src/content/livelli.json
+```
+
+Finché le immagini mancano, la pagina usa segnaposto disegnati.
