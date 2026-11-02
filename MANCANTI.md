@@ -2,7 +2,7 @@
 
 Tutti i valori stanno in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"`. Finché c'è almeno una voce **bloccante**, il sito resta su `*.workers.dev` con `noindex`.
 
-Ultimo aggiornamento: fine fase 4 (1 novembre 2026). Vedi anche `docs/VERIFICHE.md`.
+Ultimo aggiornamento: versione 2, fase A (2 novembre 2026). Vedi anche `docs/VERIFICHE.md`.
 
 ## Bloccano il lancio
 
@@ -48,4 +48,6 @@ Ultimo aggiornamento: fine fase 4 (1 novembre 2026). Vedi anche `docs/VERIFICHE.
 | Profilo LinkedIn (facoltativo) | Footer | `contatti.linkedin` |
 | PEC (facoltativa) | Footer | `datiLegali.pec` |
 | Indirizzo `*.workers.dev` assegnato | README, test | `sito.urlProvvisorio` |
-| (Solo prova, ramo `lab-hero-livelli`) Scelta tra hero 3D e hero a livelli (immagini Gemini arrivate e preparate) | `/lab/hero-livelli` | `riferimenti/livelli/PROMPT.md`, poi `tools/prepara-livelli.mjs` |
+| Illustrazioni Gemini: ufficio in ordine e ufficio nel caos (2 immagini, prompt in `riferimenti/immagini/PROMPT.md`) | Hero della home (fase B) | `riferimenti/immagini/` |
+| Condizioni d'uso commerciale delle immagini generate e assenza di filigrane | Tutte le illustrazioni | — |
+| Scelta della palette: "Circuito" (blu e ciano, indicata nel piano v2) o "Terminale" (verde, quella in uso) | Tutto il sito | `src/styles/tokens.css` |

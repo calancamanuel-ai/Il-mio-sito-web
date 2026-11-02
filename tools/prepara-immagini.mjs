@@ -1,39 +1,51 @@
-// Prepara i livelli della prova /lab/hero-livelli dalle immagini generate con Gemini.
-// Uso: node tools/prepara-livelli.mjs [cartella-ingresso=riferimenti/livelli] [cartella-uscita=public/livelli]
+// Prepara le illustrazioni generate con Gemini per il sito (piano v2, "Immagini e asset").
+// Uso: node tools/prepara-immagini.mjs [ingresso=riferimenti/immagini] [uscita=public/immagini]
 //
-// Nomi attesi in ingresso (png, jpg o webp; gli altri file sono ignorati):
-//   sfondo-computer.*  sfondo-telefono.*   -> sfondo pieno, nessuna scontornatura
-//   primo-piano.*                           -> scontornato
-//   oggetto-email.* oggetto-whatsapp.* oggetto-pdf.* oggetto-foglio.* oggetto-postit.* oggetto-scontrino.*
+// Regole sui nomi (png, jpg o webp; gli altri file sono ignorati):
+//   ufficio-ordine.jpg              -> una sola immagine, usata per computer e telefono
+//   ufficio-ordine-telefono.jpg     -> se c'è, è la versione per telefono di "ufficio-ordine"
+//   ufficio-ordine-computer.jpg     -> idem per computer (equivale al nome senza suffisso)
+//   nome-scontorna.jpg / nome-pieno.jpg -> forza scontorno sì / no (altrimenti si decide da solo:
+//                                      bordo di un colore uniforme e acceso = fondo da togliere)
+//   i file che iniziano con "_" (prove, riferimenti di stile) sono ignorati
 //
 // Per ogni immagine scontornata:
 //   1. colore di sfondo: letto dai bordi (il più frequente), così va bene magenta, verde o un altro colore uniforme
 //   2. trasparenza morbida in base alla distanza dal colore di sfondo (niente scalini sui bordi)
-//   3. pulizia dei bordi: tolgo il riflesso del colore di sfondo dai pixel semitrasparenti,
-//      stringo il bordo di 1 px e cancello i puntini isolati (rumore della compressione)
+//   3. pulizia dei bordi: tolgo il colore di sfondo mescolato nei pixel semitrasparenti e il riflesso
+//      vicino al bordo, stringo il bordo di 1 px e cancello i puntini isolati (rumore della compressione)
 //   4. ritaglio sul contenuto, con 4 px di margine
-// Poi versioni "telefono" e "computer" in AVIF e WebP, dentro il budget:
-//   telefono < 600 KB in tutto, computer < 1,5 MB in tutto (per formato: il browser ne scarica uno).
-// Se si sfora, abbasso la qualità a passi fino a rientrare. Scrive src/content/livelli.json
-// e un foglio di controllo su scacchiera in riferimenti/livelli/controllo.png.
+// Poi versioni "telefono" (max 1000 px) e "computer" (max 1920 px, mai ingrandite) in AVIF e WebP.
+// Budget del piano per le immagini dell'hero (nomi che iniziano con "ufficio-"): 400 KB su telefono,
+// 900 KB su computer; se si sfora, abbasso la qualità a passi. Riporta il peso di ciascuna.
+// Scrive src/content/immagini.json e, se ci sono scontornati, riferimenti/immagini/_controllo.png.
 import sharp from 'sharp';
 import { readdirSync, mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { join, parse } from 'node:path';
 
-const [inDir = 'riferimenti/livelli', outDir = 'public/livelli'] = process.argv.slice(2);
-const manifestPath = 'src/content/livelli.json';
+const [inDir = 'riferimenti/immagini', outDir = 'public/immagini'] = process.argv.slice(2);
+const manifestPath = 'src/content/immagini.json';
 const publicBase = '/' + outDir.replace(/^public\/?/, '').replace(/\/$/, '');
-const BUDGET = { telefono: 600 * 1024, computer: 1.5 * 1024 * 1024 };
+const MAXW = { computer: 1920, telefono: 1000 };
+const HERO = (name) => name.startsWith('ufficio-');
+const BUDGET = { telefono: 400 * 1024, computer: 900 * 1024 };
 
-// larghezza massima per versione (mai ingrandita oltre l'originale)
-const SIZES = {
-  sfondo: { computer: 1920, telefono: 900 },
-  'primo-piano': { computer: 1920, telefono: 1000 },
-  oggetto: { computer: 380, telefono: 240 },
-};
+const files = existsSync(inDir) ? readdirSync(inDir).filter((f) => /\.(png|jpe?g|webp)$/i.test(f) && !f.startsWith('_')) : [];
 
-const files = existsSync(inDir) ? readdirSync(inDir).filter((f) => /\.(png|jpe?g|webp)$/i.test(f)) : [];
-const pick = (base) => files.find((f) => parse(f).name.toLowerCase() === base);
+/** Il bordo è un fondo da togliere? Colore più frequente sul bordo, acceso e presente su almeno un terzo del bordo. */
+async function hasKeyBackground(file) {
+  const { data: src, info } = await sharp(join(inDir, file)).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width: w, height: h } = info;
+  const idx = [];
+  for (let x = 0; x < w; x += 2) idx.push((0 * w + x) * 3, ((h - 1) * w + x) * 3);
+  for (let y = 0; y < h; y += 2) idx.push((y * w) * 3, (y * w + w - 1) * 3);
+  const count = new Map();
+  for (const i of idx) { const k = (src[i] >> 4) * 256 + (src[i + 1] >> 4) * 16 + (src[i + 2] >> 4); count.set(k, (count.get(k) ?? 0) + 1); }
+  const [k, n] = [...count.entries()].sort((a, b) => b[1] - a[1])[0];
+  const rgb = [(k >> 8) * 16 + 8, ((k >> 4) & 15) * 16 + 8, (k & 15) * 16 + 8];
+  const max = Math.max(...rgb), min = Math.min(...rgb);
+  return n / idx.length >= 0.33 && max > 150 && (max - min) / max > 0.6;
+}
 
 /** Scontorna: restituisce { data (RGBA), width, height } già ritagliato. */
 async function keyOut(file) {
@@ -140,27 +152,37 @@ async function keyOut(file) {
   return { data, width: cw, height: ch, key };
 }
 
-const jobs = [];
-for (const [name, files2] of [['sfondo', { computer: 'sfondo-computer', telefono: 'sfondo-telefono' }]]) {
-  const pc = pick(files2.computer), tel = pick(files2.telefono) ?? pc;
-  if (pc || tel) jobs.push({ name, kind: 'sfondo', src: { computer: pc ?? tel, telefono: tel } });
+// gruppi: nome base -> file per computer e per telefono, e scelta dello scontorno
+const groups = new Map();
+for (const f of files) {
+  let base = parse(f).name.toLowerCase();
+  let force = null;
+  if (/-scontorna$/.test(base)) { force = true; base = base.replace(/-scontorna$/, ''); }
+  if (/-pieno$/.test(base)) { force = false; base = base.replace(/-pieno$/, ''); }
+  const m = base.match(/^(.*)-(telefono|computer)$/);
+  const name = m ? m[1] : base, ver = m ? m[2] : 'computer';
+  const g = groups.get(name) ?? { name, src: {}, force: null };
+  if (!g.src[ver] || !m) g.src[ver] = f;
+  if (force !== null) g.force = force;
+  groups.set(name, g);
 }
-if (pick('primo-piano')) jobs.push({ name: 'primo-piano', kind: 'primo-piano', src: { computer: pick('primo-piano'), telefono: pick('primo-piano') } });
-for (const k of ['email', 'whatsapp', 'pdf', 'foglio', 'postit', 'scontrino']) {
-  const f = pick(`oggetto-${k}`);
-  if (f) jobs.push({ name: k, kind: 'oggetto', src: { computer: f, telefono: f } });
-}
-if (!jobs.length) {
-  console.log(`Nessuna immagine in ${inDir}: la pagina usa i segnaposto disegnati.`);
+if (!groups.size) {
+  console.log(`Nessuna immagine in ${inDir}: le pagine usano i segnaposto disegnati.`);
   process.exit(0);
+}
+const jobs = [];
+for (const g of groups.values()) {
+  g.src.computer ??= g.src.telefono; g.src.telefono ??= g.src.computer;
+  g.keyed = g.force ?? (await hasKeyBackground(g.src.computer));
+  jobs.push(g);
 }
 
 // sorgenti preparate una volta sola
 const prepared = new Map();
 async function source(job, file) {
-  const id = `${job.kind}:${file}`;
+  const id = `${job.keyed}:${file}`;
   if (!prepared.has(id)) {
-    if (job.kind === 'sfondo') {
+    if (!job.keyed) {
       const { data, info } = await sharp(join(inDir, file)).removeAlpha().ensureAlpha().raw().toBuffer({ resolveWithObject: true });
       prepared.set(id, { data, width: info.width, height: info.height, opaque: true });
     } else prepared.set(id, await keyOut(file));
@@ -168,41 +190,42 @@ async function source(job, file) {
   return prepared.get(id);
 }
 
-async function encodeAll(q) {
-  rmSync(outDir, { recursive: true, force: true });
-  mkdirSync(outDir, { recursive: true });
-  const manifest = {}; const totals = { telefono: { avif: 0, webp: 0 }, computer: { avif: 0, webp: 0 } };
-  for (const job of jobs) {
-    manifest[job.name] = {};
-    for (const ver of ['computer', 'telefono']) {
-      const s = await source(job, job.src[ver]);
-      const width = Math.min(s.width, SIZES[job.kind][ver]);
-      const img = () => sharp(s.data, { raw: { width: s.width, height: s.height, channels: 4 } }).resize({ width, kernel: 'lanczos3' });
-      const base = `${job.name}-${ver}`;
-      const avif = await img().avif({ quality: q.avif, effort: 6 }).toBuffer();
-      const webp = await img().webp({ quality: q.webp, alphaQuality: 90, effort: 6, smartSubsample: true }).toBuffer();
-      writeFileSync(join(outDir, `${base}.avif`), avif);
-      writeFileSync(join(outDir, `${base}.webp`), webp);
-      const height = Math.round((s.height * width) / s.width);
-      manifest[job.name][ver] = { w: width, h: height, avif: `${publicBase}/${base}.avif`, webp: `${publicBase}/${base}.webp`, kb: { avif: Math.round(avif.length / 1024), webp: Math.round(webp.length / 1024) } };
-      // un oggetto compare più volte nella pagina ma si scarica una volta sola
-      totals[ver].avif += avif.length; totals[ver].webp += webp.length;
-    }
+async function encode(job, q) {
+  const entry = { scontornata: job.keyed };
+  for (const ver of ['computer', 'telefono']) {
+    const s = await source(job, job.src[ver]);
+    const width = Math.min(s.width, MAXW[ver]);
+    const img = () => sharp(s.data, { raw: { width: s.width, height: s.height, channels: 4 } }).resize({ width, kernel: 'lanczos3' });
+    const base = `${job.name}-${ver}`;
+    const avif = await img().avif({ quality: q.avif, effort: 6 }).toBuffer();
+    const webp = await img().webp({ quality: q.webp, alphaQuality: 90, effort: 6, smartSubsample: true }).toBuffer();
+    writeFileSync(join(outDir, `${base}.avif`), avif);
+    writeFileSync(join(outDir, `${base}.webp`), webp);
+    entry[ver] = { w: width, h: Math.round((s.height * width) / s.width), avif: `${publicBase}/${base}.avif`, webp: `${publicBase}/${base}.webp`, kb: { avif: Math.round(avif.length / 1024), webp: Math.round(webp.length / 1024) } };
   }
-  return { manifest, totals };
+  return entry;
 }
 
-let q = { avif: 55, webp: 80 };
-let res;
-for (;;) {
-  res = await encodeAll(q);
-  const over = ['telefono', 'computer'].filter((v) => Math.max(res.totals[v].avif, res.totals[v].webp) > BUDGET[v]);
-  if (!over.length || q.webp <= 40) break;
-  q = { avif: q.avif - 6, webp: q.webp - 8 };
-  console.log(`Sopra il budget (${over.join(', ')}): riprovo con qualità AVIF ${q.avif}, WebP ${q.webp}`);
+rmSync(outDir, { recursive: true, force: true });
+mkdirSync(outDir, { recursive: true });
+const manifest = {};
+const qOf = {};
+for (const job of jobs) {
+  let q = { avif: 55, webp: 80 };
+  manifest[job.name] = await encode(job, q);
+  qOf[job.name] = q;
 }
-
-writeFileSync(manifestPath, JSON.stringify({ nota: 'Generato da tools/prepara-livelli.mjs: non modificare a mano.', qualita: q, livelli: res.manifest }, null, 2) + '\n');
+// budget dell'hero: abbasso la qualità di tutte le immagini "ufficio-" insieme finché rientrano
+const heroJobs = jobs.filter((j) => HERO(j.name));
+const heroTotal = (ver) => heroJobs.reduce((t, j) => t + Math.max(manifest[j.name][ver].kb.avif, manifest[j.name][ver].kb.webp) * 1024, 0);
+let hq = { avif: 55, webp: 80 };
+while (heroJobs.length && ['telefono', 'computer'].some((v) => heroTotal(v) > BUDGET[v]) && hq.webp > 40) {
+  hq = { avif: hq.avif - 6, webp: hq.webp - 8 };
+  console.log(`Hero sopra il budget: riprovo con qualità AVIF ${hq.avif}, WebP ${hq.webp}`);
+  for (const j of heroJobs) { manifest[j.name] = await encode(j, hq); qOf[j.name] = hq; }
+}
+for (const [n, q] of Object.entries(qOf)) manifest[n].qualita = q;
+writeFileSync(manifestPath, JSON.stringify({ nota: 'Generato da tools/prepara-immagini.mjs: non modificare a mano.', immagini: manifest }, null, 2) + '\n');
 
 // foglio di controllo: ogni scontornato su scacchiera, per vedere i bordi
 const cut = [...prepared.values()].filter((p) => !p.opaque);
@@ -215,15 +238,12 @@ if (cut.length) {
     return sharp(board, { raw: { width: cell, height: cell, channels: 3 } }).composite([{ input: fg, gravity: 'center' }]).png().toBuffer();
   }));
   await sharp({ create: { width: cell * tiles.length, height: cell, channels: 3, background: '#000' } })
-    .composite(tiles.map((input, i) => ({ input, left: i * cell, top: 0 }))).png().toFile(join(inDir, 'controllo.png'));
+    .composite(tiles.map((input, i) => ({ input, left: i * cell, top: 0 }))).png().toFile(join(inDir, '_controllo.png'));
 }
 
 const kb = (n) => `${Math.round(n / 1024)} KB`;
-console.log(`\nQualità finale: AVIF ${q.avif}, WebP ${q.webp}`);
-for (const [name, v] of Object.entries(res.manifest))
-  console.log(`${name.padEnd(12)} computer ${v.computer.w}x${v.computer.h} ${v.computer.kb.avif}/${v.computer.kb.webp} KB · telefono ${v.telefono.w}x${v.telefono.h} ${v.telefono.kb.avif}/${v.telefono.kb.webp} KB (avif/webp)`);
-for (const ver of ['telefono', 'computer']) {
-  const t = res.totals[ver];
-  console.log(`Totale ${ver}: AVIF ${kb(t.avif)}, WebP ${kb(t.webp)} (budget ${kb(BUDGET[ver])}) ${Math.max(t.avif, t.webp) <= BUDGET[ver] ? 'OK' : 'SOPRA IL BUDGET'}`);
-}
-console.log(`Manifest: ${manifestPath}${cut.length ? ` · controllo bordi: ${join(inDir, 'controllo.png')}` : ''}`);
+for (const [name, v] of Object.entries(manifest))
+  console.log(`${name.padEnd(22)} ${v.scontornata ? 'scontornata' : 'piena      '} computer ${v.computer.w}x${v.computer.h} ${v.computer.kb.avif}/${v.computer.kb.webp} KB · telefono ${v.telefono.w}x${v.telefono.h} ${v.telefono.kb.avif}/${v.telefono.kb.webp} KB (avif/webp, q ${v.qualita.avif}/${v.qualita.webp})`);
+if (heroJobs.length) for (const ver of ['telefono', 'computer'])
+  console.log(`Hero (${heroJobs.map((j) => j.name).join(', ')}) ${ver}: ${kb(heroTotal(ver))} nel formato più pesante (budget ${kb(BUDGET[ver])}) ${heroTotal(ver) <= BUDGET[ver] ? 'OK' : 'SOPRA IL BUDGET'}`);
+console.log(`Manifest: ${manifestPath}${cut.length ? ` · controllo bordi: ${join(inDir, '_controllo.png')}` : ''}`);

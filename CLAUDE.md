@@ -1,91 +1,124 @@
-# Regole del progetto
+# Regole del progetto (versione 2)
 
-Riferimento unico: `docs/PIANO.md`. Se una regola qui sotto e il piano sembrano in conflitto, vince il piano. Il piano vince anche sulle skill: se una skill chiede qualcosa che lo contraddice, segui il piano e scrivilo nel riepilogo di fase.
+Riferimento unico: `docs/PIANO.md` (versione 2, 2 novembre 2026). Se una regola qui sotto e il piano sembrano in conflitto, vince il piano. Il piano vince anche sulle skill: se una skill chiede qualcosa che lo contraddice, segui il piano e scrivilo nel riepilogo di fase. Sistema di movimento: `docs/MOVIMENTO.md`.
 
 ## Obiettivo
 
-Il sito ha un solo compito: far prenotare una call conoscitiva di 20 minuti. Ogni pagina e ogni demo chiudono con "Prenota una call". Ogni effetto deve passare il test: "aiuta a capire o a contattarmi?".
+Il sito ha un solo compito: far prenotare una call conoscitiva di 20 minuti. Tutto il resto serve a convincere chi visita che il lavoro ripetitivo si può togliere di mezzo, e che Manuel sa farlo. **Il sito è la prova**: dimostra, non descrive. Ogni pagina e ogni demo chiudono con "Prenota una call".
+
+## Concetto: dal disordine all'ordine
+
+- Una sola storia: un ufficio sommerso dal lavoro ripetitivo diventa, scorrendo, un ufficio in ordine e tranquillo.
+- Hero: ufficio isometrico in sezione nel caos → si scompone in "pioggia di codice" fatta di frammenti veri del lavoro d'ufficio ("fattura n. 132", "richiamami", date, oggetti di email) → i caratteri entrano nel circuito, attraversano i nodi (ricevi, capisci, archivia, avvisa), si ordinano → ricompongono lo stesso ufficio calmo. Le stanze in ordine sono toccabili e portano ai servizi.
+- Arco della pagina: in alto "nervoso" (caos), al centro "elaborazione", in fondo "calma" quasi immobile e luminosa vicino all'invito finale.
+- Le linee del circuito collegano le sezioni e portano "dati" da una all'altra.
+- Ispirazione, non citazione: niente pioggia verde di caratteri giapponesi, niente Matrix. Caratteri latini, numeri, parole d'ufficio, colori della palette.
 
 ## Ordine di priorità
 
-1. **Prestazioni e accessibilità.**
+1. **Prestazioni e accessibilità.** Il movimento non deve mai rendere il sito lento.
 2. **Chiarezza e contatto.**
-3. **Creatività.** Dentro i limiti sopra, preferisci sempre l'opzione distintiva a quella standard. Se una soluzione è quella che userebbe chiunque, cerca un'alternativa.
+3. **Creatività.** Dentro i limiti sopra, l'opzione distintiva batte quella standard.
 
-## Budget di prestazioni (Lighthouse mobile 95+ in tutte e quattro le categorie)
+## Budget di prestazioni
 
 | Metrica | Limite |
 | --- | --- |
-| JavaScript in home al primo caricamento | < 50 KB compressi (3D escluso, caricato dopo) |
-| LCP | < 2,5 s su 4G lento |
+| Lighthouse mobile | almeno 90 in tutte le categorie |
+| LCP | < 2,5 s su 4G lento (l'immagine statica dell'hero arriva subito, l'effetto parte dopo) |
 | CLS | < 0,05 |
 | INP | < 200 ms |
-| 3D per pagina | < 1,5 MB; modelli GLB < 400 KB; pixel ratio max 2; 60 fps su un telefono di tre anni fa |
-| Contrasto testo | almeno WCAG AA |
+| Immagini hero | < 400 KB su telefono, < 900 KB su computer, caricate in modo progressivo |
+| JavaScript iniziale | < 80 KB compressi; il resto caricato quando serve |
+| Pioggia di codice | un solo canvas, colonne limitate, ferma fuori schermo e con scheda in background, versione leggera su telefono, 60 fps durante lo scroll su un telefono di fascia media |
+| Contrasto testo | almeno WCAG AA, anche sopra gli effetti |
 
-- Titolo e pulsante della home sono HTML puro, visibili prima del 3D.
-- **Un solo momento 3D pesante** in tutto il sito ("La macchina del flusso", home). Il dispositivo 3D della pagina Siti web resta leggero.
-- **Fallback obbligatori**: con `prefers-reduced-motion` o senza WebGL, immagine statica del fotogramma finale ed etichette in HTML. Ogni animazione rispetta `prefers-reduced-motion`; nessun contenuto resta nascosto se lo script non parte.
-- Isole Astro: il 3D solo in `client:visible`; niente framework UI se basta JavaScript vanilla.
+- Titolo e pulsante "Prenota una call" della home sono HTML puro, visibili subito.
+- Isole Astro, JavaScript vanilla; niente framework UI se non serve. Niente 3D WebGL in questa versione: three.js e i suoi asset escono quando la home nuova sostituisce la vecchia.
 - Navigazione completa da tastiera, focus visibile, testi alternativi, testo mai sotto 16 px su mobile.
-- Barra fissa in basso su mobile con "Chiama" e "WhatsApp", pulsanti di almeno 44 px, piatta (niente vetro, pillola o ombra).
+- Barra fissa in basso su telefono con "Chiama" e "WhatsApp", pulsanti di almeno 44 px, piatta.
+
+## Sistema di movimento (dettagli in `docs/MOVIMENTO.md`)
+
+- Il movimento è il linguaggio principale, non decorazione. Tre stati legati alla posizione: **caos** (hero), **elaborazione** (sezioni centrali), **calma** (fine pagina).
+- Ogni sezione ha una sua scena legata al concetto; nessuna sezione statica, nessuna animazione uguale ripetuta ovunque. Sezioni collegate da transizioni continue (circuito, elementi che passano).
+- **Decodifica**: testi e immagini entrano come caratteri che si assestano; il testo vero è nel DOM dall'inizio.
+- **Cursore** (solo desktop): i caratteri sfiorati si ricompongono per un attimo in parole sensate.
+- Si muovono composizione, oggetti, immagini e sfondi su più livelli di profondità, non solo le scritte.
+- Interfaccia (pulsanti, menu, stati): regole di Emil Kowalski, ease-out, sotto i 300 ms, pressione con scala 0,97.
+- Scene allo scroll: GSAP + ScrollTrigger; su telefono pin corti o assenti, mai la sensazione di restare incastrati.
+- Solo `transform` e `opacity` per l'HTML; la pioggia di codice in un solo `canvas`.
+- **Sicurezza**: mai più di 3 lampeggi al secondo, nessun flash a schermo intero.
+- **`prefers-reduced-motion`**: niente pioggia, niente decodifica; immagini statiche (caos e ordine) e testi subito. Nessun contenuto resta nascosto se lo script non parte.
 
 ## Stack
 
-Astro statico + TypeScript, Cloudflare Workers static assets (`wrangler.jsonc`), three.js vanilla, GSAP + ScrollTrigger + Lenis solo dove servono. Font e librerie da npm (`@fontsource`), mai da CDN. Niente Vite standalone, Netlify o Vercel. Prima di usare API o configurazioni di librerie e servizi, verifica la documentazione aggiornata.
+Astro statico + TypeScript, Cloudflare Workers static assets (`wrangler.jsonc`), GSAP + ScrollTrigger + Lenis solo dove servono, canvas 2D per la pioggia. Font e librerie da npm (`@fontsource`), mai da CDN. Niente Vite standalone, Netlify o Vercel. Prima di usare API o configurazioni di librerie e servizi, verifica la documentazione ufficiale aggiornata ed elenca le fonti nel riepilogo.
 
 ## Rete
 
-Se una richiesta di rete viene bloccata, non ripiegare in silenzio. Scrivimi subito il dominio bloccato e a cosa serve. Se puoi continuare con altro nel frattempo, fallo, ma segnala nel riepilogo di fase ogni lavoro fatto con un ripiego (documentazione non letta, immagini disegnate invece che cercate) per poterlo rifare dopo.
+Se una richiesta di rete viene bloccata, non ripiegare in silenzio. Scrivi subito il dominio bloccato e a cosa serve. Se puoi continuare con altro nel frattempo, fallo, ma segnala nel riepilogo di fase ogni lavoro fatto con un ripiego (documentazione non letta, immagini sostituite o disegnate) per poterlo rifare dopo.
 
 ## Regole sulle skill
 
-Regia: pro-design. Direzione visiva: design-taste-frontend. 3D: sito-3d-premium e threejs-web-3d. Animazioni: gsap-scroll-animation. Test: playwright-cli. Revisione finale: web-design-guidelines. Quello che il piano fissa vince; per il resto vale la tabella "chi vince su cosa" di pro-design.
+| Skill | Ruolo |
+| --- | --- |
+| pro-design | Regia: precedenze, controllo dei conflitti, ciclo di revisione (massimo 3 giri) |
+| design-taste-frontend | Regole di stile, inspector, critica sugli screenshot |
+| impeccable | Critica e miglioramento: critique, audit, bolder, delight, overdrive, polish |
+| Emil Kowalski (animate, review-animations, improve-animations, break-ui) | Qualità del movimento dell'interfaccia, prove con dati estremi |
+| gsap-scroll-animation | Codice delle scene allo scroll |
+| playwright-cli | Test, screenshot, studio dei riferimenti |
+| web-design-guidelines | Revisione finale |
+| threejs-web-3d, sito-3d-premium | Non usate (niente 3D) |
 
-**Eccezioni volute alle regole di design-taste-frontend** (passa `--allow` all'inspector solo per queste e scrivilo nel report):
+- **Movimento come linguaggio**: non si applicano le regole delle skill che limitano le scene a 2–3 per pagina o chiedono di tenere tranquillo il resto. La soglia minima di elementi in movimento di design-taste-frontend è superata: va bene. Le regole di Emil valgono per l'interfaccia; le scene allo scroll seguono il piano e gsap-scroll-animation.
+- **Eccezioni volute alle regole di design-taste-frontend** (`--allow` all'inspector solo per queste, dichiarato nel report):
+  - **Monospace**: pioggia di codice, decodifica, barra di stato, vista tecnica, etichette dei nodi. Mai testo corrente. Al massimo due famiglie in tutto (titoli + mono).
+  - **Linee**: solo le linee del circuito, piene, almeno 2 px, colore piatto. Nessun'altra linea sottile, divisore o griglia decorativa.
+  - **Luce**: leggero alone solo sui caratteri della pioggia e sui nodi attivi, dentro il canvas; nessun bagliore, ombra o gradiente nell'HTML.
+- **Immagini per la soglia di design-taste-frontend**: illustrazioni generate (raster vere), frammenti di interfaccia in HTML marcati `data-ui` (dati d'esempio dichiarati), foto di Manuel (segnaposto finché manca). Mai foto stock con persone, mai immagini trovate presentate come lavori propri.
 
-- **Monospace**: solo etichette dei nodi, numeri tecnici, barra di stato, modalità terminale, effetto di decodifica dei titoli. Mai testo corrente. Al massimo due famiglie in tutto (display + mono).
-- **Linee**: solo la linea di flusso e le piste della mappa a circuito. Linee piene ≥ 2 px, colore piatto della palette, nessun bagliore fuori dalla scena 3D. Nessun'altra linea sottile, divisore o griglia decorativa.
-- **Bagliori e bloom**: solo dentro la scena 3D, mai nell'HTML.
+**Una "cosa viva" per pagina**
 
-**Una "cosa viva" per pagina**, massimo 2–3 scene allo scroll per pagina:
+| Pagina | Cosa viva |
+| --- | --- |
+| Home | Il riordino dell'ufficio con le stanze toccabili; "Costruisci la tua automazione" come seconda interazione |
+| Automazioni | Calcolatore di risparmio |
+| Software su misura | Simulazione WhatsApp |
+| Siti web | Casi studio dei progetti dimostrativi navigabili |
+| Casi d'uso | Filtro per settore, presentato come registro di sistema |
+| Chi sono | Mappa a circuito della zona, con piste che escono dai bordi |
+| Contatti | Mini-diagnosi |
 
-| Pagina | Cosa viva | Scene e dettagli |
-| --- | --- | --- |
-| Home | "Costruisci la tua automazione" | 3D "La macchina del flusso", "Il lunedì mattina", linea di flusso |
-| Automazioni | Calcolatore di risparmio | Schemi di workflow SVG animati, prima/dopo con cursore |
-| Software AI | Simulazione WhatsApp | Frammento di interfaccia di un software su misura |
-| Siti web | Dispositivo 3D leggero con i progetti dimostrativi | Confronto tra gli stili dei progetti |
-| Casi d'uso | Filtro dei "log di sistema" per settore | — |
-| Chi sono | Mappa a circuito: tap su un paese | — |
-| Contatti | Form intelligente; "chiedi al sito" solo se confermato | — |
+Su tutto il sito: barra di stato in fondo (stile terminale, dati veri o segnaposto), interruttore "vista tecnica" (unico posto con i nomi degli strumenti), 404 "un foglio fuori posto".
 
-Leggeri e non contati: barra di stato, "vista tecnica", cursore con scia (solo desktop), tema giorno/notte, 404, modalità terminale.
-
-**Immagini**: la soglia di 4 immagini reali per pagina si raggiunge con frammenti di interfaccia in HTML marcati `data-ui` (dati d'esempio dichiarati), mappe e foto d'archivio con licenza commerciale (crediti nel footer), foto vera di Manuel (segnaposto finché manca). Mai foto stock con persone, mai immagini trovate presentate come lavori propri. Se i domini delle collezioni aperte sono bloccati, disegna e segnalalo.
-
-**Processo**: stop a fine fase e scelte richieste (3 direzioni, 2 varianti del 3D) prevalgono su "chiedi al massimo una volta". Revisione: ciclo di pro-design, massimo 3 giri, poi report di cosa resta aperto (sostituisce il voto 8 di sito-3d-premium).
+**Processo**: gli stop di fase e le scelte richieste da Manuel prevalgono su "chiedi al massimo una volta". Stack del piano, non quelli degli esempi delle skill. Revisione: ciclo di pro-design, massimo 3 giri, poi report di cosa resta aperto.
 
 ## Filtro anti-template (da non fare)
 
-- Niente blob sfumati, card in vetro, griglie bento generiche, icone stock, gradienti viola-blu da startup AI.
+- Niente blob sfumati, card in vetro, griglie di card o bento, blocchi testo+immagine ripetuti, icone stock, gradienti viola-blu da startup AI. Ogni sezione con una composizione propria.
 - Niente frasi fatte: "Trasforma il tuo business", "Soluzioni innovative", "Il futuro è adesso" e simili.
-- Niente animazione uguale su ogni sezione: ogni effetto ha un motivo.
 
-## Contenuti
+## Contenuti e testi
 
-- **Solo contenuti veri o segnaposto.** Mai inventare dati, prezzi, recensioni, clienti, testimonianze o numeri. I dati mancanti vivono solo in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"` e sono elencati in `MANCANTI.md` (cosa, dove compare, se blocca il lancio). Aggiorna `MANCANTI.md` a ogni sessione.
-- **Fiducia senza testimonianze** (sezione Fiducia del piano): persona vera (foto segnaposto, consulente non agenzia, territorio), trasparenza (prezzi "da", preventivo fisso, tempi di risposta e passi dopo il primo contatto), onestà ("Quando non conviene automatizzare"), prova pratica (demo, sito, vista tecnica). Lo spazio per testimonianze e casi veri esiste ma resta nascosto finché `testimonianze` in `sito.ts` è vuota.
-- **Portfolio**: casi studio brevi (brief dichiarato inventato, scelte di design e perché, cosa fa il sito, anteprima), il lavoro prima del testo; almeno un progetto sobrio e classico; una riga semplice dice che il sito di Manuel è una vetrina delle sue capacità, non l'unico stile che propone.
-- Esempi e progetti dimostrativi sono dichiarati come tali ("esempio", "progetto dimostrativo").
-- Prezzi solo da `src/config/sito.ts`. Stime del calcolatore sempre con le ipotesi scritte sotto.
-- Testi derivati da `riferimenti/messaggi.md`, marcati `[BOZZA]` finché non approvati.
-- Tono: concreto, ore risparmiate ed errori evitati; microcopy umano e un po' ironico, mai gergo.
+- **Solo contenuti veri o segnaposto.** Mai inventare dati, prezzi, recensioni, clienti, testimonianze o numeri. I dati mancanti vivono solo in `src/config/sito.ts` come `"[DA COMPLETARE: ...]"` ed elencati in `MANCANTI.md` (cosa, dove compare, se blocca il lancio). Aggiorna `MANCANTI.md` a ogni sessione.
+- **Testi orientati ai risultati**: chi legge non è tecnico. Nelle sezioni principali niente nomi di strumenti (n8n, Claude, Astro…) e niente spiegazioni su come è strutturato il lavoro; si parla di tempo recuperato, errori evitati, clienti che ricevono risposta subito, meno stress, con esempi concreti d'ufficio. Dettagli tecnici solo nella vista tecnica, nelle FAQ e nelle pagine di approfondimento.
+- Tono umano, diretto, un po' ironico; titoli al massimo 2 righe. Testi da `riferimenti/messaggi.md`, marcati `[BOZZA]` finché non approvati.
+- **Fiducia senza testimonianze**: persona vera, trasparenza (prezzi "da", preventivo fisso, cosa succede dopo il contatto e in quanto tempo), onestà ("Quando non conviene automatizzare"), prova pratica (demo, il sito stesso). Lo spazio per testimonianze resta nascosto finché `testimonianze` in `sito.ts` è vuota.
+- **Portfolio**: 2–3 progetti dimostrativi dichiarati come tali, stili diversi, almeno uno sobrio e classico; casi studio brevi, il lavoro prima del testo.
+- Esempi e demo dichiarati come tali; mai risultati inventati. Prezzi solo da `src/config/sito.ts`; stime del calcolatore con le ipotesi scritte sotto.
 - **Sito solo in italiano.** Nomi di codice in inglese, URL e testi in italiano.
-- **`noindex`** su tutto il sito finché `MANCANTI.md` ha voci bloccanti.
+- **`noindex`** su tutto il sito finché `MANCANTI.md` ha voci bloccanti; si resta su `*.workers.dev` finché non c'è la P.IVA.
+
+## Immagini
+
+- Manuel genera le illustrazioni con Gemini (1K, senza trasparenza, limite che si ricarica ogni 5 ore); prompt in `riferimenti/immagini/PROMPT.md`. Prima l'ufficio in ordine, poi lo stesso nel caos con composizione identica.
+- Sorgenti in `riferimenti/immagini/` (non pubblicate); `node tools/prepara-immagini.mjs` scontorna dove serve, ritaglia, crea AVIF/WebP per telefono e computer e riporta i pesi.
+- Finché mancano, segnaposto disegnati con la stessa composizione. Prima di pubblicare: condizioni d'uso commerciale e rimozione di eventuali filigrane.
 
 ## Consegna
 
-- **Prima di ogni consegna: screenshot a 390 e 1440 px** (per il 3D anche a più profondità di scroll e 0/50/100% delle sezioni pinnate), Lighthouse mobile, inspector di design-taste-frontend. Se il WebGL esce nero negli screenshot automatici, dirlo e chiedere verifica sul telefono.
-- Un ramo per fase; unione su `main` solo dopo anteprima approvata. A fine fase: riepilogo breve (scelte minori, fonti), link di anteprima, screenshot, Lighthouse, `MANCANTI.md` aggiornato. Poi fermarsi.
-- Un componente per file, nessun file oltre 500 righe, niente cartelle nuove fuori dalla struttura del piano senza dirlo. Aggiorna il README quando cambiano avvio, test o deploy.
+- **Prima di ogni consegna: screenshot a 390 e 1440 px** (per le scene allo scroll anche a più profondità e a 0/50/100% delle sezioni pinnate), Lighthouse mobile, inspector di design-taste-frontend, fps misurati per la pioggia. Se un effetto esce sbagliato negli screenshot automatici, dirlo e chiedere verifica sul telefono.
+- Versione 2 sul ramo `v2`, unita a `main` solo dopo approvazione. A fine fase: riepilogo breve (scelte minori, fonti, lavori con ripieghi), link di anteprima, screenshot, Lighthouse, `MANCANTI.md` aggiornato. Poi fermarsi.
+- Un componente per file, nessun file oltre 500 righe. Cartelle: quelle della versione 1 più `src/components/scenes/` (pioggia di codice, riordino, transizioni di decodifica) e `riferimenti/immagini/`; nessun'altra cartella nuova senza dirlo. Aggiorna il README quando cambiano avvio, test o deploy.

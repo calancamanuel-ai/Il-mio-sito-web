@@ -13,7 +13,7 @@ if (!out) { console.error('uso: node tools/anteprima-artefatto.mjs <cartella>');
 if (existsSync(out)) rmSync(out, { recursive: true });
 mkdirSync(join(out, 'risorse'), { recursive: true });
 
-// pagine alla radice e nelle sottocartelle (es. lab/flusso.html -> lab-flusso.html: tutto resta alla radice)
+// pagine alla radice e nelle sottocartelle (es. lab/riordino.html -> lab-riordino.html: tutto resta alla radice)
 const pages = readdirSync(src, { recursive: true }).map(String).filter((f) => f.endsWith('.html') && !f.startsWith('_astro'));
 const flat = (f) => f.replace(/\.html$/, '').replaceAll('/', '-');
 const names = new Map(pages.map((f) => [f.replace(/\.html$/, ''), flat(f)]));
@@ -55,10 +55,10 @@ for (const f of readdirSync(join(src, '_astro'))) {
   writeFileSync(join(out, 'risorse', f), css);
 }
 copyFileSync(join(src, 'favicon.svg'), join(out, 'favicon.svg'));
-// immagini dei livelli (prova /lab/hero-livelli), servite così come sono
-if (existsSync(join(src, 'livelli'))) {
-  mkdirSync(join(out, 'livelli'), { recursive: true });
-  for (const f of readdirSync(join(src, 'livelli'))) copyFileSync(join(src, 'livelli', f), join(out, 'livelli', f));
+// illustrazioni preparate da tools/prepara-immagini.mjs (public/immagini), servite così come sono
+if (existsSync(join(src, 'immagini'))) {
+  mkdirSync(join(out, 'immagini'), { recursive: true });
+  for (const f of readdirSync(join(src, 'immagini'))) copyFileSync(join(src, 'immagini', f), join(out, 'immagini', f));
 }
 // file serviti così come sono (es. HDRI in public/3d)
 if (existsSync(join(src, '3d'))) {

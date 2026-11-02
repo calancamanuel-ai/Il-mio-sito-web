@@ -35,7 +35,7 @@ Tutti i dati (contatti, dati legali, prezzi) stanno in `src/config/sito.ts`. I v
 
 ## Bozze
 
-Le pagine in `/lab/` sono prove di lavoro (in fase 3 il 3D), non collegate dalla navigazione. Le bozze delle tre direzioni della fase 1 sono nella storia git (commit "Fase 1: tre direzioni creative").
+Le pagine in `/lab/` sono prove di lavoro, non collegate dalla navigazione (in versione 2: `/lab/riordino`, fase B). La prova a parallasse della versione 1 è nella storia del ramo `lab-hero-livelli`. Le bozze delle tre direzioni della fase 1 sono nella storia git (commit "Fase 1: tre direzioni creative").
 
 ## Form di contatto
 
@@ -68,12 +68,12 @@ GSAP 3.15 + ScrollTrigger e Lenis 1.3.27 (npm). Si caricano dopo il primo disegn
 
 Tema giorno/notte: segue il sistema; `?tema=chiaro` o `?tema=scuro` nell'indirizzo lo forzano (utile per i test).
 
-### Prova: hero a livelli (ramo `lab-hero-livelli`)
+### Illustrazioni (versione 2)
 
-`/lab/hero-livelli` è la home con la macchina del flusso in parallasse 2.5D, senza WebGL. Le immagini si generano con Gemini usando i prompt in `riferimenti/livelli/PROMPT.md`, si salvano in `riferimenti/livelli/` e poi si preparano così:
+Le illustrazioni si generano con Gemini usando i prompt in `riferimenti/immagini/PROMPT.md` e si salvano in `riferimenti/immagini/` (non pubblicate). Poi:
 
 ```sh
-node tools/prepara-livelli.mjs   # scontorna, ritaglia, crea AVIF/WebP in public/livelli e aggiorna src/content/livelli.json
+node tools/prepara-immagini.mjs   # scontorna dove serve, ritaglia, crea AVIF/WebP in public/immagini e aggiorna src/content/immagini.json
 ```
 
-Finché le immagini mancano, la pagina usa segnaposto disegnati.
+Lo script decide da solo se scontornare (bordo di un colore uniforme e acceso, per esempio magenta); si può forzare con i suffissi `-scontorna` o `-pieno`. `-telefono` e `-computer` indicano versioni diverse della stessa immagine. Riporta il peso di ogni immagine e controlla il budget dell'hero (400 KB su telefono, 900 KB su computer).
