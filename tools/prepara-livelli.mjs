@@ -7,7 +7,7 @@
 //   oggetto-email.* oggetto-whatsapp.* oggetto-pdf.* oggetto-foglio.* oggetto-postit.* oggetto-scontrino.*
 //
 // Per ogni immagine scontornata:
-//   1. colore di sfondo: letto dai bordi (mediana), così va bene magenta, verde o un altro colore uniforme
+//   1. colore di sfondo: letto dai bordi (il più frequente), così va bene magenta, verde o un altro colore uniforme
 //   2. trasparenza morbida in base alla distanza dal colore di sfondo (niente scalini sui bordi)
 //   3. pulizia dei bordi: tolgo il riflesso del colore di sfondo dai pixel semitrasparenti,
 //      stringo il bordo di 1 px e cancello i puntini isolati (rumore della compressione)
@@ -45,8 +45,17 @@ async function keyOut(file) {
   const border = [];
   for (let x = 0; x < w; x += 2) border.push(px(x, 0), px(x, h - 1));
   for (let y = 0; y < h; y += 2) border.push(px(0, y), px(w - 1, y));
-  const med = (c) => border.map((i) => src[i + c]).sort((a, b) => a - b)[border.length >> 1];
-  const key = [med(0), med(1), med(2)];
+  // colore più frequente sul bordo (a gruppi di 16 livelli), non la mediana: nel primo piano il banco
+  // tocca tre lati su quattro, ma è scuro e variegato, mentre il fondo è uniforme e vince comunque
+  const buckets = new Map();
+  for (const i of border) {
+    const k = (src[i] >> 4) * 256 + (src[i + 1] >> 4) * 16 + (src[i + 2] >> 4);
+    const b = buckets.get(k) ?? { n: 0, r: 0, g: 0, b: 0 };
+    b.n++; b.r += src[i]; b.g += src[i + 1]; b.b += src[i + 2];
+    buckets.set(k, b);
+  }
+  const mode = [...buckets.values()].sort((a, b) => b.n - a.n)[0];
+  const key = [mode.r / mode.n, mode.g / mode.n, mode.b / mode.n].map(Math.round);
 
   // 2. trasparenza: distanza nel piano del colore (meno sensibile alla luminosità) + distanza RGB
   const alpha = new Float32Array(w * h);
@@ -84,6 +93,14 @@ async function keyOut(file) {
   const keep = Math.max(...sizes, 1) * 0.002;
   // i pixel semitrasparenti seguono la zona solida più vicina (vicinato 5x5)
   const solidOk = (i) => lab[i] >= 0 && sizes[lab[i]] >= keep;
+  // pixel entro 3 px da una zona di sfondo (alpha < 0,5)
+  const bgMask = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) bgMask[i] = er[i] < 0.5 ? 1 : 0;
+  const nearBg = (x, y) => {
+    for (let yy = Math.max(0, y - 3); yy <= Math.min(h - 1, y + 3); yy++)
+      for (let xx = Math.max(0, x - 3); xx <= Math.min(w - 1, x + 3); xx++) if (bgMask[yy * w + xx]) return true;
+    return false;
+  };
   const out = Buffer.alloc(w * h * 4);
   let x0 = w, y0 = h, x1 = -1, y1 = -1;
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
@@ -100,6 +117,15 @@ async function keyOut(file) {
     for (let c = 0; c < 3; c++) {
       const v = a > 0.02 ? (src[p + c] - (1 - a) * key[c]) / a : 0;
       out[o + c] = Math.max(0, Math.min(255, Math.round(v)));
+    }
+    // 3d. vicino al bordo (entro 3 px dallo sfondo) tolgo anche il riflesso residuo del colore di sfondo:
+    // per un fondo magenta, rosso e blu che superano il verde. Più all'interno i colori restano intatti.
+    if (a > 0 && nearBg(x, y)) {
+      const hi = [0, 1, 2].filter((c) => key[c] > 128), lo = [0, 1, 2].filter((c) => key[c] <= 128);
+      if (hi.length && lo.length) {
+        const spill = Math.min(...hi.map((c) => out[o + c])) - Math.max(...lo.map((c) => out[o + c]));
+        if (spill > 0) hi.forEach((c) => { out[o + c] -= spill; });
+      }
     }
     out[o + 3] = Math.round(a * 255);
     if (a > 0.04) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }

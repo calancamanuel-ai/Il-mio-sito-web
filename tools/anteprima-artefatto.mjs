@@ -55,6 +55,11 @@ for (const f of readdirSync(join(src, '_astro'))) {
   writeFileSync(join(out, 'risorse', f), css);
 }
 copyFileSync(join(src, 'favicon.svg'), join(out, 'favicon.svg'));
+// immagini dei livelli (prova /lab/hero-livelli), servite così come sono
+if (existsSync(join(src, 'livelli'))) {
+  mkdirSync(join(out, 'livelli'), { recursive: true });
+  for (const f of readdirSync(join(src, 'livelli'))) copyFileSync(join(src, 'livelli', f), join(out, 'livelli', f));
+}
 // file serviti così come sono (es. HDRI in public/3d)
 if (existsSync(join(src, '3d'))) {
   mkdirSync(join(out, '3d'), { recursive: true });

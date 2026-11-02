@@ -96,7 +96,7 @@ const pos = (w: { x: number; y: number }, t: { x: number; y: number }) => `--wx:
 
   /* La scena resta scura anche col tema chiaro: è una "finestra" sul banco di lavoro di notte. */
   .ly-stage {
-    --s-bg: #0a0d0b; --s-surface: #131a15; --s-line: #24302a; --s-ink: #e7efe9; --s-soft: #9aab9f; --s-action: #4ade80;
+    --s-bg: #0a0d0b; --s-surface: #131a15; --s-line: #3a4a40; --s-ink: #e7efe9; --s-soft: #9aab9f; --s-action: #4ade80;
     position: relative;
     container-type: inline-size;
     width: 100%;
@@ -107,9 +107,11 @@ const pos = (w: { x: number; y: number }, t: { x: number; y: number }) => `--wx:
   }
   .ly-layer { position: absolute; inset: 0; }
   .ly-bg { inset: -6%; }
+  /* velo piatto sullo sfondo: la linea e i nodi spenti restano leggibili sopra l'illustrazione */
+  .ly-bg::after { content: ""; position: absolute; inset: 0; background: rgb(10 13 11 / 0.45); }
   .ly-fg { top: auto; height: 26%; bottom: -2%; left: -6%; right: -6%; pointer-events: none; }
   .ly-bg :global(img) { object-fit: cover; }
-  .ly-fg :global(img) { object-fit: cover; object-position: bottom; }
+  .ly-fg :global(img) { object-fit: cover; object-position: top; }
   .ly-objs { position: absolute; inset: 0; pointer-events: none; }
   .ly-obj {
     position: absolute;

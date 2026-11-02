@@ -48,4 +48,4 @@ Ultimo aggiornamento: fine fase 4 (1 novembre 2026). Vedi anche `docs/VERIFICHE.
 | Profilo LinkedIn (facoltativo) | Footer | `contatti.linkedin` |
 | PEC (facoltativa) | Footer | `datiLegali.pec` |
 | Indirizzo `*.workers.dev` assegnato | README, test | `sito.urlProvvisorio` |
-| (Solo prova, ramo `lab-hero-livelli`) 10 immagini Gemini per l'hero a livelli: oggi segnaposto disegnati | `/lab/hero-livelli` | `riferimenti/livelli/PROMPT.md`, poi `tools/prepara-livelli.mjs` |
+| (Solo prova, ramo `lab-hero-livelli`) Scelta tra hero 3D e hero a livelli (immagini Gemini arrivate e preparate) | `/lab/hero-livelli` | `riferimenti/livelli/PROMPT.md`, poi `tools/prepara-livelli.mjs` |
