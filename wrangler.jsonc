@@ -3,6 +3,8 @@
   // Sito statico: nessun Worker per ora (l'endpoint /api arriva in fase 5).
   "name": "il-mio-sito-web",
   "compatibility_date": "2026-11-02",
+  // niente dati d'uso a Cloudflare (sparrow.cloudflare.com non serve e resta bloccato)
+  "send_metrics": false,
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
