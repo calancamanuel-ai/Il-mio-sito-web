@@ -89,6 +89,20 @@ Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6ed
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
+## 1b. Correzione della candidata (allegando `_ordine-candidata.jpg`)
+
+La candidata del 3 novembre è l'unica con le postazioni ben divise e l'ingresso fuori dalla lastra: si corregge quella invece di rigenerare da capo.
+
+```
+Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, lo stesso guscio, le stesse pareti, le stesse pareti divisorie, la stessa posizione di tutti i mobili, le stesse piste blu, il gradino d'ingresso e lo stesso stile. Fai solo queste modifiche:
+1. Scrivania in fondo a sinistra (amministrazione): togli il telefono fisso; al suo posto un raccoglitore aperto con i fogli allineati e un vassoio con pochi documenti in ordine. Computer, lampada, sedia, pianta e quadro restano.
+2. Scaffale in fondo a destra: togli le spunte verdi che galleggiano sulle scatole e sui ripiani; al loro posto, sul dorso di alcuni faldoni, una piccola etichetta verde #34d399.
+3. Postazione sul lato sinistro (vetrina online): gira il monitor grande verso chi guarda e mostra sullo schermo una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante.
+4. Postazione sul lato destro (laboratorio software): i due monitor mostrano righe colorate come codice, fatte solo di barre di colori diversi.
+5. Zerbino sul gradino d'ingresso: liscio, senza disegni.
+Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi e sullo zerbino: ogni scritta è solo una barra piena arrotondata. Tutto il resto resta identico. Formato quadrato 1:1. Niente persone, nessun logo, nessuna filigrana.
+```
+
 ## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
 
 ```
