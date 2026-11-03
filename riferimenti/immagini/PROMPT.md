@@ -174,3 +174,17 @@ Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun nume
 - Guarda le immagini 1 e 2 una dopo l'altra: guscio, pareti, mobili e sedie devono stare negli stessi punti. Se Gemini ha spostato qualcosa, rigenera la 2 aggiungendo "stessa identica inquadratura dell'immagine allegata". Allineamento e sagoma li verifico io.
 - I dettagli 3 e 4 si generano solo dopo la nuova immagine 1. Devono essere ingrandimenti di quella stanza, non l'ufficio intero.
 - Le immagini attuali (prima versione) restano finché non arrivano le nuove: vanno sostituite con gli stessi nomi.
+
+## Controllo delle immagini (ogni volta, oltre alla presenza degli elementi)
+
+Non basta che ci sia tutto: si cerca anche ciò che non torna. Ingrandimento a quadranti, zona per zona.
+
+- **Doppioni**: lo stesso oggetto due volte (es. cornetta staccata e cornetta ancora sul telefono), sedie o monitor in più.
+- **Stati incoerenti**: un oggetto in due stati insieme (acceso/spento, aperto/chiuso), luce calda e fredda mescolate.
+- **Fisica**: oggetti sospesi nel vuoto, che attraversano mobili o pareti, appoggiati a metà su un bordo; notifiche o finestre d'interfaccia fuori dagli schermi.
+- **Orientamento**: sedie e schermi girati dalla parte sbagliata, prospettiva che non segue l'isometria.
+- **Proporzioni**: oggetti troppo grandi o piccoli rispetto ai mobili vicini.
+- **Residui di modifiche**: pezzi di oggetti tolti, toppe con colore o linee non allineate, cuciture.
+- **Testo e simboli**: lettere, numeri, loghi, spunte o segni verdi non voluti.
+- **Coerenza tra ordine e caos**: guscio, mobili e sedie negli stessi punti; nessun oggetto che sparisce o compare senza motivo (es. tablet della reception).
+- **Fondo e bordi**: colore del fondo, ombre sotto la lastra, bordo della lastra continuo.
