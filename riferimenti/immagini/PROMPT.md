@@ -41,15 +41,21 @@ Trovati con Openverse il 3 novembre 2026. Da ognuno prendo solo un'idea di compo
 - Salva in `riferimenti/immagini/` con i nomi della tabella (png o jpg), poi lancia `node tools/prepara-immagini.mjs`.
 - Se Gemini scrive lettere su fogli o schermi, rigenera aggiungendo: "Ogni scritta è solo una barra piena arrotondata: nessuna lettera, nessun numero".
 
-**Palette nei prompt**: "Terminale", quella scelta da Manuel il 3 novembre: quasi nero verdastro #0a0d0b, superfici #131a15 e #24302a, chiaro #e7efe9, grigio verde #9aab9f, verde segnale #4ade80, azzurro #7dd3fc.
-**[DA CONFERMARE]**: la regola di stile dello stesso giorno chiede invece ciano #22D3EE come accento, blu #3B82F6 nel circuito e verde #34D399 per l'ordine. Se vale quella, cambio le righe "Colori" qui sotto.
+**Palette nei prompt**: "Circuito", scelta da Manuel il 3 novembre 2026. Nelle illustrazioni:
+- fondo blu notte #0b1220, pareti e pavimenti blu ardesia #111a2e e #1e2a44;
+- chiaro #e6edf7, grigio blu #94a3b8;
+- blu #3b82f6 per piste del circuito e schermi;
+- verde #34d399 solo per ciò che è "in ordine";
+- luce calda ambrata solo nell'ordine.
+
+Il ciano #22d3ee resta riservato ai pulsanti del sito: non compare nelle illustrazioni.
 
 ---
 
 ## 0. Prova di stile (facoltativa)
 
 ```
-Illustrazione isometrica in sezione, vista dall'alto a 30°, come una casa delle bambole tagliata: una sola stanza di un piccolo ufficio italiano, la reception, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, con un bancone, un telefono fisso, uno schermo, una pianta, una sedia. Stile illustrazione vettoriale pulita con piccoli dettagli, contorni sottili scuri, ombre piatte, leggera grana. La stanza galleggia al centro su un fondo quasi nero verdastro uniforme #0a0d0b. Colori: pavimento e pareti in verde scurissimo #131a15 e #24302a, mobili chiari #e7efe9 e legno caldo, accenti verde segnale #4ade80 e azzurro #7dd3fc, luce di una lampada calda. Ordinata e tranquilla. Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo.
+Illustrazione isometrica in sezione, vista dall'alto a 30°, come una casa delle bambole tagliata: una sola stanza di un piccolo ufficio italiano, la reception, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, con un bancone, un telefono fisso, uno schermo, una pianta, una sedia. Stile illustrazione vettoriale pulita con piccoli dettagli, contorni sottili scuri, ombre piatte, leggera grana. La stanza galleggia al centro su un fondo blu notte uniforme #0b1220. Colori: pavimento e pareti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, accenti blu #3b82f6, una pianta verde #34d399, luce di una lampada calda. Ordinata e tranquilla. Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo.
 ```
 
 ## 1. Ufficio in ordine (da generare per primo)
@@ -61,10 +67,10 @@ Illustrazione isometrica in sezione, vista dall'alto a 30°, come una casa delle
 3. al centro il commerciale: tavolo con due sedie e un portatile aperto, una lavagna bianca vuota;
 4. in basso a sinistra la vetrina online: una scrivania con un grande monitor e un tablet su un supporto;
 5. in basso a destra il laboratorio software: una scrivania con due monitor e un piccolo server ordinato.
-Tra le stanze, sul pavimento, corrono sottili piste luminose verde segnale come quelle di un circuito stampato, che collegano le stanze a quattro piccoli nodi quadrati.
+Tra le stanze, sul pavimento, corrono sottili piste luminose blu #3b82f6 come quelle di un circuito stampato, che collegano le stanze a quattro piccoli nodi quadrati.
 Tutto è in perfetto ordine: scrivanie sgombre, fogli impilati con cura, cavi nascosti, piante curate. Luce calda di fine giornata dalle finestre, lampade accese, atmosfera calma.
-Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. L'ufficio occupa il centro dell'immagine con un margine intorno e galleggia su un fondo quasi nero verdastro uniforme #0a0d0b.
-Colori: pareti e pavimenti in verde scurissimo #131a15 e #24302a, mobili chiari #e7efe9 e legno caldo, grigio verde #9aab9f per i dettagli, accenti verde segnale #4ade80 (piste, spunte sulle cartelle, piante) e azzurro #7dd3fc (schermi), luce calda ambrata dalle lampade.
+Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. L'ufficio occupa il centro dell'immagine con un margine intorno e galleggia su un fondo blu notte uniforme #0b1220.
+Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, grigio blu #94a3b8 per i dettagli, blu #3b82f6 per le piste e gli schermi, verde #34d399 solo per ciò che è in ordine (spunte sulle cartelle, piante), luce calda ambrata dalle lampade.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
@@ -72,26 +78,26 @@ Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun nume
 
 ```
 Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, la stessa prospettiva, le stesse pareti, gli stessi mobili nella stessa posizione e lo stesso stile. Cambia solo lo stato dell'ufficio: ora è sommerso dal lavoro ripetitivo.
-Visto dall'alto, le carte coprono i piani delle scrivanie e debordano oltre i bordi; pile di fogli instabili che franano sulle tastiere, raccoglitori aperti e caduti, cartelline aperte, buste strappate, post-it gialli attaccati intorno agli schermi, scatole aperte, una stampante che sputa fogli sul pavimento, il telefono della reception con la cornetta staccata, sugli schermi tanti piccoli riquadri di notifica rossi e arancioni, tazze di caffè vuote, cavi aggrovigliati dietro le scrivanie. Le piste verdi sul pavimento sono spente e coperte di carte, i nodi spenti.
-Luce fredda e un po' piatta di neon, niente luce calda. Stessi colori di base (#0a0d0b, #131a15, #24302a, #e7efe9), con in più rosso e arancione solo per le notifiche e giallo per i post-it.
+Visto dall'alto, le carte coprono i piani delle scrivanie e debordano oltre i bordi; pile di fogli instabili che franano sulle tastiere, raccoglitori aperti e caduti, cartelline aperte, buste strappate, post-it gialli attaccati intorno agli schermi, scatole aperte, una stampante che sputa fogli sul pavimento, il telefono della reception con la cornetta staccata, sugli schermi tanti piccoli riquadri di notifica rossi e arancioni, tazze di caffè vuote, cavi aggrovigliati dietro le scrivanie. Le piste blu sul pavimento sono spente e coperte di carte, i nodi spenti.
+Luce fredda e un po' piatta di neon, niente luce calda. Stessi colori di base (#0b1220, #111a2e, #1e2a44, #e6edf7), nessun verde, con in più rosso e arancione solo per le notifiche e giallo per i post-it.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
 ## 3. Dettaglio: la reception in ordine (allegando l'immagine 1)
 
 ```
-Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo la reception di quell'ufficio, ingrandita: la stessa stanza con gli stessi mobili, in isometria vista dall'alto a 30°, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, che galleggia al centro su un fondo quasi nero verdastro uniforme #0a0d0b.
-Bancone pulito, telefono fisso con la cornetta al suo posto, un tablet che mostra una sola notifica verde, uno schermo con un calendario ordinato fatto di blocchi colorati, una pianta, una sedia, un vassoio con tre buste impilate. Una pista luminosa verde segnale #4ade80 esce dal bancone e scende dal bordo della lastra. Luce calda di lampada, atmosfera calma.
-Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #131a15, #24302a, #e7efe9, #9aab9f, legno caldo, accenti #4ade80 e #7dd3fc.
+Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo la reception di quell'ufficio, ingrandita: la stessa stanza con gli stessi mobili, in isometria vista dall'alto a 30°, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, che galleggia al centro su un fondo blu notte uniforme #0b1220.
+Bancone pulito, telefono fisso con la cornetta al suo posto, un tablet che mostra una sola notifica verde #34d399, uno schermo con un calendario ordinato fatto di blocchi colorati, una pianta, una sedia, un vassoio con tre buste impilate. Una pista luminosa blu #3b82f6 esce dal bancone e scende dal bordo della lastra. Luce calda di lampada, atmosfera calma.
+Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, verde #34d399 solo sugli oggetti in ordine.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
 ## 4. Dettaglio: l'amministrazione in ordine (allegando l'immagine 1)
 
 ```
-Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo l'amministrazione di quell'ufficio, ingrandita: la stessa stanza con gli stessi mobili, in isometria vista dall'alto a 30°, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, che galleggia al centro su un fondo quasi nero verdastro uniforme #0a0d0b.
-Scrivania con un raccoglitore aperto e i fogli allineati, uno scaffale con faldoni in fila ordinati per colore, ognuno con una piccola spunta verde, una stampante spenta con un solo foglio nel vassoio, uno schermo con una tabella fatta di righe colorate, una lampada accesa. Una pista luminosa verde segnale #4ade80 entra dallo scaffale e scende dal bordo della lastra. Luce calda, atmosfera calma.
-Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #131a15, #24302a, #e7efe9, #9aab9f, legno caldo, accenti #4ade80 e #7dd3fc.
+Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo l'amministrazione di quell'ufficio, ingrandita: la stessa stanza con gli stessi mobili, in isometria vista dall'alto a 30°, su una lastra di pavimento con lo spessore visibile e due pareti tagliate, che galleggia al centro su un fondo blu notte uniforme #0b1220.
+Scrivania con un raccoglitore aperto e i fogli allineati, uno scaffale con faldoni in fila ordinati per colore, ognuno con una piccola spunta verde #34d399, una stampante spenta con un solo foglio nel vassoio, uno schermo con una tabella fatta di righe colorate, una lampada accesa. Una pista luminosa blu #3b82f6 entra dallo scaffale e scende dal bordo della lastra. Luce calda, atmosfera calma.
+Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, verde #34d399 solo sugli oggetti in ordine.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 

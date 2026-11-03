@@ -4,7 +4,7 @@ Riferimento unico: `docs/PIANO.md` (versione 2, 2 novembre 2026). Se una regola 
 
 ## Decisioni di Manuel che precisano il piano (3 novembre 2026)
 
-- **Palette**: resta "Terminale" (verde neon su quasi nero, `src/styles/tokens.css`), non "Circuito" del piano. Il verde pieno è riservato al pulsante di prenotazione e allo stato "in ordine". **[DA CONFERMARE]**: la regola di stile dello stesso giorno ("ciano #22D3EE unico accento, blu #3B82F6 nel circuito, verde #34D399 per lo stato in ordine") dice il contrario. Finché Manuel non sceglie si resta su "Terminale", che è la risposta data alla domanda diretta.
+- **Palette**: "Circuito" (scelta definitiva del 3 novembre 2026, `src/styles/tokens.css`): sfondo #0b1220, superfici #111a2e, bordi #1e2a44, testo #e6edf7 e #94a3b8; ciano #22d3ee unico accento (azioni); blu #3b82f6 solo nel circuito e nelle illustrazioni; verde #34d399 solo per lo stato "in ordine".
 - **Prezzi**: titolo e testi dicono "Prezzi", mai "prezzi di lancio" o "per i primi clienti". Se in futuro cambiano, si cambiano in `src/config/sito.ts`.
 - **Tema giorno/notte**: tolto per ora; il sito è solo scuro.
 

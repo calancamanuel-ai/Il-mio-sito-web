@@ -1,30 +1,31 @@
 /*
- * Design token della direzione C, "La frase che si accende" (scelta a fine fase 1).
- * Palette Terminale: quasi nero con verde segnale. I componenti usano solo questi nomi.
- * Contrasti (WCAG AA) verificati su --c-bg e --c-surface.
+ * Design token. Palette "Circuito" (piano v2, scelta di Manuel il 3 novembre 2026):
+ * ciano unico accento (azioni), blu solo nel circuito e nelle illustrazioni,
+ * verde solo per lo stato "in ordine". I componenti usano solo questi nomi.
+ * Contrasti (WCAG AA) calcolati su --c-bg / --c-surface.
  */
 :root {
   color-scheme: dark;
 
   /* Colori */
-  --c-bg: #0a0d0b;          /* sfondo */
-  --c-surface: #131a15;     /* superfici */
-  --c-line: #24302a;        /* campi del form, linea di flusso a riposo */
-  --c-ink: #e7efe9;         /* testo principale (15,9:1) */
-  --c-ink-soft: #9aab9f;    /* testo secondario (7,9:1) */
-  --c-action: #4ade80;      /* azione: pulsanti e link (11:1) */
-  --c-on-action: #0a0d0b;
-  --c-accent: #7dd3fc;      /* accento secondario: nodi, grafici */
-  --c-ok: #4ade80;
+  --c-bg: #0b1220;          /* sfondo */
+  --c-surface: #111a2e;     /* superfici: separate dallo sfondo per passo di tono */
+  --c-line: #1e2a44;        /* bordi: solo campi dei moduli e frammenti data-ui; circuito a riposo */
+  --c-ink: #e6edf7;         /* testo principale (15,9:1 / 14,7:1) */
+  --c-ink-soft: #94a3b8;    /* testo secondario (7,3:1 / 6,8:1) */
+  --c-action: #22d3ee;      /* unico accento: pulsanti e link (10,4:1 / 9,6:1) */
+  --c-on-action: #0b1220;   /* testo sul ciano (10,4:1) */
+  --c-accent: #3b82f6;      /* blu: solo circuito e illustrazioni (5,1:1 / 4,7:1) */
+  --c-ok: #34d399;          /* verde: solo stato "in ordine" (9,7:1) */
   --c-error: #fca5a5;
   --c-placeholder: #fbbf24; /* evidenza dei segnaposto [DA COMPLETARE] */
-  --c-inverse-bg: #e7efe9;  /* chiusura invertita */
-  --c-inverse-ink: #0a0d0b;
-  --c-inverse-surface: #c9d6cc;
-  --c-inverse-soft: #2c3a31;
-  --c-inverse-placeholder: #7a4b00;
-  --c-inverse-hover: #26332b;
-  --c-tint-wa: #1f3b2e;     /* carte "WhatsApp" e "PDF" nella macchina del flusso */
+  --c-inverse-bg: #e6edf7;  /* chiusura invertita */
+  --c-inverse-ink: #0b1220;
+  --c-inverse-surface: #cbd5e1;
+  --c-inverse-soft: #334155;     /* 8,8:1 */
+  --c-inverse-placeholder: #7a4b00; /* 6,3:1 */
+  --c-inverse-hover: #1e293b;
+  --c-tint-wa: #12352c;     /* carte "WhatsApp" e "PDF" nei frammenti */
   --c-tint-pdf: #3a2330;
 
   /* Tipografia: Fraunces per titoli e testo, Geist Mono solo per dettagli tecnici */
