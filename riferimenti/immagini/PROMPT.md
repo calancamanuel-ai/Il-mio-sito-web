@@ -66,9 +66,10 @@ Si legge dal davanti (l'angolo in basso, il più vicino a chi guarda) verso il f
 | --- | --- | --- |
 | Angolo in basso, davanti | Reception con l'ingresso | Ricevi |
 | Centro | Commerciale | Capisci |
-| In alto, contro le pareti con le finestre | Amministrazione | Archivia |
-| Lato sinistro | Vetrina online | ramo laterale |
-| Lato destro | Laboratorio software | ramo laterale |
+| In fondo a sinistra, contro la parete con la finestra | Amministrazione | Archivia |
+| Lato sinistro | Vetrina online: un grande schermo su piedistallo, senza scrivania | ramo laterale |
+| In fondo a destra | Laboratorio software | ramo laterale |
+| Lato destro, vicino all'ingresso | Sala d'attesa | — |
 
 L'ultimo nodo, "avvisa", torna verso l'angolo in basso, dove la pista esce dalla lastra e continua nella pagina.
 
@@ -110,6 +111,24 @@ Formato quadrato 1:1. Niente persone. Nessuna lettera, nessun numero e nessuna p
 - **Vetrina e laboratorio:** la sedia è dal nostro lato e si vedono gli schermi.
 - **Libreria:** nessuna etichetta e nessun simbolo sui faldoni.
 - **Testo:** nessuna lettera da nessuna parte.
+
+## 1d. Rifinitura della candidata 3 (allegando `_ordine-candidata-3.jpg`, una modifica alla volta)
+
+La candidata 3 è la base scelta il 3 novembre:
+- il laboratorio software è in fondo a destra;
+- la sala d'attesa è a destra dell'ingresso;
+- la reception è davanti;
+- l'amministrazione è in fondo a sinistra.
+
+**Passaggio A: togliere le spunte**
+```
+Modifica l'immagine allegata cambiando una sola cosa: togli le due spunte verdi sulla libreria in fondo, sui faldoni e sulle scatole. I faldoni restano tutti uguali, senza simboli né etichette. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
+```
+
+**Passaggio B: vetrina online come schermo** (allegando il risultato del passaggio A)
+```
+Modifica l'immagine allegata cambiando una sola cosa: nella postazione sul lato sinistro togli la scrivania e la sedia; al loro posto metti un grande schermo verticale su un piedistallo, come una vetrina digitale, rivolto verso chi guarda e verso l'ingresso, con una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante. La pianta accanto resta. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesse piste blu, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero e nessuna parola sullo schermo: ogni scritta è solo una barra piena arrotondata. Nessun logo, nessuna filigrana.
+```
 
 ## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
 
