@@ -45,7 +45,7 @@ Trovati con Openverse il 3 novembre 2026. Da ognuno prendo solo un'idea di compo
 - fondo blu notte #0b1220, pareti e pavimenti blu ardesia #111a2e e #1e2a44;
 - chiaro #e6edf7, grigio blu #94a3b8;
 - blu #3b82f6 per piste del circuito e schermi;
-- verde #34d399 solo per ciò che è "in ordine" (nelle illustrazioni: piante e la notifica sul tablet della reception; niente spunte né etichette verdi sui faldoni);
+- verde #34d399 solo per ciò che è "in ordine" (nelle illustrazioni solo le piante: niente spunte, puntini o etichette verdi; il verde dell'"in ordine" lo aggiunge il sito);
 - luce calda ambrata solo nell'ordine.
 
 Il ciano #22d3ee resta riservato ai pulsanti del sito: non compare nelle illustrazioni.
@@ -88,7 +88,7 @@ Usa l'immagine allegata solo come riferimento di stile, colori, luce e guscio es
 
 Il pavimento è un rombo con quattro angoli: davanti (in basso, il più vicino a chi guarda), a sinistra, a destra e in fondo (in alto). L'interno è diviso in cinque zone da pareti basse a mezza altezza, ognuna riconoscibile a colpo d'occhio:
 
-INGRESSO E RECEPTION, nell'angolo davanti. Sul bordo destro della lastra, vicino all'angolo davanti, c'è un gradino d'ingresso con uno zerbino liscio. Chi entra trova alla sua sinistra il bancone della reception, curvo, messo di lato: perpendicolare al gradino d'ingresso, con il lato lungo rivolto verso il passaggio. Dietro il bancone, dal lato della parete, una sola sedia girevole per la receptionist, rivolta verso il passaggio. Sul bancone un telefono fisso e un tablet. Alla destra di chi entra, separata dal bancone da un passaggio libero, una piccola sala d'attesa: due poltroncine rivolte verso il bancone, un tavolino basso e una pianta.
+INGRESSO E RECEPTION, nell'angolo davanti. Sul bordo destro della lastra, vicino all'angolo davanti, c'è un gradino d'ingresso con uno zerbino liscio. Chi entra trova alla sua sinistra il bancone della reception, curvo, messo di lato: perpendicolare al gradino d'ingresso, con il lato lungo rivolto verso il passaggio. Dietro il bancone, dal lato della parete, una sola sedia girevole per la receptionist, rivolta verso il passaggio. Sul bancone un computer con monitor e tastiera rivolto verso la sedia, un telefono fisso e un tablet. Alla destra di chi entra, separata dal bancone da un passaggio libero, una piccola sala d'attesa: due poltroncine rivolte verso il bancone, un tavolino basso e una pianta.
 
 COMMERCIALE, al centro. Un tavolo con due sedie una di fronte all'altra, un portatile aperto e una cartellina chiusa. Dietro, una lavagna bianca vuota su un pannello.
 
@@ -102,7 +102,7 @@ CIRCUITO. Sul pavimento corrono sottili piste luminose blu #3b82f6 come quelle d
 
 Ogni sedia è rivolta verso la sua scrivania o il suo bancone. Tutto è in perfetto ordine, luce calda di fine giornata dalle finestre e dalle lampade, atmosfera calma.
 Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa.
-Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, grigio blu #94a3b8 per i dettagli, blu #3b82f6 per le piste e gli schermi, piante verdi; sul tablet della reception una sola notifica verde #34d399.
+Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, grigio blu #94a3b8 per i dettagli, blu #3b82f6 per le piste e gli schermi, piante verdi; nessun altro segno verde (niente spunte, puntini o etichette verdi).
 Formato quadrato 1:1. Niente persone. Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi e sullo zerbino: ogni scritta è solo una barra piena arrotondata. Nessun logo, nessuna filigrana.
 ```
 
@@ -120,14 +120,19 @@ La candidata 3 è la base scelta il 3 novembre:
 - la reception è davanti;
 - l'amministrazione è in fondo a sinistra.
 
-**Passaggio A: togliere le spunte**
+**Passaggio A: togliere tutti i segni verdi**
 ```
-Modifica l'immagine allegata cambiando una sola cosa: togli le due spunte verdi sulla libreria in fondo, sui faldoni e sulle scatole. I faldoni restano tutti uguali, senza simboli né etichette. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
+Modifica l'immagine allegata cambiando una sola cosa: togli tutti i segni verdi che non sono piante, cioè le due spunte verdi sulla libreria in fondo (sui faldoni e sulle scatole) e i puntini verdi sul bancone della reception accanto al tablet. I faldoni restano tutti uguali, senza simboli né etichette; lo schermo del tablet resta acceso, azzurro chiaro, senza icone. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
 **Passaggio B: vetrina online come schermo** (allegando il risultato del passaggio A)
 ```
 Modifica l'immagine allegata cambiando una sola cosa: nella postazione sul lato sinistro togli la scrivania e la sedia; al loro posto metti un grande schermo verticale su un piedistallo, come una vetrina digitale, rivolto verso chi guarda e verso l'ingresso, con una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante. La pianta accanto resta. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesse piste blu, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero e nessuna parola sullo schermo: ogni scritta è solo una barra piena arrotondata. Nessun logo, nessuna filigrana.
+```
+
+**Passaggio C: il computer della reception** (allegando il risultato del passaggio B)
+```
+Modifica l'immagine allegata cambiando una sola cosa: sul bancone della reception, davanti alla sedia della receptionist, aggiungi un computer con monitor e tastiera, con lo schermo rivolto verso la sedia. Il telefono fisso e il tablet restano dove sono. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesse piste blu, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
 ## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
@@ -144,7 +149,7 @@ Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun nume
 
 ```
 Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo la reception di quell'ufficio, quella nell'angolo in basso vicino all'ingresso, ingrandita: gli stessi mobili, in isometria vista dall'alto a 30°. Non disegnare il guscio dell'ufficio intero né le altre stanze: inquadra solo questa stanza da vicino, come un ingrandimento, con la lastra di pavimento tagliata ai bordi della stanza, che galleggia al centro su un fondo blu notte uniforme #0b1220.
-Bancone alto e curvo pulito, telefono fisso con la cornetta al suo posto, un tablet che mostra una sola notifica verde #34d399, una sedia dietro il bancone, due poltroncine d'attesa, lo zerbino dell'ingresso, un vassoio con tre buste impilate, una pianta. Una pista luminosa blu #3b82f6 entra dal bordo della lastra e passa sotto il bancone. Luce calda di lampada, atmosfera calma.
+Bancone alto e curvo pulito, telefono fisso con la cornetta al suo posto, un computer con monitor e tastiera, un tablet, una sedia dietro il bancone, due poltroncine d'attesa, lo zerbino dell'ingresso, un vassoio con tre buste impilate, una pianta. Una pista luminosa blu #3b82f6 entra dal bordo della lastra e passa sotto il bancone. Luce calda di lampada, atmosfera calma.
 Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, piante verdi.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
