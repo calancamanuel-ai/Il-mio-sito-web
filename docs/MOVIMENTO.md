@@ -1,8 +1,38 @@
 # Sistema di movimento [BOZZA]
 
-Bozza della fase A (2 novembre 2026), da approvare con il prototipo della fase B. Deriva da `docs/PIANO.md` ("Concetto" e "Sistema di movimento"); se qualcosa qui contraddice il piano, vince il piano.
+Bozza della fase A (2 novembre 2026, valori aggiornati il 3 novembre con le regole di Manuel), da approvare con il prototipo della fase B. **È l'unico file dei valori di movimento**: codice, CSS e skill prendono i numeri da qui. Deriva da `docs/PIANO.md` ("Concetto" e "Sistema di movimento"); se qualcosa qui contraddice il piano, vince il piano.
 
 **Idea in una riga**: chi scorre vive quello che Manuel vende. In alto il sito è nervoso, al centro lavora, in fondo è calmo. Ogni movimento dice in quale di questi tre stati siamo.
+
+## 0. Valori (unica fonte)
+
+**Interfaccia** (pulsanti, menu, pannelli, stati), valori di Emil Kowalski, in CSS o WAAPI, mai GSAP:
+
+| Cosa | Durata | Curva |
+| --- | --- | --- |
+| Pressione di un pulsante | 120 ms, ritorno 150 ms | `scale(0.97)`, `--ease-out` |
+| Hover, cambio di colore | 150 ms | `ease` (solo con `@media (hover: hover)`) |
+| Tooltip, piccoli popover | 150 ms | `--ease-out` |
+| Menu, tendine, pannello "Contattami" | 200 ms entrata, 150 ms uscita | `--ease-out` |
+| Pannelli grandi (menu su telefono) | 250 ms | `--ease-out` |
+| Elementi in sequenza | 40 ms tra uno e l'altro | — |
+
+- `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` (in `src/styles/tokens.css`). Per un elemento che si sposta sullo schermo restando visibile: `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)`.
+- **Mai ease-in**, nemmeno per le uscite. Mai sopra i 300 ms nell'interfaccia. Le animazioni dell'interfaccia si possono interrompere: transizioni CSS, non keyframe.
+
+**Rivelazioni e scene** (GSAP + ScrollTrigger), valori di gsap-scroll-animation e design-taste-frontend:
+
+| Cosa | Valore |
+| --- | --- |
+| Entrata di una sezione | titolo, poi testo, poi immagine; sfalsati di 60–90 ms; salgono di 16–32 px con opacità; 600–1000 ms; una volta sola |
+| Spostamenti di oggetti nella scena | 1,1–1,6 s, `power3.inOut` o `expo.inOut` |
+| Entrate | `power2.out` |
+| Tutto ciò che segue lo scroll (scrub) | `ease: "none"`, `scrub: 0.4` |
+| Rimbalzi ed elastici | mai |
+| Sezioni bloccate (pin) | **al massimo 2 per pagina**; ciascuna al massimo 3 schermate su computer e 1,5 su telefono |
+| Sequenza di apertura dell'hero | finisce entro 1,2 s; titolo e frase leggibili dal primo istante |
+
+Nessuna libreria di animazione oltre a GSAP (niente Motion). `/impeccable animate` non si usa.
 
 ## 1. I tre stati
 
@@ -21,8 +51,8 @@ Lo stato dipende dalla posizione nella pagina, non dal tempo. Ogni sezione dichi
 
 ## 2. Gli strumenti (sempre gli stessi, dosati dallo stato)
 
-1. **Pioggia di codice**: un solo `canvas` per pagina (in home dentro l'hero, poi un canvas sottile che accompagna il circuito). Glifi da un atlante pre-disegnato, mai `fillText` a ogni fotogramma. I glifi sono frammenti veri del lavoro d'ufficio (vedi §6). Densità = `1 − --quiete`.
-2. **Decodifica**: un titolo o un'immagine entra come caratteri che si assestano nella forma finale. Il testo vero è nel DOM da subito (leggibile da screen reader e Google): l'effetto copre solo lo strato visivo (`aria-hidden`). Durata massima 700 ms per un titolo, una volta per visita.
+1. **Pioggia di codice**: non passa mai sopra titoli o testi (il canvas occupa solo l'area dell'illustrazione e le piste; i testi stanno fuori dalla sua area). Un solo `canvas` per pagina (in home dentro l'hero, poi un canvas sottile che accompagna il circuito). Glifi da un atlante pre-disegnato, mai `fillText` a ogni fotogramma. I glifi sono frammenti veri del lavoro d'ufficio (vedi §6). Densità = `1 − --quiete`.
+2. **Decodifica**: un titolo o un'immagine entra come caratteri che si assestano nella forma finale. Il testo vero è nel DOM da subito (leggibile da screen reader e Google): l'effetto copre solo lo strato visivo (`aria-hidden`). Durata massima 700 ms per un titolo, una volta per visita. **Mai sul titolo e sulla frase dell'hero**: devono essere leggibili dal primo istante.
 3. **Circuito**: le piste (linee piene, ≥ 2 px, colore piatto) escono dall'hero e scendono lungo la pagina. Si "accendono" sotto il dato che le percorre; a ogni sezione entrano in un nodo. Sono il filo che collega una scena alla successiva.
 4. **Profondità**: 3 livelli per scena (sfondo, illustrazione, interfaccia) con velocità diverse allo scroll (0,6 / 1 / 1,15). Solo `transform`, mai `top`/`left`.
 5. **Cursore** (solo desktop, puntatore fine): nel raggio di 80 px i glifi della pioggia si ricompongono per 600 ms in una parola sensata ("pagato", "richiamato", "archiviato"), poi tornano caos. Niente scia, niente cursore personalizzato.
@@ -31,19 +61,19 @@ Lo stato dipende dalla posizione nella pagina, non dal tempo. Ogni sezione dichi
 
 | # | Sezione | Stato | Scena | Collegamento con la successiva |
 | --- | --- | --- | --- | --- |
-| 1 | Hero, il riordino | Caos → ordine | Ufficio nel caos → pioggia → circuito e nodi → ufficio in ordine (§5) | Le piste del circuito escono dal fondo dell'ufficio |
-| 2 | Le stanze | Elaborazione | L'ufficio in ordine resta; tocchi una stanza: zoom sulla stanza, "prima" e "dopo" si decodificano | Un dato esce dalla stanza scelta e scende nella pista |
+| 1 | Hero, il riordino | Caos → ordine | Ufficio nel caos → pioggia → circuito e nodi → ufficio in ordine (§5). **Pin 1 di 2** | Le piste del circuito escono dal fondo dell'ufficio |
+| 2 | Le stanze | Elaborazione | L'ufficio in ordine resta; tocchi una stanza: zoom sulla stanza, "prima" e "dopo" si decodificano; i dettagli delle stanze (immagini vere) entrano con la profondità. **Pin 2 di 2, se serve** (proposta: niente pin, si decide col prototipo) | Un dato esce dalla stanza scelta e scende nella pista |
 | 3 | Costruisci la tua automazione | Elaborazione | I tre blocchi scelti si collegano con le stesse piste; i caratteri del "cosa arriva" li attraversano | La richiesta compilata diventa una riga che scende |
 | 4 | Come lavoro | Elaborazione | I 5 passi come nodi su una pista verticale; ognuno si accende quando lo raggiungi | La pista rallenta |
 | 5 | Prezzi | Elaborazione → calma | Le cifre si decodificano una volta; nessun altro effetto | — |
 | 6 | Quando non conviene | Calma | Un solo nodo spento, volutamente fermo | La luce si allarga |
-| 7 | FAQ e invito finale | Calma | Quasi immobile; l'ultimo carattere della pagina entra nel pulsante "Prenota una call" | — |
+| 7 | FAQ e invito finale | Calma | Lento, non vuoto: ogni schermata ha contenuto. L'ultimo carattere della pagina entra nel pulsante "Prenota una call". **Proposta da mostrare a Manuel** (non decisa): questa parte passa a uno sfondo chiaro con un taglio netto, come "luce che si allarga" | — |
 
 Le altre pagine usano gli stessi strumenti: la loro "cosa viva" (vedi `CLAUDE.md`) sta nello stato elaborazione, l'invito finale in calma, la 404 è l'unico angolo di caos rimasto.
 
-## 4. Interfaccia (regole di Emil Kowalski)
+## 4. Interfaccia (regole di Emil Kowalski; valori in §0)
 
-- Transizioni di pulsanti, menu, stati: ease-out (`cubic-bezier(0.2, 0.7, 0.2, 1)`), 150 – 250 ms, mai oltre 300 ms.
+- Transizioni di pulsanti, menu, stati: `--ease-out` (`cubic-bezier(0.23, 1, 0.32, 1)`), 150 – 250 ms, mai oltre 300 ms, mai ease-in.
 - Pressione: `scale(0.97)` su `:active`, ritorno in 150 ms.
 - Menu e pannelli: entrano da dove sono stati aperti; uscita più veloce dell'entrata.
 - Niente animazione al primo caricamento su elementi che l'utente deve usare subito (titolo, pulsante "Prenota").
@@ -55,7 +85,7 @@ Un solo valore `p` (0 → 1) guidato dallo scroll; tutte le posizioni sono funzi
 
 | `p` | Cosa si vede |
 | --- | --- |
-| 0 | L'illustrazione dell'ufficio nel caos (immagine vera, è l'LCP), titolo e pulsante in HTML. Tremolio leggero di qualche glifo sopra le carte |
+| 0 | L'illustrazione dell'ufficio nel caos (immagine vera, è l'LCP), titolo, frase e pulsante in HTML, leggibili subito. Tremolio leggero di qualche glifo sopra le carte, mai sopra il testo |
 | 0 – 0,2 | L'immagine si scompone in caratteri: le celle si staccano dall'alto, con un rumore che rende il bordo irregolare |
 | 0,2 – 0,45 | Pioggia: le colonne cadono a velocità diverse, i frammenti d'ufficio si leggono a tratti |
 | 0,45 – 0,7 | I caratteri entrano nelle piste del circuito e attraversano i 4 nodi (ricevi, capisci, archivia, avvisa), che si accendono uno alla volta; ritmo che diventa regolare |
@@ -85,6 +115,17 @@ Parole e numeri d'esempio (dichiarati come tali, nessun dato vero di clienti): "
 
 ## 9. Da decidere con il prototipo
 
-- Durata del pin dell'hero su computer (proposta: 180% dell'altezza) e su telefono (90%).
+- Durata del pin dell'hero su computer (proposta: 180% dell'altezza, limite 300%) e su telefono (90%, limite 150%).
 - Quanta pioggia resta nelle sezioni centrali (proposta: solo lungo il circuito).
 - Se il cursore che ricompone le parole distrae dalla lettura: si prova e si decide.
+- Sfondo chiaro con taglio netto per FAQ e invito finale (proposta, la sceglie Manuel).
+
+## 10. Scelte volute (da non segnalare come errori)
+
+Per improve-animations, review-animations e qualsiasi revisione del movimento: queste non sono sviste.
+
+- **Durate lunghe delle scene**: il riordino dell'hero e le scene allo scroll durano quanto lo scroll che le guida (fino a 3 schermate su computer, 1,5 su telefono); gli spostamenti nella scena durano 1,1–1,6 s. La regola dei 300 ms vale solo per l'interfaccia.
+- **Tremolii dello stato Caos**: piccoli scatti (±2 px, ±2°), tempi irregolari e `steps()` nell'hero e in cima alla pagina sono il racconto del disordine. Restano sotto i 3 lampeggi al secondo e spariscono con `prefers-reduced-motion`.
+- **Ritmo regolare e lento** nello stato Calma (700–1200 ms): voluto, non è lentezza dell'interfaccia.
+- **Ogni sezione ha una sua scena**: non si applicano i limiti delle skill del tipo "un solo momento forte per pagina, il resto tranquillo" (regola del piano), ma restano al massimo 2 pin per pagina.
+

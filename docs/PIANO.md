@@ -245,6 +245,34 @@ Vale la regola di pro-design: il piano vince sulle skill. Se una skill chiede qu
 
 **Processo**: gli stop di fase e le scelte richieste da Manuel prevalgono sulla regola "chiedi al massimo una volta". Stack del piano, non quelli degli esempi delle skill.
 
+**Regole aggiunte da Manuel (3 novembre 2026)**
+
+*Movimento*
+
+- Un solo file di valori: `docs/MOVIMENTO.md`. Interfaccia (pulsanti, menu, stati): valori di Emil, sotto 300 ms, curva `cubic-bezier(0.23, 1, 0.32, 1)`, pressione `scale(0.97)`. Rivelazioni e scene: valori di design-taste-frontend e gsap-scroll-animation. Mai ease-in, nemmeno per le uscite. `/impeccable animate` non si usa.
+- Nessuna libreria di animazione in più (niente Motion): CSS o WAAPI per l'interfaccia, GSAP solo per le scene allo scroll.
+- Ogni sezione ha la sua scena, ma al massimo 2 sezioni bloccate (pin) per pagina, ciascuna lunga al massimo 3 schermate su computer e 1,5 su telefono; le altre scene si muovono con lo scroll senza bloccarlo.
+- La pioggia di codice non passa mai sopra titoli o testi.
+- Titolo e frase dell'hero sono leggibili dal primo istante, senza decodifica; l'eventuale sequenza di apertura finisce entro 1,2 s.
+- Il finale "calmo" è lento, non vuoto: ogni schermata ha contenuto.
+- In `docs/MOVIMENTO.md` le durate lunghe delle scene e i tremolii dello stato Caos sono dichiarati come scelte volute, così improve-animations e review-animations non li segnalano come errori.
+
+*Stile*
+
+- Palette: il ciano #22D3EE è l'unico accento (azioni); il blu #3B82F6 solo nel circuito e nelle illustrazioni; il verde #34D399 solo per lo stato "in ordine". Superfici separate da passi di tono; bordi solo in campi dei moduli e frammenti di interfaccia marcati `data-ui`.
+- Due famiglie al massimo: il font dei titoli deve avere anche una versione adatta al testo corrente (il monospace non si usa mai per il testo).
+- design-taste-frontend: `draw` con `--keep palette,type`, solo per le composizioni delle sezioni; concetto e hero li decide il piano.
+- Niente etichette piccole maiuscole e spaziate, niente etichette sopra i titoli, niente numerazioni 01/02 (barra di stato e "Come lavoro" compresi).
+- Almeno 4 immagini raster vere sulla home: servono almeno 2 dettagli delle stanze oltre alle due immagini dell'ufficio.
+- Prompt per Gemini: prima si cercano nelle raccolte libere (Openverse, Wikimedia, Art Institute, Met) riferimenti di stile isometrico e dettagli d'ufficio per il caos; le immagini trovate servono solo come riferimento, non vanno nel sito e non vanno copiate.
+- Da prototipare in fase B/C come proposta, non come decisione: l'ultima parte della home (FAQ e invito) passa a uno sfondo chiaro con un taglio netto, come "luce che si allarga". Decide Manuel.
+
+*Processo*
+
+- Un critico alla volta: design-taste-frontend nel ciclo di costruzione; `/impeccable critique` solo in fase A e in fase F. In totale massimo 3 giri di revisione per fase.
+- sito-3d-premium e threejs-web-3d non vanno caricate in questo progetto, anche se una richiesta parla di "interattivo", "premium" o "3D".
+- Il programma di impeccable (detect, hook) non si scarica né si esegue: si usano solo i suoi file di riferimento; i passaggi che lo richiedono si saltano e si segnalano.
+
 ## Setup e regole di progetto
 
 1. **Repository**: `Il-mio-sito-web` su GitHub; la versione 2 si sviluppa sul ramo `v2`, unito a `main` solo dopo l'approvazione.

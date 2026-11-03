@@ -48,5 +48,6 @@ Ultimo aggiornamento: versione 2, fase A (2 novembre 2026). Vedi anche `docs/VER
 | Profilo LinkedIn (facoltativo) | Footer | `contatti.linkedin` |
 | PEC (facoltativa) | Footer | `datiLegali.pec` |
 | Indirizzo `*.workers.dev` assegnato | README, test | `sito.urlProvvisorio` |
-| Illustrazioni Gemini: ufficio in ordine e ufficio nel caos (2 immagini, prompt in `riferimenti/immagini/PROMPT.md`) | Hero della home (fase B) | `riferimenti/immagini/` |
+| Illustrazioni Gemini: ufficio in ordine, ufficio nel caos, dettagli reception e amministrazione (4 immagini, prompt in `riferimenti/immagini/PROMPT.md`) | Hero e "Le stanze" in home (fasi B e C) | `riferimenti/immagini/` |
+| Scelta della palette: "Terminale" (verde, risposta del 3 novembre) o ciano/blu/verde della regola di stile dello stesso giorno | Tutto il sito, prompt delle immagini | `src/styles/tokens.css` |
 | Condizioni d'uso commerciale delle immagini generate e assenza di filigrane | Tutte le illustrazioni | — |

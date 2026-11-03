@@ -4,7 +4,7 @@ Riferimento unico: `docs/PIANO.md` (versione 2, 2 novembre 2026). Se una regola 
 
 ## Decisioni di Manuel che precisano il piano (3 novembre 2026)
 
-- **Palette**: resta "Terminale" (verde neon su quasi nero, `src/styles/tokens.css`), non "Circuito" del piano. Il verde pieno è riservato al pulsante di prenotazione e allo stato "in ordine".
+- **Palette**: resta "Terminale" (verde neon su quasi nero, `src/styles/tokens.css`), non "Circuito" del piano. Il verde pieno è riservato al pulsante di prenotazione e allo stato "in ordine". **[DA CONFERMARE]**: la regola di stile dello stesso giorno ("ciano #22D3EE unico accento, blu #3B82F6 nel circuito, verde #34D399 per lo stato in ordine") dice il contrario. Finché Manuel non sceglie si resta su "Terminale", che è la risposta data alla domanda diretta.
 - **Prezzi**: titolo e testi dicono "Prezzi", mai "prezzi di lancio" o "per i primi clienti". Se in futuro cambiano, si cambiano in `src/config/sito.ts`.
 - **Tema giorno/notte**: tolto per ora; il sito è solo scuro.
 
@@ -100,6 +100,34 @@ Se una richiesta di rete viene bloccata, non ripiegare in silenzio. Scrivi subit
 Su tutto il sito: barra di stato in fondo (stile terminale, dati veri o segnaposto), interruttore "vista tecnica" (unico posto con i nomi degli strumenti), 404 "un foglio fuori posto".
 
 **Processo**: gli stop di fase e le scelte richieste da Manuel prevalgono su "chiedi al massimo una volta". Stack del piano, non quelli degli esempi delle skill. Revisione: ciclo di pro-design, massimo 3 giri, poi report di cosa resta aperto.
+
+**Regole aggiunte da Manuel (3 novembre 2026)**
+
+*Movimento*
+
+- Un solo file di valori: `docs/MOVIMENTO.md`. Interfaccia (pulsanti, menu, stati): valori di Emil, sotto 300 ms, curva `cubic-bezier(0.23, 1, 0.32, 1)`, pressione `scale(0.97)`. Rivelazioni e scene: valori di design-taste-frontend e gsap-scroll-animation. Mai ease-in, nemmeno per le uscite. `/impeccable animate` non si usa.
+- Nessuna libreria di animazione in più (niente Motion): CSS o WAAPI per l'interfaccia, GSAP solo per le scene allo scroll.
+- Ogni sezione ha la sua scena, ma al massimo 2 sezioni bloccate (pin) per pagina, ciascuna lunga al massimo 3 schermate su computer e 1,5 su telefono; le altre scene si muovono con lo scroll senza bloccarlo.
+- La pioggia di codice non passa mai sopra titoli o testi.
+- Titolo e frase dell'hero sono leggibili dal primo istante, senza decodifica; l'eventuale sequenza di apertura finisce entro 1,2 s.
+- Il finale "calmo" è lento, non vuoto: ogni schermata ha contenuto.
+- In `docs/MOVIMENTO.md` le durate lunghe delle scene e i tremolii dello stato Caos sono dichiarati come scelte volute, così improve-animations e review-animations non li segnalano come errori.
+
+*Stile*
+
+- Palette: il ciano #22D3EE è l'unico accento (azioni); il blu #3B82F6 solo nel circuito e nelle illustrazioni; il verde #34D399 solo per lo stato "in ordine". Superfici separate da passi di tono; bordi solo in campi dei moduli e frammenti di interfaccia marcati `data-ui`.
+- Due famiglie al massimo: il font dei titoli deve avere anche una versione adatta al testo corrente (il monospace non si usa mai per il testo).
+- design-taste-frontend: `draw` con `--keep palette,type`, solo per le composizioni delle sezioni; concetto e hero li decide il piano.
+- Niente etichette piccole maiuscole e spaziate, niente etichette sopra i titoli, niente numerazioni 01/02 (barra di stato e "Come lavoro" compresi).
+- Almeno 4 immagini raster vere sulla home: servono almeno 2 dettagli delle stanze oltre alle due immagini dell'ufficio.
+- Prompt per Gemini: prima si cercano nelle raccolte libere (Openverse, Wikimedia, Art Institute, Met) riferimenti di stile isometrico e dettagli d'ufficio per il caos; le immagini trovate servono solo come riferimento, non vanno nel sito e non vanno copiate.
+- Da prototipare in fase B/C come proposta, non come decisione: l'ultima parte della home (FAQ e invito) passa a uno sfondo chiaro con un taglio netto, come "luce che si allarga". Decide Manuel.
+
+*Processo*
+
+- Un critico alla volta: design-taste-frontend nel ciclo di costruzione; `/impeccable critique` solo in fase A e in fase F. In totale massimo 3 giri di revisione per fase.
+- sito-3d-premium e threejs-web-3d non vanno caricate in questo progetto, anche se una richiesta parla di "interattivo", "premium" o "3D".
+- Il programma di impeccable (detect, hook) non si scarica né si esegue: si usano solo i suoi file di riferimento; i passaggi che lo richiedono si saltano e si segnalano.
 
 ## Filtro anti-template (da non fare)
 
