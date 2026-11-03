@@ -1,6 +1,33 @@
 {
   "nota": "Generato da tools/prepara-immagini.mjs: non modificare a mano.",
   "immagini": {
+    "ufficio-caos": {
+      "scontornata": false,
+      "computer": {
+        "w": 1024,
+        "h": 1024,
+        "avif": "/immagini/ufficio-caos-computer.avif",
+        "webp": "/immagini/ufficio-caos-computer.webp",
+        "kb": {
+          "avif": 58,
+          "webp": 105
+        }
+      },
+      "telefono": {
+        "w": 800,
+        "h": 800,
+        "avif": "/immagini/ufficio-caos-telefono.avif",
+        "webp": "/immagini/ufficio-caos-telefono.webp",
+        "kb": {
+          "avif": 39,
+          "webp": 71
+        }
+      },
+      "qualita": {
+        "avif": 55,
+        "webp": 80
+      }
+    },
     "ufficio-ordine": {
       "scontornata": false,
       "computer": {
