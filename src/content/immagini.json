@@ -4,13 +4,13 @@
     "ufficio-ordine": {
       "scontornata": false,
       "computer": {
-        "w": 1024,
-        "h": 1024,
+        "w": 1400,
+        "h": 1400,
         "avif": "/immagini/ufficio-ordine-computer.avif",
         "webp": "/immagini/ufficio-ordine-computer.webp",
         "kb": {
-          "avif": 60,
-          "webp": 107
+          "avif": 89,
+          "webp": 165
         }
       },
       "telefono": {
@@ -19,8 +19,8 @@
         "avif": "/immagini/ufficio-ordine-telefono.avif",
         "webp": "/immagini/ufficio-ordine-telefono.webp",
         "kb": {
-          "avif": 39,
-          "webp": 69
+          "avif": 40,
+          "webp": 71
         }
       },
       "qualita": {
