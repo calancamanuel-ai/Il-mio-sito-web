@@ -103,6 +103,24 @@ Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, lo s
 Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi e sullo zerbino: ogni scritta è solo una barra piena arrotondata. Tutto il resto resta identico. Formato quadrato 1:1. Niente persone, nessun logo, nessuna filigrana.
 ```
 
+## 1c. Seconda correzione (allegando `_ordine-candidata-2.jpg`)
+
+Con la prima correzione l'amministrazione, i faldoni e lo zerbino sono a posto. Restano da sistemare:
+- la pagina del negozio è finita sulla lavagna del commerciale invece che sul monitor della vetrina;
+- i monitor del laboratorio guardano verso chi osserva l'immagine, non verso la sedia;
+- la reception non ha una sala d'attesa separata e il bancone non è perpendicolare all'ingresso.
+
+```
+Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, lo stesso guscio, le stesse pareti esterne, le stesse pareti divisorie, le stesse piste blu, il gradino d'ingresso con lo zerbino liscio e lo stesso stile. Fai solo queste modifiche:
+1. Lavagna del commerciale, al centro: torna bianca e vuota, senza disegni.
+2. Vetrina online, sul lato sinistro: sposta la sedia davanti alla scrivania, dal lato verso chi guarda, e gira il monitor grande verso la sedia; sullo schermo, visibile, una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante.
+3. Laboratorio software, sul lato destro: sposta la sedia davanti alla scrivania, dal lato verso chi guarda, e gira i due monitor verso la sedia, con righe colorate come codice fatte solo di barre di colori diversi. Il server resta dov'è.
+4. Reception, davanti: ruota il bancone curvo in modo che sia perpendicolare al gradino d'ingresso, con il lato lungo rivolto verso chi entra, e la sedia della receptionist dietro il bancone, dal lato della parete divisoria. Sposta le due poltroncine in una piccola sala d'attesa separata, nell'angolo dall'altra parte dell'ingresso, con un tavolino basso e una pianta; tra la sala d'attesa e il bancone resta un passaggio libero dall'ingresso verso il centro dell'ufficio.
+Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi: ogni scritta è solo una barra piena arrotondata. Tutto il resto resta identico. Formato quadrato 1:1. Niente persone, nessun logo, nessuna filigrana.
+```
+
+Se Gemini sposta troppe cose insieme, dividi in due passaggi: prima i punti 1–3, poi il punto 4 sull'immagine che ne esce.
+
 ## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
 
 ```
