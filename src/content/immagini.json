@@ -10,7 +10,7 @@
         "webp": "/immagini/ufficio-caos-computer.webp",
         "kb": {
           "avif": 58,
-          "webp": 106
+          "webp": 104
         }
       },
       "telefono": {
@@ -19,8 +19,8 @@
         "avif": "/immagini/ufficio-caos-telefono.avif",
         "webp": "/immagini/ufficio-caos-telefono.webp",
         "kb": {
-          "avif": 39,
-          "webp": 72
+          "avif": 38,
+          "webp": 70
         }
       },
       "qualita": {
