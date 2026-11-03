@@ -1,7 +1,6 @@
 ---
 import { brand } from '../../config/sito';
 import ContactMenu from '../ui/ContactMenu.astro';
-import ThemeToggle from '../ui/ThemeToggle.astro';
 import Value from '../ui/Value.astro';
 
 const links = [
@@ -23,7 +22,6 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
     </ul>
   </nav>
   <div class="header-actions">
-    <ThemeToggle class="tt-header" />
     <ContactMenu />
     <details class="nav-mobile" data-dropdown>
       <summary aria-label="Menu">
@@ -40,7 +38,6 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
           ))}
           <li><a href="/contatti">Contatti</a></li>
         </ul>
-        <ThemeToggle withLabel class="tt-menu" />
       </nav>
     </details>
   </div>
@@ -134,9 +131,6 @@ const current = Astro.url.pathname.replace(/\.html$/, '');
     .nav-mobile { display: block; }
     .wordmark { flex: 1; }
   }
-  .nav-mobile :global(.tt-menu) { margin-top: var(--space-2); }
-  @media (min-width: 521px) { .nav-mobile :global(.tt-menu) { display: none; } }
-  @media (max-width: 520px) { .site-header :global(.tt-header) { display: none; } }
   @media (max-width: 400px) {
     .site-header { gap: 0.5rem; }
     .wordmark { font-size: 0.9375rem; }

@@ -2,6 +2,12 @@
 
 Riferimento unico: `docs/PIANO.md` (versione 2, 2 novembre 2026). Se una regola qui sotto e il piano sembrano in conflitto, vince il piano. Il piano vince anche sulle skill: se una skill chiede qualcosa che lo contraddice, segui il piano e scrivilo nel riepilogo di fase. Sistema di movimento: `docs/MOVIMENTO.md`.
 
+## Decisioni di Manuel che precisano il piano (3 novembre 2026)
+
+- **Palette**: resta "Terminale" (verde neon su quasi nero, `src/styles/tokens.css`), non "Circuito" del piano. Il verde pieno è riservato al pulsante di prenotazione e allo stato "in ordine".
+- **Prezzi**: titolo e testi dicono "Prezzi", mai "prezzi di lancio" o "per i primi clienti". Se in futuro cambiano, si cambiano in `src/config/sito.ts`.
+- **Tema giorno/notte**: tolto per ora; il sito è solo scuro.
+
 ## Obiettivo
 
 Il sito ha un solo compito: far prenotare una call conoscitiva di 20 minuti. Tutto il resto serve a convincere chi visita che il lavoro ripetitivo si può togliere di mezzo, e che Manuel sa farlo. **Il sito è la prova**: dimostra, non descrive. Ogni pagina e ogni demo chiudono con "Prenota una call".

@@ -16,7 +16,7 @@ Lo stato dipende dalla posizione nella pagina, non dal tempo. Ogni sezione dichi
 | Durata tipica | 120 – 260 ms, a scatti | 300 – 500 ms, costante | 700 – 1200 ms |
 | Curva | `steps()` e `power3.out` con piccoli rimbalzi di posizione (±2 px) | `power2.inOut`, `none` per i flussi continui | `expo.out`, `sine.inOut` |
 | Caratteri | Pioggia fitta (fino a 100% delle colonne), tremolio, glifi che cambiano | Caratteri che scorrono lungo il circuito, si fermano e si decodificano | Pochissimi caratteri (≤ 5% delle colonne), lenti, che si spengono |
-| Colore | Ciano e blu, qualche glifo fuori palette spento | Ciano sul circuito, verde quando un dato è "in ordine" | Verde stabile; luce calda solo nelle illustrazioni |
+| Colore | Grigio verde e chiaro, qualche glifo azzurro, nessun verde pieno | Azzurro sul circuito, verde segnale quando un dato è "in ordine" | Verde stabile; luce calda solo nelle illustrazioni |
 | Layout | Elementi leggermente fuori posto (rotazioni ±2°, spostamenti ±8 px) che si assestano | Allineati a una griglia a colonne visibile solo nel movimento | Molto spazio, composizioni ferme |
 
 ## 2. Gli strumenti (sempre gli stessi, dosati dallo stato)

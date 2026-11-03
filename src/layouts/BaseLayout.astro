@@ -28,18 +28,6 @@ const fullTitle = `${title} · ${brandName}`;
     <meta name="description" content={description} />
     {sito.noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#0a0d0b" />
-    <script is:inline>
-      // Tema prima del primo disegno (niente lampi): scelta salvata, poi ?tema= per i test, poi sistema.
-      (function () {
-        var d = document.documentElement, t = null;
-        try { t = localStorage.getItem('tema'); } catch (e) {}
-        var q = new URLSearchParams(location.search).get('tema');
-        if (q === 'chiaro') t = 'light'; else if (q === 'scuro') t = 'dark';
-        var m = matchMedia('(prefers-color-scheme: light)');
-        d.dataset.theme = t || (m.matches ? 'light' : 'dark');
-        if (!t) m.addEventListener('change', function (e) { try { if (localStorage.getItem('tema')) return; } catch (x) {} d.dataset.theme = e.matches ? 'light' : 'dark'; });
-      })();
-    </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
