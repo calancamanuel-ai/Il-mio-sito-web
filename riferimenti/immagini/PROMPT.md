@@ -135,14 +135,20 @@ Modifica l'immagine allegata cambiando una sola cosa: nella postazione sul lato 
 Modifica l'immagine allegata cambiando una sola cosa: sul bancone della reception, davanti alla sedia della receptionist, aggiungi un computer con monitor e tastiera, con lo schermo rivolto verso la sedia. Il telefono fisso e il tablet restano dove sono. Tutto il resto resta identico: stessa inquadratura, stessi mobili nella stessa posizione, stesse piste blu, stesso stile. Formato quadrato 1:1. Nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
-## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
+## 2. Ufficio nel caos (in una chat nuova, allegando `ufficio-ordine.jpg`)
 
 ```
-Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, la stessa prospettiva, le stesse pareti, gli stessi mobili nella stessa posizione e lo stesso stile. Cambia solo lo stato dell'ufficio: ora è sommerso dal lavoro ripetitivo.
-Visto dall'alto, le carte coprono i piani delle scrivanie e debordano oltre i bordi; pile di fogli instabili che franano sulle tastiere, raccoglitori aperti e caduti, cartelline aperte, buste strappate, post-it gialli attaccati intorno agli schermi, scatole aperte, una stampante che sputa fogli sul pavimento, il telefono della reception con la cornetta staccata, sugli schermi tanti piccoli riquadri di notifica rossi e arancioni, tazze di caffè vuote, cavi aggrovigliati dietro le scrivanie. Davanti all'ingresso, sullo zerbino, una pila di buste e pacchi non aperti.
-Luce fredda e un po' piatta di neon, niente luce calda. Stessi colori di base (#0b1220, #111a2e, #1e2a44, #e6edf7), nessun verde, con in più rosso e arancione solo per le notifiche e giallo per i post-it.
-Le sedie e i mobili restano esattamente dove sono nell'immagine allegata, alcune sedie girate o spostate di poco. Le piste blu sul pavimento sono spente: grigie, senza luce, coperte di carte.
-Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
+Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, la stessa prospettiva, lo stesso guscio, le stesse pareti, le stesse pareti divisorie, il gradino d'ingresso, gli stessi mobili e le stesse sedie nella stessa posizione e lo stesso stile. Cambia solo lo stato dell'ufficio: ora è sommerso dal lavoro ripetitivo. Zona per zona:
+RECEPTION: il telefono con la cornetta staccata, sul monitor e sul tablet tanti piccoli riquadri di notifica rossi e arancioni, post-it gialli attaccati intorno al monitor, buste aperte sparse sul bancone.
+INGRESSO: sullo zerbino e sul gradino una pila di buste e pacchi non aperti.
+SALA D'ATTESA: scatoloni e pile di fogli appoggiati sulle poltroncine e sul tavolino.
+VETRINA ONLINE: lo schermo grande mostra una pagina rotta, con blocchi grigi vuoti e un riquadro rosso di errore; post-it gialli sul bordo dello schermo.
+COMMERCIALE: il tavolo coperto di fogli e cartelline aperte, tazze di caffè vuote, la lavagna coperta di post-it gialli e frecce disordinate.
+AMMINISTRAZIONE: raccoglitori aperti e caduti, pile di fogli instabili che franano sulla tastiera, faldoni storti e alcuni per terra, la stampante che sputa fogli sul pavimento.
+LABORATORIO SOFTWARE: sugli schermi riquadri di errore rossi, cavi aggrovigliati dietro la scrivania e intorno al server.
+PAVIMENTO: fogli sparsi ovunque; le piste del circuito sono spente, grigie, senza luce, in parte coperte di carte; i nodi spenti.
+Le sedie restano dove sono, alcune girate o spostate di poco. Luce fredda e un po' piatta di neon, niente luce calda dalle finestre e dalle lampade. Stessi colori di base (#0b1220, #111a2e, #1e2a44, #e6edf7), con in più rosso e arancione solo per le notifiche e gli errori e giallo per i post-it; nessun verde a parte le piante.
+Formato quadrato 1:1. Niente persone. Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno su schermi, post-it e buste: ogni scritta è solo una barra piena arrotondata. Nessun logo, nessuna filigrana.
 ```
 
 ## 3. Dettaglio: la reception in ordine (allegando la nuova immagine 1)
