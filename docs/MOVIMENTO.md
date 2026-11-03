@@ -94,6 +94,16 @@ Un solo valore `p` (0 → 1) guidato dallo scroll; tutte le posizioni sono funzi
 
 **Telefono**: stessa storia, più corta (pin di circa una schermata), meno caratteri, circuito verticale. **Movimento ridotto**: nessun canvas; le due immagini (caos e ordine) in sequenza con le etichette "Prima" e "Dopo", stanze toccabili sull'immagine in ordine.
 
+### Stanze e nodi
+
+L'ufficio si legge dal davanti verso il fondo, nell'ordine dei nodi:
+- **Ricevi:** la reception, nell'angolo in basso, con l'ingresso.
+- **Capisci:** il commerciale, al centro.
+- **Archivia:** l'amministrazione, in fondo contro le finestre.
+- **Avvisa:** sulla pista che torna all'angolo in basso ed esce dalla lastra. Da lì il circuito scende nella pagina, verso "Le stanze".
+
+Vetrina online (a sinistra) e laboratorio software (a destra) sono rami laterali. Nel riordino i caratteri entrano dall'ingresso, seguono questo percorso ed escono dall'angolo in basso.
+
 ## 6. I frammenti d'ufficio della pioggia
 
 Parole e numeri d'esempio (dichiarati come tali, nessun dato vero di clienti): "fattura n. 132", "richiamami", "preventivo urgente", "RE: RE: ordine", "scad. 30/11", "+39 3·· ··· ····", "allegato mancante", "sollecito", "IBAN?", "a che punto è?", "bozza_v3_DEF", "conferma appuntamento", "DDT 0451", "pagato?". Nello stato calma restano solo parole risolte: "pagato", "archiviato", "risposto", "fatto".
