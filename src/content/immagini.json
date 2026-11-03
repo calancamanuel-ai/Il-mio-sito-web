@@ -9,8 +9,8 @@
         "avif": "/immagini/ufficio-ordine-computer.avif",
         "webp": "/immagini/ufficio-ordine-computer.webp",
         "kb": {
-          "avif": 49,
-          "webp": 89
+          "avif": 56,
+          "webp": 105
         }
       },
       "telefono": {
@@ -19,8 +19,8 @@
         "avif": "/immagini/ufficio-ordine-telefono.avif",
         "webp": "/immagini/ufficio-ordine-telefono.webp",
         "kb": {
-          "avif": 32,
-          "webp": 59
+          "avif": 36,
+          "webp": 69
         }
       },
       "qualita": {
