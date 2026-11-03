@@ -1,0 +1,16 @@
+---
+/** PROVA (fase B, ramo v2): solo l'hero "Il riordino", da guardare sul telefono. Non collegata dalla navigazione. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Riordino from '../../components/scenes/Riordino.astro';
+---
+<BaseLayout title="Prova: il riordino" description="Prototipo dell'hero: l'ufficio nel caos che si scompone in caratteri e si ricompone in ordine.">
+  <Riordino />
+  <section class="section dopo" aria-labelledby="dopo-h">
+    <h2 id="dopo-h">Qui comincia il resto della home</h2>
+    <p class="lead">Nel prototipo la pagina finisce qui: serve solo a vedere che, finito il riordino, lo scroll riprende normalmente. Le stanze, la demo e il resto arrivano nella fase C.</p>
+  </section>
+</BaseLayout>
+<style>
+  .dopo { min-height: 70svh; display: grid; align-content: start; gap: var(--space-3); }
+  .dopo h2 { font-size: var(--step-head); font-weight: 300; max-width: 16ch; }
+</style>

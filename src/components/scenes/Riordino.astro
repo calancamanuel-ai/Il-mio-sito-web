@@ -1,0 +1,183 @@
+---
+/**
+ * Hero "Il riordino" (fase B, prova su /lab/riordino).
+ * - Titolo, frase e pulsante sono HTML, leggibili da subito. La pioggia resta dentro il riquadro dell'immagine.
+ * - L'ufficio nel caos è un'immagine vera (LCP). Con le animazioni (html.motion) la scena si blocca allo
+ *   scroll e il canvas la scompone e la ricompone (riordino-motore.ts).
+ * - Movimento ridotto o niente JavaScript: le due immagini in sequenza, "Prima" e "Dopo", con le stanze.
+ */
+import ButtonLink from '../ui/ButtonLink.astro';
+import manifest from '../../content/immagini.json';
+import { contatti, brand } from '../../config/sito';
+import { nodi, percorso, stanze } from './riordino-dati';
+
+type V = { w: number; h: number; avif: string; webp: string };
+const img = manifest.immagini as Record<string, { computer: V; telefono: V }>;
+const caos = img['ufficio-caos'], ordine = img['ufficio-ordine'];
+const sizes = '(max-width: 760px) calc(100vw - 2rem), min(50vw, calc(100vh - 10rem))';
+const srcset = (k: 'avif' | 'webp', v: { computer: V; telefono: V }) => `${v.telefono[k]} ${v.telefono.w}w, ${v.computer[k]} ${v.computer.w}w`;
+const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
+---
+<section class="rio" aria-labelledby="rio-titolo" data-riordino>
+  <div class="rio-testo">
+    <h1 id="rio-titolo">Il lavoro ripetitivo, finalmente in ordine.</h1>
+    <p class="rio-frase">{brand.promessa} Scorri: questo è il tuo ufficio, prima e dopo.</p>
+    <div class="rio-azioni">
+      <ButtonLink href={contatti.linkPrenotazione}>Prenota una call di 20 minuti</ButtonLink>
+    </div>
+  </div>
+
+  <figure class="rio-scena" aria-labelledby="rio-dida">
+    <div class="rio-stage" data-stage>
+      <div class="rio-prima">
+        <picture>
+          <source type="image/avif" srcset={srcset('avif', caos)} sizes={sizes} />
+          <img src={caos.computer.webp} srcset={srcset('webp', caos)} sizes={sizes} width="1024" height="1024" alt="Un piccolo ufficio visto dall'alto, sommerso dal lavoro: carte ovunque, notifiche rosse sugli schermi, la cornetta del telefono staccata, pacchi davanti all'ingresso." fetchpriority="high" decoding="async" data-caos />
+        </picture>
+        <span class="rio-tag mono">Prima</span>
+      </div>
+      <div class="rio-dopo" data-dopo>
+        <picture>
+          <source type="image/avif" srcset={srcset('avif', ordine)} sizes={sizes} />
+          <img src={ordine.computer.webp} srcset={srcset('webp', ordine)} sizes={sizes} width="1024" height="1024" alt="Lo stesso ufficio in ordine: scrivanie sgombre, luce calda, piste blu del circuito che collegano le stanze." loading="lazy" decoding="async" data-ordine />
+        </picture>
+        <span class="rio-tag mono">Dopo</span>
+        <ul class="rio-stanze" aria-label="Le stanze dell'ufficio">
+          {stanze.map((s) => (
+            <li style={`left:${pct(s.dove.x)};top:${pct(s.dove.y)}`}>
+              <a href={s.href} class="rio-stanza"><span class="rio-punto" aria-hidden="true"></span><span class="rio-nome">{s.nome}</span></a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <canvas class="rio-canvas" aria-hidden="true" data-canvas></canvas>
+      <ol class="rio-nodi" aria-hidden="true">
+        {nodi.map((n) => <li class="mono" data-nodo data-lato={n.lato} style={`left:${pct(percorso[n.i].x)};top:${pct(percorso[n.i].y)}`}>{n.label}</li>)}
+      </ol>
+    </div>
+    <figcaption id="rio-dida" class="rio-dida">Esempio: lo stesso ufficio prima e dopo. Le richieste arrivano, vengono capite, archiviate e ti avvisano solo quando serve. Tocca una stanza per vedere cosa cambia.</figcaption>
+  </figure>
+
+  <ul class="rio-elenco">
+    {stanze.map((s) => <li><a href={s.href}><strong>{s.nome}</strong> · {s.dopo}</a></li>)}
+  </ul>
+</section>
+
+<noscript><style>.rio-stage { display: grid !important; gap: 1rem; aspect-ratio: auto !important; } .rio-prima, .rio-dopo { position: relative !important; aspect-ratio: 1; visibility: visible !important; opacity: 1 !important; } .rio-tag { display: block !important; } .rio-canvas, .rio-nodi { display: none !important; }</style></noscript>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-riordino]');
+  const html = document.documentElement;
+  if (root) {
+    const go = async () => {
+      const [{ gsap }, { ScrollTrigger }, { createRiordino }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger'), import('./riordino-motore')]);
+      gsap.registerPlugin(ScrollTrigger);
+      const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+      const caos = root.querySelector<HTMLImageElement>('[data-caos]')!;
+      const ordine = root.querySelector<HTMLImageElement>('[data-ordine]')!;
+      const dopo = root.querySelector<HTMLElement>('[data-dopo]')!;
+      const canvas = root.querySelector<HTMLCanvasElement>('[data-canvas]')!;
+      const labels = [...root.querySelectorAll<HTMLElement>('[data-nodo]')];
+      ordine.loading = 'eager';
+      const phone = matchMedia('(max-width: 760px)').matches;
+      const scene = await createRiordino({ canvas, caos, ordine, phone, onNodes: (lit) => labels.forEach((l, i) => l.classList.toggle('is-on', lit[i])) });
+      root.classList.add('is-live');
+      const set = (p: number) => {
+        scene.setProgress(p);
+        caos.style.opacity = p > 0 ? '0' : '1';
+        const fine = p >= 0.96;
+        dopo.classList.toggle('is-fine', fine);
+        root.classList.toggle('is-scena', p > 0.3 && p < 0.96);
+      };
+      // su telefono si blocca solo la scena: titolo e pulsante scorrono via prima
+      const fig = root.querySelector<HTMLElement>('.rio-scena')!;
+      ScrollTrigger.create({
+        trigger: phone ? fig : root,
+        pin: phone ? fig : root,
+        // la testata è fissa (sticky): la scena si blocca appena sotto
+        start: () => `top ${document.querySelector<HTMLElement>('.site-header')?.offsetHeight ?? 0}px`,
+        // pin 1 di 2: al massimo 3 schermate su computer e 1,5 su telefono (docs/MOVIMENTO.md)
+        end: () => (phone ? '+=90%' : '+=180%'),
+        scrub: 0.4,
+        invalidateOnRefresh: true,
+        refreshPriority: 1,
+        onUpdate: (st) => set(st.progress),
+      });
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+      (stage as HTMLElement & { riordino?: unknown }).riordino = scene;
+    };
+    const ready = () => (html.classList.contains('motion') ? go() : new MutationObserver((_, mo) => { if (html.classList.contains('motion')) { mo.disconnect(); go(); } }).observe(html, { attributes: true, attributeFilter: ['class'] }));
+    ready();
+  }
+</script>
+
+<style>
+  .rio {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    min-height: calc(100svh - 4.5rem);
+    padding: var(--space-3) var(--margin);
+  }
+  .rio-testo { display: grid; gap: var(--space-3); align-content: center; }
+  h1 { font-size: var(--step-head); font-weight: 300; line-height: 1.02; letter-spacing: var(--tracking-display); max-width: 13ch; }
+  .rio-frase { font-size: var(--step-lead); line-height: 1.3; max-width: 30ch; color: var(--c-ink-soft); }
+  .rio-scena { margin: 0; display: grid; gap: var(--space-2); justify-items: center; }
+  .rio-stage { position: relative; width: min(100%, calc(100svh - 10rem)); aspect-ratio: 1; }
+  .rio-prima, .rio-dopo { position: absolute; inset: 0; }
+  .rio-prima img, .rio-dopo img { display: block; width: 100%; height: 100%; }
+  .rio-dopo { visibility: hidden; opacity: 0; }
+  .rio-dopo.is-fine { visibility: visible; opacity: 1; }
+  .rio-tag { display: none; position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.2rem 0.5rem; background: var(--c-surface); color: var(--c-ink); font-size: 1rem; }
+  .rio-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .rio-dida { max-width: 52ch; color: var(--c-ink-soft); font-size: 1rem; text-align: center; }
+
+  .rio-nodi { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; pointer-events: none; }
+  .rio-nodi li { position: absolute; translate: -50% calc(-100% - 12px); padding: 0.15rem 0.45rem; background: var(--c-bg); color: var(--c-ink); font-size: 0.875rem; opacity: 0; transition: opacity 200ms var(--ease-out); }
+  .rio-nodi li[data-lato='sotto'] { translate: -50% 12px; }
+  .rio-nodi li[data-lato='destra'] { translate: 12px -50%; }
+  .rio-nodi li[data-lato='sinistra'] { translate: calc(-100% - 12px) -50%; }
+  .rio-nodi li.is-on { opacity: 1; }
+  .rio:not(.is-scena) .rio-nodi li { opacity: 0; }
+
+  .rio-stanze { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+  .rio-stanze li { position: absolute; translate: -50% -50%; opacity: 0; transition: opacity 250ms var(--ease-out); }
+  .rio-dopo.is-fine .rio-stanze li, html:not(.motion) .rio-stanze li { opacity: 1; }
+  .rio-dopo.is-fine .rio-stanze li:nth-child(2) { transition-delay: 40ms; }
+  .rio-dopo.is-fine .rio-stanze li:nth-child(3) { transition-delay: 80ms; }
+  .rio-dopo.is-fine .rio-stanze li:nth-child(4) { transition-delay: 120ms; }
+  .rio-dopo.is-fine .rio-stanze li:nth-child(5) { transition-delay: 160ms; }
+  .rio-stanza { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0 0.7rem 0 0.5rem; background: var(--c-bg); color: var(--c-ink); text-decoration: none; font-size: 1rem; white-space: nowrap; transition: background-color 150ms ease, scale 120ms var(--ease-out); }
+  .rio-punto { width: 10px; height: 10px; background: var(--c-ok); }
+  .rio-stanza:active { scale: 0.97; }
+  @media (hover: hover) { .rio-stanza:hover { background: var(--c-surface); } }
+  .rio-stanza:focus-visible { outline: 3px solid var(--c-action); outline-offset: 2px; }
+
+  .rio-elenco { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin: 0; padding: 0; list-style: none; font-size: 1rem; color: var(--c-ink-soft); }
+  .rio-elenco a { color: inherit; text-decoration: none; display: inline-block; padding-block: 0.6rem; }
+  .rio-elenco strong { color: var(--c-ink); font-weight: 600; }
+  @media (hover: hover) { .rio-elenco a:hover strong { color: var(--c-action); } }
+  .rio.is-live .rio-elenco { display: none; }
+
+  @media (max-width: 760px) {
+    .rio { grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--space-3); padding-top: var(--space-2); min-height: calc(100svh - 7rem); }
+    .rio-stage { width: 100%; }
+    .rio-nodi li { font-size: 0.8125rem; }
+    /* sul telefono i nomi non ci stanno sull'immagine: sopra restano i punti (44 px), i nomi nell'elenco sotto */
+    .rio-stanza { width: 44px; height: 44px; padding: 0; justify-content: center; background: transparent; }
+    .rio-punto { width: 14px; height: 14px; outline: 3px solid var(--c-bg); }
+    .rio-nome { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .rio.is-live .rio-elenco { display: grid; gap: 0; }
+    .rio-dida { text-align: left; }
+  }
+
+  /* movimento ridotto: niente canvas, le due immagini in sequenza con le stanze sull'ordine */
+  @media (prefers-reduced-motion: reduce) {
+    .rio-stage { display: grid; gap: var(--space-2); aspect-ratio: auto; }
+    .rio-prima, .rio-dopo { position: relative; aspect-ratio: 1; visibility: visible; opacity: 1; }
+    .rio-tag { display: block; }
+    .rio-canvas, .rio-nodi { display: none; }
+  }
+</style>
