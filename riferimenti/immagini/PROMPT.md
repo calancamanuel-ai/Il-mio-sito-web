@@ -45,7 +45,7 @@ Trovati con Openverse il 3 novembre 2026. Da ognuno prendo solo un'idea di compo
 - fondo blu notte #0b1220, pareti e pavimenti blu ardesia #111a2e e #1e2a44;
 - chiaro #e6edf7, grigio blu #94a3b8;
 - blu #3b82f6 per piste del circuito e schermi;
-- verde #34d399 solo per ciò che è "in ordine";
+- verde #34d399 solo per ciò che è "in ordine" (nelle illustrazioni: piante e la notifica sul tablet della reception; niente spunte né etichette verdi sui faldoni);
 - luce calda ambrata solo nell'ordine.
 
 Il ciano #22d3ee resta riservato ai pulsanti del sito: non compare nelle illustrazioni.
@@ -72,54 +72,44 @@ Si legge dal davanti (l'angolo in basso, il più vicino a chi guarda) verso il f
 
 L'ultimo nodo, "avvisa", torna verso l'angolo in basso, dove la pista esce dalla lastra e continua nella pagina.
 
-## 1. Ufficio in ordine (allegando la versione attuale di `ufficio-ordine` come riferimento di guscio e stile)
+## 1. Ufficio in ordine (da zero, postazione per postazione)
+
+Le correzioni a catena non funzionano: a ogni modifica Gemini sposta altro. Si riparte da zero con una pianta precisa e si allega `_ordine-candidata.jpg` **solo come riferimento di stile e di guscio**. Conviene generare 2–3 versioni con lo stesso prompt e scegliere la migliore; dopo, al massimo una correzione con una sola modifica alla volta.
+
+**Come si legge la pianta.** Il pavimento è un rombo visto dall'alto, con quattro angoli:
+- in basso: davanti, il più vicino a chi guarda;
+- a sinistra;
+- a destra;
+- in alto: in fondo, dove ci sono le finestre.
 
 ```
-Usa l'immagine allegata come riferimento per lo stile, i colori, la luce e il guscio dell'ufficio: stessa inquadratura isometrica dall'alto a 30°, stessa lastra di pavimento con lo spessore visibile, stesse pareti esterne di mattoni tagliate, stesse finestre sulle pareti di fondo, stesso fondo blu notte uniforme #0b1220. Riorganizza invece l'interno così, dal davanti (l'angolo in basso, il più vicino a chi guarda) verso il fondo:
-1. davanti, nell'angolo in basso: la reception, con un bancone alto e curvo rivolto verso chi guarda, sopra un telefono fisso e un tablet, una sedia dietro il bancone, due poltroncine d'attesa e uno zerbino sul bordo anteriore della lastra, come un ingresso aperto;
-2. al centro: il commerciale, con un tavolo, due sedie e un portatile aperto, una lavagna bianca vuota;
-3. in fondo, in alto contro le pareti con le finestre: l'amministrazione, con una scrivania, una sedia, scaffali con faldoni in fila con piccole spunte verdi #34d399 e una stampante;
-4. sul lato sinistro: la vetrina online, con una scrivania, una sedia e un grande monitor rivolto verso l'esterno;
-5. sul lato destro: il laboratorio software, con una scrivania, una sedia, due monitor e un piccolo server ordinato.
-Ogni zona è separata dalle altre da pareti basse a mezza altezza, così che ogni stanza si riconosca a colpo d'occhio. Ogni scrivania ha la sua sedia.
-Sul pavimento corrono sottili piste luminose blu #3b82f6 come quelle di un circuito stampato: entrano dall'angolo in basso, passano dalla reception, dal commerciale e arrivano all'amministrazione, con due rami verso la vetrina e il laboratorio; quattro piccoli nodi quadrati lungo il percorso; una pista torna verso l'angolo in basso e scende dal bordo della lastra.
-Tutto è in perfetto ordine, luce calda di fine giornata dalle finestre e dalle lampade, atmosfera calma.
+Usa l'immagine allegata solo come riferimento di stile, colori, luce e guscio esterno: stessa inquadratura isometrica dall'alto a 30°, stessa lastra di pavimento con lo spessore visibile, stesse pareti esterne di mattoni tagliate, due finestre con luce calda sulle pareti di fondo, stesso fondo blu notte uniforme #0b1220. Non copiare la disposizione interna: ridisegnala da zero secondo questa pianta.
+
+Il pavimento è un rombo con quattro angoli: davanti (in basso, il più vicino a chi guarda), a sinistra, a destra e in fondo (in alto). L'interno è diviso in cinque zone da pareti basse a mezza altezza, ognuna riconoscibile a colpo d'occhio:
+
+INGRESSO E RECEPTION, nell'angolo davanti. Sul bordo destro della lastra, vicino all'angolo davanti, c'è un gradino d'ingresso con uno zerbino liscio. Chi entra trova alla sua sinistra il bancone della reception, curvo, messo di lato: perpendicolare al gradino d'ingresso, con il lato lungo rivolto verso il passaggio. Dietro il bancone, dal lato della parete, una sola sedia girevole per la receptionist, rivolta verso il passaggio. Sul bancone un telefono fisso e un tablet. Alla destra di chi entra, separata dal bancone da un passaggio libero, una piccola sala d'attesa: due poltroncine rivolte verso il bancone, un tavolino basso e una pianta.
+
+COMMERCIALE, al centro. Un tavolo con due sedie una di fronte all'altra, un portatile aperto e una cartellina chiusa. Dietro, una lavagna bianca vuota su un pannello.
+
+AMMINISTRAZIONE, nell'angolo in fondo, contro le pareti con le finestre. Una scrivania con un computer, una lampada accesa e un raccoglitore aperto con i fogli allineati, una sedia girevole dietro la scrivania. Una libreria con faldoni tutti uguali in fila, senza simboli né etichette, e una stampante su un mobiletto.
+
+VETRINA ONLINE, nell'angolo a sinistra. Una scrivania con un grande monitor. La sedia è davanti alla scrivania, dal lato verso chi guarda, e il monitor è rivolto verso la sedia, quindi lo schermo si vede: una pagina di negozio online fatta solo di blocchi colorati (un'immagine grande, tre riquadri di prodotto, un pulsante). Una pianta in vaso.
+
+LABORATORIO SOFTWARE, nell'angolo a destra. Una scrivania con due monitor. La sedia è davanti alla scrivania, dal lato verso chi guarda, e i due monitor sono rivolti verso la sedia, quindi gli schermi si vedono: righe colorate come codice, fatte solo di barre. Accanto, un piccolo server ordinato con i cavi raccolti.
+
+CIRCUITO. Sul pavimento corrono sottili piste luminose blu #3b82f6 come quelle di un circuito stampato: partono dal gradino d'ingresso, passano sotto il bancone della reception, attraversano il commerciale e arrivano all'amministrazione, con un ramo verso la vetrina e uno verso il laboratorio. Lungo il percorso ci sono quattro piccoli nodi quadrati. Una pista torna verso l'ingresso e scende dal bordo della lastra.
+
+Ogni sedia è rivolta verso la sua scrivania o il suo bancone. Tutto è in perfetto ordine, luce calda di fine giornata dalle finestre e dalle lampade, atmosfera calma.
 Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa.
-Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, grigio blu #94a3b8 per i dettagli, blu #3b82f6 per le piste e gli schermi, verde #34d399 solo per ciò che è in ordine.
-Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
+Colori: pareti e pavimenti in blu ardesia #111a2e e #1e2a44, mobili chiari #e6edf7 e legno caldo, grigio blu #94a3b8 per i dettagli, blu #3b82f6 per le piste e gli schermi, piante verdi; sul tablet della reception una sola notifica verde #34d399.
+Formato quadrato 1:1. Niente persone. Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi e sullo zerbino: ogni scritta è solo una barra piena arrotondata. Nessun logo, nessuna filigrana.
 ```
 
-## 1b. Correzione della candidata (allegando `_ordine-candidata.jpg`)
-
-La candidata del 3 novembre è l'unica con le postazioni ben divise e l'ingresso fuori dalla lastra: si corregge quella invece di rigenerare da capo.
-
-```
-Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, lo stesso guscio, le stesse pareti, le stesse pareti divisorie, la stessa posizione di tutti i mobili, le stesse piste blu, il gradino d'ingresso e lo stesso stile. Fai solo queste modifiche:
-1. Scrivania in fondo a sinistra (amministrazione): togli il telefono fisso; al suo posto un raccoglitore aperto con i fogli allineati e un vassoio con pochi documenti in ordine. Computer, lampada, sedia, pianta e quadro restano.
-2. Scaffale in fondo a destra: togli le spunte verdi che galleggiano sulle scatole e sui ripiani; al loro posto, sul dorso di alcuni faldoni, una piccola etichetta verde #34d399.
-3. Postazione sul lato sinistro (vetrina online): gira il monitor grande verso chi guarda e mostra sullo schermo una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante.
-4. Postazione sul lato destro (laboratorio software): i due monitor mostrano righe colorate come codice, fatte solo di barre di colori diversi.
-5. Zerbino sul gradino d'ingresso: liscio, senza disegni.
-Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi e sullo zerbino: ogni scritta è solo una barra piena arrotondata. Tutto il resto resta identico. Formato quadrato 1:1. Niente persone, nessun logo, nessuna filigrana.
-```
-
-## 1c. Seconda correzione (allegando `_ordine-candidata-2.jpg`)
-
-Con la prima correzione l'amministrazione, i faldoni e lo zerbino sono a posto. Restano da sistemare:
-- la pagina del negozio è finita sulla lavagna del commerciale invece che sul monitor della vetrina;
-- i monitor del laboratorio guardano verso chi osserva l'immagine, non verso la sedia;
-- la reception non ha una sala d'attesa separata e il bancone non è perpendicolare all'ingresso.
-
-```
-Modifica l'immagine allegata mantenendo esattamente la stessa inquadratura, lo stesso guscio, le stesse pareti esterne, le stesse pareti divisorie, le stesse piste blu, il gradino d'ingresso con lo zerbino liscio e lo stesso stile. Fai solo queste modifiche:
-1. Lavagna del commerciale, al centro: torna bianca e vuota, senza disegni.
-2. Vetrina online, sul lato sinistro: sposta la sedia davanti alla scrivania, dal lato verso chi guarda, e gira il monitor grande verso la sedia; sullo schermo, visibile, una pagina di negozio online fatta solo di blocchi colorati: un'immagine grande, tre riquadri di prodotto, un pulsante.
-3. Laboratorio software, sul lato destro: sposta la sedia davanti alla scrivania, dal lato verso chi guarda, e gira i due monitor verso la sedia, con righe colorate come codice fatte solo di barre di colori diversi. Il server resta dov'è.
-4. Reception, davanti: ruota il bancone curvo in modo che sia perpendicolare al gradino d'ingresso, con il lato lungo rivolto verso chi entra, e la sedia della receptionist dietro il bancone, dal lato della parete divisoria. Sposta le due poltroncine in una piccola sala d'attesa separata, nell'angolo dall'altra parte dell'ingresso, con un tavolino basso e una pianta; tra la sala d'attesa e il bancone resta un passaggio libero dall'ingresso verso il centro dell'ufficio.
-Nessuna lettera, nessun numero e nessuna parola da nessuna parte, nemmeno sugli schermi: ogni scritta è solo una barra piena arrotondata. Tutto il resto resta identico. Formato quadrato 1:1. Niente persone, nessun logo, nessuna filigrana.
-```
-
-Se Gemini sposta troppe cose insieme, dividi in due passaggi: prima i punti 1–3, poi il punto 4 sull'immagine che ne esce.
+**Come controllare il risultato, postazione per postazione:**
+- **Reception:** bancone di lato rispetto al gradino, una sola sedia dietro, poltroncine separate dal bancone.
+- **Vetrina e laboratorio:** la sedia è dal nostro lato e si vedono gli schermi.
+- **Libreria:** nessuna etichetta e nessun simbolo sui faldoni.
+- **Testo:** nessuna lettera da nessuna parte.
 
 ## 2. Ufficio nel caos (nella stessa chat, allegando la nuova immagine 1)
 
@@ -136,7 +126,7 @@ Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun nume
 ```
 Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo la reception di quell'ufficio, quella nell'angolo in basso vicino all'ingresso, ingrandita: gli stessi mobili, in isometria vista dall'alto a 30°. Non disegnare il guscio dell'ufficio intero né le altre stanze: inquadra solo questa stanza da vicino, come un ingrandimento, con la lastra di pavimento tagliata ai bordi della stanza, che galleggia al centro su un fondo blu notte uniforme #0b1220.
 Bancone alto e curvo pulito, telefono fisso con la cornetta al suo posto, un tablet che mostra una sola notifica verde #34d399, una sedia dietro il bancone, due poltroncine d'attesa, lo zerbino dell'ingresso, un vassoio con tre buste impilate, una pianta. Una pista luminosa blu #3b82f6 entra dal bordo della lastra e passa sotto il bancone. Luce calda di lampada, atmosfera calma.
-Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, verde #34d399 solo sugli oggetti in ordine.
+Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, piante verdi.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
@@ -144,8 +134,8 @@ Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun nume
 
 ```
 Usa l'immagine allegata come riferimento di stile, colori e luce. Disegna solo l'amministrazione di quell'ufficio, quella in fondo contro le pareti con le finestre, ingrandita: gli stessi mobili, in isometria vista dall'alto a 30°. Non disegnare il guscio dell'ufficio intero né le altre stanze: inquadra solo questa stanza da vicino, come un ingrandimento, con la lastra di pavimento tagliata ai bordi della stanza, che galleggia al centro su un fondo blu notte uniforme #0b1220.
-Scrivania con un raccoglitore aperto e i fogli allineati, una sedia, scaffali con faldoni in fila ordinati per colore, ognuno con una piccola spunta verde #34d399, una stampante spenta con un solo foglio nel vassoio, uno schermo con una tabella fatta di righe colorate, una finestra con luce calda, una lampada accesa. Una pista luminosa blu #3b82f6 entra dal bordo della lastra e arriva allo scaffale. Atmosfera calma.
-Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, verde #34d399 solo sugli oggetti in ordine.
+Scrivania con un raccoglitore aperto e i fogli allineati, una sedia, scaffali con faldoni tutti uguali in fila, senza simboli né etichette, una stampante spenta con un solo foglio nel vassoio, uno schermo con una tabella fatta di righe colorate, una finestra con luce calda, una lampada accesa. Una pista luminosa blu #3b82f6 entra dal bordo della lastra e arriva allo scaffale. Atmosfera calma.
+Stile illustrazione vettoriale pulita e dettagliata, contorni sottili scuri, ombre piatte, leggera grana di stampa. Colori: #111a2e, #1e2a44, #e6edf7, #94a3b8, legno caldo, blu #3b82f6, piante verdi.
 Formato quadrato 1:1. Niente persone, nessun testo, nessuna lettera, nessun numero, nessun logo, nessuna filigrana.
 ```
 
