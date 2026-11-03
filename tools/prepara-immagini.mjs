@@ -15,7 +15,7 @@
 //   3. pulizia dei bordi: tolgo il colore di sfondo mescolato nei pixel semitrasparenti e il riflesso
 //      vicino al bordo, stringo il bordo di 1 px e cancello i puntini isolati (rumore della compressione)
 //   4. ritaglio sul contenuto, con 4 px di margine
-// Poi versioni "telefono" (max 1000 px) e "computer" (max 1920 px, mai ingrandite) in AVIF e WebP.
+// Poi versioni "telefono" (max 800 px) e "computer" (max 1920 px, mai ingrandite) in AVIF e WebP.
 // Budget del piano per le immagini dell'hero (nomi che iniziano con "ufficio-"): 400 KB su telefono,
 // 900 KB su computer; se si sfora, abbasso la qualità a passi. Riporta il peso di ciascuna.
 // Scrive src/content/immagini.json e, se ci sono scontornati, riferimenti/immagini/_controllo.png.
@@ -26,7 +26,7 @@ import { join, parse } from 'node:path';
 const [inDir = 'riferimenti/immagini', outDir = 'public/immagini'] = process.argv.slice(2);
 const manifestPath = 'src/content/immagini.json';
 const publicBase = '/' + outDir.replace(/^public\/?/, '').replace(/\/$/, '');
-const MAXW = { computer: 1920, telefono: 1000 };
+const MAXW = { computer: 1920, telefono: 800 }; // telefono: ~390 px di larghezza a densità 2
 const HERO = (name) => name.startsWith('ufficio-');
 const BUDGET = { telefono: 400 * 1024, computer: 900 * 1024 };
 

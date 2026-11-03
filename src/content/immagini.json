@@ -1,0 +1,113 @@
+{
+  "nota": "Generato da tools/prepara-immagini.mjs: non modificare a mano.",
+  "immagini": {
+    "stanza-amministrazione": {
+      "scontornata": false,
+      "computer": {
+        "w": 1024,
+        "h": 1024,
+        "avif": "/immagini/stanza-amministrazione-computer.avif",
+        "webp": "/immagini/stanza-amministrazione-computer.webp",
+        "kb": {
+          "avif": 44,
+          "webp": 80
+        }
+      },
+      "telefono": {
+        "w": 800,
+        "h": 800,
+        "avif": "/immagini/stanza-amministrazione-telefono.avif",
+        "webp": "/immagini/stanza-amministrazione-telefono.webp",
+        "kb": {
+          "avif": 29,
+          "webp": 53
+        }
+      },
+      "qualita": {
+        "avif": 55,
+        "webp": 80
+      }
+    },
+    "stanza-reception": {
+      "scontornata": false,
+      "computer": {
+        "w": 1024,
+        "h": 1024,
+        "avif": "/immagini/stanza-reception-computer.avif",
+        "webp": "/immagini/stanza-reception-computer.webp",
+        "kb": {
+          "avif": 42,
+          "webp": 78
+        }
+      },
+      "telefono": {
+        "w": 800,
+        "h": 800,
+        "avif": "/immagini/stanza-reception-telefono.avif",
+        "webp": "/immagini/stanza-reception-telefono.webp",
+        "kb": {
+          "avif": 27,
+          "webp": 52
+        }
+      },
+      "qualita": {
+        "avif": 55,
+        "webp": 80
+      }
+    },
+    "ufficio-caos": {
+      "scontornata": false,
+      "computer": {
+        "w": 1024,
+        "h": 1024,
+        "avif": "/immagini/ufficio-caos-computer.avif",
+        "webp": "/immagini/ufficio-caos-computer.webp",
+        "kb": {
+          "avif": 65,
+          "webp": 120
+        }
+      },
+      "telefono": {
+        "w": 800,
+        "h": 800,
+        "avif": "/immagini/ufficio-caos-telefono.avif",
+        "webp": "/immagini/ufficio-caos-telefono.webp",
+        "kb": {
+          "avif": 42,
+          "webp": 78
+        }
+      },
+      "qualita": {
+        "avif": 55,
+        "webp": 80
+      }
+    },
+    "ufficio-ordine": {
+      "scontornata": false,
+      "computer": {
+        "w": 1024,
+        "h": 1024,
+        "avif": "/immagini/ufficio-ordine-computer.avif",
+        "webp": "/immagini/ufficio-ordine-computer.webp",
+        "kb": {
+          "avif": 48,
+          "webp": 95
+        }
+      },
+      "telefono": {
+        "w": 800,
+        "h": 800,
+        "avif": "/immagini/ufficio-ordine-telefono.avif",
+        "webp": "/immagini/ufficio-ordine-telefono.webp",
+        "kb": {
+          "avif": 31,
+          "webp": 63
+        }
+      },
+      "qualita": {
+        "avif": 55,
+        "webp": 80
+      }
+    }
+  }
+}
